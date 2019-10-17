@@ -53,9 +53,33 @@ Having trouble? Salesforce.org staff and your fellow sprinters are here to help!
 * track if member declines benefits - relates to tax-deductibility as well
 * benefits over longer period of time, including over multiple events
 
+## Requirements to refine
+* Benefit/purchase rollovers
+  * status in benefit Assignment
+* Different benefits -> new vs. renewing 
+* Membership records required for:
+  * Communities
+  * Org/Corporate memberships
+* BDI considerations 
 
 ![Image of MemberPosterPhoto.jpg](images/MemberPosterPhoto.jpg)
 
+### Solutioning
+
+![Image of InitialDataModel.jpg](images/InitialDataModel.jpg)
+
+## Next Steps for Friday
+* Use cases / user stories
+* Prove out on model
+* Re-validate requirements
+* Firm answer on the membership and its junction
+* Determine custom settings
+* Define MVP and Roadmap
+* List edge cases we will not support
+
+## Code
+* Custom setting (or metadata) : based on product, assign related benefits to Opportunity
+  
 ### Project Resources
 
 * [Current NPSP functionality docs](https://powerofus.force.com/s/article/NPSP-Working-with-Memberships)
