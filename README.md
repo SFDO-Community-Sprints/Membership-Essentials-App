@@ -4,27 +4,33 @@
 Help us give you the thanks you deserve! Please ensure that all contributing members of the team are included!
 * Team Leader(s): 
 * GitHub Scribe(s): Thomas Taylor (@tet3)
-* List of all Contributors: Andrea Hanson, Dean Grahahm, John Adams, Deepa Bedi, Jon Varese, Shari Carlson Reily, Michael Kolodner, Brittany Neale
+* List of all Contributors: Andrea Hanson, Dean Graham, John Adams, Deepa Bedi, Jon Varese, Shari Carlson Reily, Michael Kolodner, Brittany Neale
 
 ### Project Vision (Your first task as a team)
 A schema for memberships, renewals, payments, multiple members, families, benefits, etc, that actually works. Eventually automation etc.
 
-What is the big problem that your project is trying to solve?
-: The existing NPSP membership data model is very lightweight and doesn't meet many orgs' needs. We seek to design a data model that is flexible and extensible for a wide range of membership models. 
+* What is the big problem that your project is trying to solve?
+    The existing NPSP membership data model is very lightweight and doesn't meet many orgs' needs. We seek to design a data model that is flexible and extensible for a wide range of membership models. 
 
-Who will be using your project?
-: Organizations that have paid memberships of some kind. 
+* Who will be using your project?
+    Organizations that have paid memberships of some kind. 
 
-A year from now, how do you see people describing your project?
+* A year from now, how do you see people describing your project?
 
 Use these questions to form a clear vision statement of 3-5 sentences (rough guideline). 
 
 Having trouble? Salesforce.org staff and your fellow sprinters are here to help! Use one of your table's request signs and/or post in the Quip Chat to seek help, and we'll pop by.
 
+### Requirements
+
+* Track retention, renewal and reacquire
+* 
+
+![Image of MemberPosterPhoto.jpg](images/MemberPosterPhoto.jpg)
 
 ### Project Resources
 
-![Image of MemberPosterPhoto.jpg](images/PhillyRepo.jpg)
+
 
 * Indicate if there are any existing Hub Ideas, or product Issues/Bugs that you're solving for. 
 * Where can we find additional information on your project? Ie. do you have supporting code in another Repo, do you have documentation in Google, your repo's Wiki, etc.? Be sure to include (or at least links to) all supporting material here. If it's not in your project Repo, it will get lost.
