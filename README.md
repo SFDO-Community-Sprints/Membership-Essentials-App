@@ -4,7 +4,7 @@
 Help us give you the thanks you deserve! Please ensure that all contributing members of the team are included!
 * Team Leader(s): 
 * GitHub Scribe(s): Thomas Taylor (@tet3)
-* List of all Contributors: Andrea Hanson, Dean Grahahm, John Adams, Deepa Bedi, Jon Varese, Shari Carlson Reily, Michael Kolodner 
+* List of all Contributors: Andrea Hanson, Dean Grahahm, John Adams, Deepa Bedi, Jon Varese, Shari Carlson Reily, Michael Kolodner, Brittany Neale
 
 ### Project Vision (Your first task as a team)
 A schema for memberships, renewals, payments, multiple members, families, benefits, etc, that actually works. Eventually automation etc.
@@ -23,6 +23,9 @@ Having trouble? Salesforce.org staff and your fellow sprinters are here to help!
 
 
 ### Project Resources
+
+![Image of MemberPosterPhoto.jpg](images/PhillyRepo.jpg)
+
 * Indicate if there are any existing Hub Ideas, or product Issues/Bugs that you're solving for. 
 * Where can we find additional information on your project? Ie. do you have supporting code in another Repo, do you have documentation in Google, your repo's Wiki, etc.? Be sure to include (or at least links to) all supporting material here. If it's not in your project Repo, it will get lost.
 
