@@ -24,13 +24,33 @@ Having trouble? Salesforce.org staff and your fellow sprinters are here to help!
 ### Requirements
 
 * Track retention, renewal and reacquire
+* Individual memberships
+* Dual & Household memberships
+* Multiple Contacts attached to a membership, not necessarily tied to a single Account
+* Memberships without payment, eg, gift memberships & subscriptions
+* Free memberships 
+* Membership levels & products
+* Overlapping membership levels, especially re: discounted levels like Senior or Student 
+* Personal Benefit/non-tax deductible amount
+* Multiple memberships per contact
+* acknowledgements & receipting
+* automate renewal creation
+* automate renewal reminders
+* tying benefits to specific events, eg, seats, ads
+* marking memberships as lapsed
+* grace period 
+* multi-year memberships
+* membership # associated with Contact(s)
+* membership card
+* suspending memberships
+* organizational memberships
+* periodic/recurring payments for memberships
+* suspension of membership if recurring payment missed
 * 
 
 ![Image of MemberPosterPhoto.jpg](images/MemberPosterPhoto.jpg)
 
 ### Project Resources
-
-
 
 * Indicate if there are any existing Hub Ideas, or product Issues/Bugs that you're solving for. 
 * Where can we find additional information on your project? Ie. do you have supporting code in another Repo, do you have documentation in Google, your repo's Wiki, etc.? Be sure to include (or at least links to) all supporting material here. If it's not in your project Repo, it will get lost.
