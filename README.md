@@ -24,9 +24,11 @@ Having trouble? Salesforce.org staff and your fellow sprinters are here to help!
 ### Requirements
 
 * Track retention, renewal and reacquire
+* automate labeling of membership opps as new, renewal, reacquire
 * Individual memberships
 * Dual & Household memberships
 * Multiple Contacts attached to a membership, not necessarily tied to a single Account
+* benefits/or Membership can be assigned to specific or additional contacts - relevant for Organizational membership that grants benefits to a specific number of members
 * Memberships without payment, eg, gift memberships & subscriptions
 * Free memberships 
 * Membership levels & products
@@ -46,13 +48,20 @@ Having trouble? Salesforce.org staff and your fellow sprinters are here to help!
 * organizational memberships
 * periodic/recurring payments for memberships
 * suspension of membership if recurring payment missed
-* 
+* Communities compatibility/automation
+* differentiate between membership benefit entitlements and actual receipt
+* track if member declines benefits - relates to tax-deductibility as well
+* benefits over longer period of time, including over multiple events
+
 
 ![Image of MemberPosterPhoto.jpg](images/MemberPosterPhoto.jpg)
 
 ### Project Resources
 
-* Indicate if there are any existing Hub Ideas, or product Issues/Bugs that you're solving for. 
+* [Current NPSP functionality docs](https://powerofus.force.com/s/article/NPSP-Working-with-Memberships)
+* Possibly related Hub Ideas:
+  *   [Automate Membership Origin and Start/End Dates on new Opportunities](https://powerofus.force.com/s/idea/a1W80000004DUjLEAW/automate-membership-origin-and-startend-dates-on-new-opportunities)
+  *   [Customize payment automation by stage](https://powerofus.force.com/s/idea/a1W80000006bnfMEAQ/customize-payment-automation-by-stage)
 * Where can we find additional information on your project? Ie. do you have supporting code in another Repo, do you have documentation in Google, your repo's Wiki, etc.? Be sure to include (or at least links to) all supporting material here. If it's not in your project Repo, it will get lost.
 
 ### Project Team Accomplishments
