@@ -101,15 +101,21 @@ We've reviwed the list of requirements and confirmed that the model fits. Notes 
 * Complexity of the model
     * LDV performance issues
     * End-user friendliness
-    * Distance between COntact and Benefit Item
+    * Distance between Contact and Benefits
 * Struggle to name objects that accomodates both membership & sponsorship
 * Migration of opportunity-centric model to custom object 
 * Rollups
+* Benefits object fitting too many roles (membership, sponsorship, line items)
 
 
 ### Solutioning
 
 * [Current model V3](https://drive.google.com/file/d/16nSpkvJ8fAAVRhX-rB-gPlWMUBXnfjc1/view?usp=sharing)
+    * addressed LDV concerns; allows all benefits to be viewed in a single related list connected to Account
+    * re-used Benefits object for both big picture things like Membership as well as more specific line items
+    
+* [Previous V2 model](https://drive.google.com/file/d/0B4VvMV3AXIz1NDJUNW5RY0pnUDNVY3VsZXo1ZFZXTV9lamVZ/view?usp=sharing)
+    * Reduced number of objects
 
 Previous Data Models:
 * [Draw.io ERD](https://www.draw.io/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=MembershipSchema-PhillySprint.drawio#Uhttps%3A%2F%2Fdrive.google.com%2Fa%2Fcoolbrook.org%2Fuc%3Fid%3D1UGZOsbNlRQTadTfOZhl7pvLYH-NQnRqz%26export%3Ddownload)
@@ -155,8 +161,10 @@ Previous Data Models:
 * Code hasn't yet been created
 
 ### Project Team Accomplishments
-* Reduced data model to 3 objects!
+* Reduced data model to 3 objects
 * Many, many discussions that all return to the same core data model
+* Feeling confident in creating a junction object between contact and membership
+    * slightly less confident in how to address benefits
 
 ### Future Contributions (AKA what were you unable to finish at the Sprint)
 * Write use cases
