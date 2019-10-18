@@ -3,8 +3,8 @@
 ### Project Team
 Help us give you the thanks you deserve! Please ensure that all contributing members of the team are included!
 * Team Leader(s): 
-* GitHub Scribe(s): Thomas Taylor (@tet3)
-* List of all Contributors: Andrea Hanson, Dean Graham, John Adams, Deepa Bedi, Jon Varese, Shari Carlson Reily, Michael Kolodner, Brittany Neale
+* GitHub Scribe(s): [Thomas Taylor](/tet3) 
+* List of all Contributors: [Andrea Hanson](/andreahanson), Dean Graham, John Adams, Deepa Bedi, Shari Carlson Reily, [Michael Kolodner](/mkolodner), Brittany Neale
 
 ### Project Vision (Your first task as a team)
 A schema for memberships, renewals, payments, multiple members, families, benefits, etc, that actually works. Eventually automation etc.
@@ -65,6 +65,8 @@ Having trouble? Salesforce.org staff and your fellow sprinters are here to help!
 ![Image of MemberPosterPhoto.jpg](images/MemberPosterPhoto.jpg)
 
 ### Solutioning
+
+* [Draw.io ERD](https://www.draw.io/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=MembershipSchema-PhillySprint.drawio#Uhttps%3A%2F%2Fdrive.google.com%2Fa%2Fcoolbrook.org%2Fuc%3Fid%3D1UGZOsbNlRQTadTfOZhl7pvLYH-NQnRqz%26export%3Ddownload)
 
 ![Image of InitialDataModel.jpg](images/InitialDataModel.jpg)
 
