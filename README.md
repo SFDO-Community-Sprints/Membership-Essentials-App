@@ -3,7 +3,7 @@
 ### Project Team
 Help us give you the thanks you deserve! Please ensure that all contributing members of the team are included!
 * Team Leader(s): 
-* GitHub Scribe(s): [Thomas Taylor](/tet3) 
+* GitHub Scribe(s): [Thomas Taylor](/tet3) & [Duncan McGovern](/D-McGovern)
 * List of all Contributors: [Andrea Hanson](/andreahanson), Dean Graham, John Adams, Deepa Bedi, Shari Carlson Reily, [Michael Kolodner](/mkolodner), Brittany Neale, Amy Bucciferro
 
 ### Project Vision (Your first task as a team)
@@ -24,6 +24,7 @@ The team would like to provide nonprofits and consultants with a framework for b
 Having trouble? Salesforce.org staff and your fellow sprinters are here to help! Use one of your table's request signs and/or post in the Quip Chat to seek help, and we'll pop by.
 
 ### Requirements
+We've reviwed the list of requirements and confirmed that the model fits. Notes below
 
 * Track retention, renewal and reacquire
     * "Benefits" object can encompass membership as well as sponsorship. And provides a high-level overview of allocated benefits and usage of those benefits
@@ -112,6 +113,24 @@ Having trouble? Salesforce.org staff and your fellow sprinters are here to help!
 
 ![Image of InitialDataModel.jpg](images/InitialDataModel.jpg)
 
+* Benefits (or "membership/sponsorship" object)
+    * Struggling to name this—it's confusing
+    * Lookup to itself in order to create a hierarchy to relate for example benefit items to one membership purchase
+    * OOTB Membership and Sponsorship RT
+        * Probably want a 3rd "Item" RT that designates the child Benefits
+    * Stores "type" information (purchased, gifted, awarded)
+    * Designated Primary contact - creating a BCR for this Contact recommneded as the first automation
+    * Start Date
+    * End Date
+    * Sponsorship Type
+    * Member Level
+    * Status - optional?
+ * Benefit Contact Role (for lack of a better name) - probably will only pertain to Membership RT but flexible
+    * Junction record between Contact and Benefit
+    * Shows history of membership
+* Benefit Offering
+    * Catalogue of specific things an organization might give as part of a membership or sponsorship. Parent of Benefit
+
 ## Next Steps
 * Use cases / user stories
 * Prove out on model - in progress
@@ -125,17 +144,18 @@ Having trouble? Salesforce.org staff and your fellow sprinters are here to help!
     * for future
   
 ### Project Resources
+* Lucidchart to be shared - need to get this in here *
 
 * [Current NPSP functionality docs](https://powerofus.force.com/s/article/NPSP-Working-with-Memberships)
 * Possibly related Hub Ideas:
   *   [Automate Membership Origin and Start/End Dates on new Opportunities](https://powerofus.force.com/s/idea/a1W80000004DUjLEAW/automate-membership-origin-and-startend-dates-on-new-opportunities)
   *   [Customize payment automation by stage](https://powerofus.force.com/s/idea/a1W80000006bnfMEAQ/customize-payment-automation-by-stage)
-* Where can we find additional information on your project? Ie. do you have supporting code in another Repo, do you have documentation in Google, your repo's Wiki, etc.? Be sure to include (or at least links to) all supporting material here. If it's not in your project Repo, it will get lost.
+* Code hasn't yet been created
 
 ### Project Team Accomplishments
-* Still working on data model!
+* Reduced data model to 3 objects!
+* Many, many discussions that all return to the same core data model
 
 ### Future Contributions (AKA what were you unable to finish at the Sprint)
-* Finalize data model and create 
-
-**Important**: If you have specific asks to help move this project forward we would recommend that you list them here, but also create separate Issues for each and add the label of "help wanted". This is a well-worn best practice for projects living in GitHub.
+* Write use cases
+* Build proof of concept
