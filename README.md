@@ -109,6 +109,10 @@ We've reviwed the list of requirements and confirmed that the model fits. Notes 
 
 ### Solutioning
 
+* Current model (V3)
+(https://drive.google.com/file/d/16nSpkvJ8fAAVRhX-rB-gPlWMUBXnfjc1/view?usp=sharing)
+
+Previous Data Models:
 * [Draw.io ERD](https://www.draw.io/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=MembershipSchema-PhillySprint.drawio#Uhttps%3A%2F%2Fdrive.google.com%2Fa%2Fcoolbrook.org%2Fuc%3Fid%3D1UGZOsbNlRQTadTfOZhl7pvLYH-NQnRqz%26export%3Ddownload)
 
 ![Image of InitialDataModel.jpg](images/InitialDataModel.jpg)
@@ -144,7 +148,6 @@ We've reviwed the list of requirements and confirmed that the model fits. Notes 
     * for future
   
 ### Project Resources
-* Lucidchart to be shared - need to get this in here *
 
 * [Current NPSP functionality docs](https://powerofus.force.com/s/article/NPSP-Working-with-Memberships)
 * Possibly related Hub Ideas:
