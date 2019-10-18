@@ -19,46 +19,76 @@ A schema for memberships, sponsorship, renewals, payments, multiple members, fam
     A foundational data structure that can be extended and modified
 
 * Use these questions to form a clear vision statement of 3-5 sentences (rough guideline). 
-The team would like to provide nonprofits and consultants with a framework for benefits including memberships and sponsorships that is separate from opportunities for both technical and operational considerations. These include benefits that are not tied to a financial contribution as well as the ability expose benefits objects to all SF license types (community, platform, etc)
+The team would like to provide nonprofits and consultants with a framework for benefits including memberships and sponsorships that is separate from opportunities for both technical and operational considerations. These include benefits that are not tied to a financial contribution as well as the ability expose benefits objects to all SF license types (community, platform, etc). It also decouples purchasing a benefit from the benefit recipient(s).
 
 Having trouble? Salesforce.org staff and your fellow sprinters are here to help! Use one of your table's request signs and/or post in the Quip Chat to seek help, and we'll pop by.
 
 ### Requirements
 
 * Track retention, renewal and reacquire
+    * "Benefits" object can encompass membership as well as sponsorship. And provides a high-level overview of allocated benefits and usage of those benefits
 * automate labeling of membership opps as new, renewal, reacquire
+    * Could be a future project
 * Individual memberships
+    * Tracked w/ Membership RT Benefits object + contact benefit role junction object
 * Dual & Household memberships
-* Multiple Contacts attached to a membership, not necessarily tied to a single Account
+    * Supported using one Benefits object and a Contact Benefit Role object for each "member" or recipient
+* Multiple Contacts attached to a membership, not necessarily tied to a Account
+    * Supported via Contact benefit role; detached from Account 
 * benefits/or Membership can be assigned to specific or additional contacts - relevant for Organizational membership that grants benefits to a specific number of members
+    * Supported because Benefits don't flow down to Contacts via Account; Affiliations could be leveraged to automate if desired
 * Memberships without payment, eg, gift memberships & subscriptions
+    * Benefit does not need to be linked to an Opportunity
 * Free memberships 
+    * see above
 * Membership levels & products
+    * Retains current flexiblity to use either a membership picklist on Benefit (rather than Opportunity) or use various record types or Products to track this
 * Overlapping membership levels, especially re: discounted levels like Senior or Student 
+    * This is a business process decision to be made by the organization; could assign additional Benefit Items based on org business process. Example: senior + student discount; can be assigned additional Benefits Item; Benefits object could have a senior/student level picklist or simply choose one over the other, could use discouting in Opportunity Products.
 * Personal Benefit/non-tax deductible amount
+    * Flexiblity to use either Opportunity or Opportunity Product for this
 * Multiple memberships per contact
+    * Supported!
 * acknowledgements & receipting
+    * Payment acknowledgement/receiting continutes to be handled on the opporutnity, if desired Benefits emails could be created or automated
 * automate renewal creation
+    * Optional based on business processes (could automate this in many ways internally); not part of the initial package
 * automate renewal reminders
+    * See above
 * tying benefits to specific events, eg, seats, ads
+    * Have flexiblity to connect 
 * marking memberships as lapsed
+    * End date field on Benefits object
 * grace period 
+    * Defined by business process/future requirement
 * multi-year memberships
+    * Defined by business process/future requirement
 * membership # associated with Contact(s)
+    * Optional business process, lives on Contact
 * membership card
+    * Optional businss process
 * suspending memberships
+    * Could suspend either at Benefits level or at Benefit Contact Role - could automate using Affiliation status for business
 * organizational memberships
+    * Supported
 * periodic/recurring payments for memberships
+    * Payments are separate from benefits
 * suspension of membership if recurring payment missed
+    * Optional; could be automated/future
 * Communities compatibility/automation
-* differentiate between membership benefit entitlements and actual receipt
+    * Supports all licenses
+* differentiate between membership benefit entitlements and actual receipt of benefits
+    * Optional "benefits use" object could be built or simply use picklist on benefit item
 * track if member declines benefits - relates to tax-deductibility as well
+    * Could be supported according to business processes
 * benefits over longer period of time, including over multiple events
+    * Supported
 
 ## Requirements to refine
-* Benefit/purchase rollovers
-  * status in benefit Assignment
+* Benefit/purchase rollovers - yes, could be moved to another Benefits object
+  * status in benefit Assignment - yes, could be picklist or additional object
 * Different benefits -> new vs. renewing 
+    * business process decision
 * Membership records required for:
   * Communities
   * Org/Corporate memberships
@@ -66,23 +96,33 @@ Having trouble? Salesforce.org staff and your fellow sprinters are here to help!
 
 ![Image of MemberPosterPhoto.jpg](images/MemberPosterPhoto.jpg)
 
+### Ongoing concerns
+* Complexity of the model
+    * LDV performance issues
+    * End-user friendliness
+    * Distance between COntact and Benefit Item
+* Struggle to name objects that accomodates both membership & sponsorship
+* Migration of opportunity-centric model to custom object 
+* Rollups
+
+
 ### Solutioning
 
 * [Draw.io ERD](https://www.draw.io/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=MembershipSchema-PhillySprint.drawio#Uhttps%3A%2F%2Fdrive.google.com%2Fa%2Fcoolbrook.org%2Fuc%3Fid%3D1UGZOsbNlRQTadTfOZhl7pvLYH-NQnRqz%26export%3Ddownload)
 
 ![Image of InitialDataModel.jpg](images/InitialDataModel.jpg)
 
-## Next Steps for Friday
+## Next Steps
 * Use cases / user stories
-* Prove out on model
-* Re-validate requirements
+* Prove out on model - in progress
 * Firm answer on the membership and its junction
-* Determine custom settings
 * Define MVP and Roadmap
 * List edge cases we will not support
+* List custom settings/automation to prioritize
 
 ## Code
 * Custom setting (or metadata) : based on product, assign related benefits to Opportunity
+    * for future
   
 ### Project Resources
 
@@ -93,10 +133,9 @@ Having trouble? Salesforce.org staff and your fellow sprinters are here to help!
 * Where can we find additional information on your project? Ie. do you have supporting code in another Repo, do you have documentation in Google, your repo's Wiki, etc.? Be sure to include (or at least links to) all supporting material here. If it's not in your project Repo, it will get lost.
 
 ### Project Team Accomplishments
-What did the Project Team accomplished during the Sprint?
+* Still working on data model!
 
 ### Future Contributions (AKA what were you unable to finish at the Sprint)
-Often, it takes multiple Sprints to contribute an idea back into the Community. What happens at a Sprint does not stay at a Sprint! If someone were to contribute to this project at the next Sprint what would you want them to work on to move this project forward?<br><br>
-* What is your project's Roadmap?
+* Finalize data model and create 
 
 **Important**: If you have specific asks to help move this project forward we would recommend that you list them here, but also create separate Issues for each and add the label of "help wanted". This is a well-worn best practice for projects living in GitHub.
