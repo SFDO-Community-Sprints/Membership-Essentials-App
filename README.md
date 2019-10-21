@@ -9,16 +9,16 @@ Help us give you the thanks you deserve! Please ensure that all contributing mem
 ### Project Vision (Your first task as a team)
 A schema for memberships, sponsorship, renewals, payments, multiple members, families, benefits, etc, that actually works. Eventually automation etc.
 
-* What is the big problem that your project is trying to solve?
+* **What is the big problem that your project is trying to solve?**
     The existing NPSP membership data model is very lightweight and doesn't meet many orgs' needs. We seek to design a data model that is flexible and extensible for a wide range of membership and entitlement models including memberships and sponsonships. 
 
-* Who will be using your project?
+* **Who will be using your project?**
     Organizations that have any form of membership or sponsorship, paid or unpaid. 
 
-* A year from now, how do you see people describing your project?
+* **A year from now, how do you see people describing your project?**
     A foundational data structure that can be extended and modified
 
-* Use these questions to form a clear vision statement of 3-5 sentences (rough guideline). 
+* **Use these questions to form a clear vision statement of 3-5 sentences (rough guideline).** 
 The team would like to provide nonprofits and consultants with a framework for benefits including memberships and sponsorships that is separate from opportunities for both technical and operational considerations. These include benefits that are not tied to a financial contribution as well as the ability expose benefits objects to all SF license types (community, platform, etc). It also decouples purchasing a benefit from the benefit recipient(s).
 
 Having trouble? Salesforce.org staff and your fellow sprinters are here to help! Use one of your table's request signs and/or post in the Quip Chat to seek help, and we'll pop by.
@@ -126,7 +126,7 @@ Previous Data Models:
     * Struggling to name this—it's confusing
     * Lookup to itself in order to create a hierarchy to relate for example benefit items to one membership purchase
     * OOTB Membership and Sponsorship RT
-        * Probably want a 3rd "Item" RT that designates the child Benefits
+     * Probably want a 3rd "Item" RT that designates the child Benefits
     * Stores "type" information (purchased, gifted, awarded)
     * Designated Primary contact - creating a BCR for this Contact recommneded as the first automation
     * Start Date
