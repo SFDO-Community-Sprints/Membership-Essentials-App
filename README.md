@@ -57,7 +57,8 @@ We've reviwed the list of requirements and confirmed that the model fits. Notes 
 * automate renewal reminders
     * See above
 * tying benefits to specific events, eg, seats, ads
-    * Have flexiblity to connect 
+    * Have flexiblity to connect
+    * Could create a lookup relationship from benefit to campaign
 * marking memberships as lapsed
     * End date field on Benefits object
 * grace period 
@@ -65,7 +66,7 @@ We've reviwed the list of requirements and confirmed that the model fits. Notes 
 * multi-year memberships
     * Defined by business process/future requirement
 * membership # associated with Contact(s)
-    * Optional business process, lives on Contact
+    * Optional business process, could live on Contact or custom object
 * membership card
     * Optional businss process
 * suspending memberships
@@ -109,15 +110,29 @@ We've reviwed the list of requirements and confirmed that the model fits. Notes 
 
 
 ### Solutioning
+* [Current model V4](https://drive.google.com/file/d/1zu1199WF7od-WmdEsRz2L1fSsu5cxvqJ/view?usp=sharing)
+    * focuses on addressing membership concerns
+    * Membership object provides:
+     * clarity/flexibility (as opposed to reusing another object with a confusing name and limitations - OCR or OppProds)
+     * start/stop dates for membership period
+     * ability to relate to an account (household or organization) and/or one/multiple contacts
+    * Opportunity Product object provides:
+     * details of each purchase as part of a transaction on the opportunity
+     * ability to bundle orders of various products (donations, memberships, etc) on one opportunity
+     * ability to renew a single membership record on a future opportunity (multiple OppProds can specify one membership)
+     * ability to reference product pricing, add discounts
+    * GAU Allocation object:
+     * needs to be considered if we plan to allow a bundle opportunity where a dontion and membership are purchased together
+     * provides summarized financial information relevant to accounting departments
 
-* [Current model V3](https://drive.google.com/file/d/16nSpkvJ8fAAVRhX-rB-gPlWMUBXnfjc1/view?usp=sharing)
+Previous Data Models:
+* [Previous model V3](https://drive.google.com/file/d/16nSpkvJ8fAAVRhX-rB-gPlWMUBXnfjc1/view?usp=sharing)
     * addressed LDV concerns; allows all benefits to be viewed in a single related list connected to Account
     * re-used Benefits object for both big picture things like Membership as well as more specific line items
     
-* [Previous V2 model](https://drive.google.com/file/d/0B4VvMV3AXIz1NDJUNW5RY0pnUDNVY3VsZXo1ZFZXTV9lamVZ/view?usp=sharing)
+* [Previous model V2](https://drive.google.com/file/d/0B4VvMV3AXIz1NDJUNW5RY0pnUDNVY3VsZXo1ZFZXTV9lamVZ/view?usp=sharing)
     * Reduced number of objects
 
-Previous Data Models:
 * [Draw.io ERD](https://www.draw.io/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=MembershipSchema-PhillySprint.drawio#Uhttps%3A%2F%2Fdrive.google.com%2Fa%2Fcoolbrook.org%2Fuc%3Fid%3D1UGZOsbNlRQTadTfOZhl7pvLYH-NQnRqz%26export%3Ddownload)
 
 ![Image of InitialDataModel.jpg](images/InitialDataModel.jpg)
