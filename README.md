@@ -189,11 +189,14 @@ Previous Data Models:
 * Also see prior sprint work done during Amsterdam Sprint in 2019 https://github.com/SFDO-Community-Sprints/Membership-Management
 
 ### Project Team Accomplishments
+Sprint 2020 Virtual Sprint
+* Created v4 schema
+    * benefits catalogue/used objects could fit into schema but not mapped out as out of scope for this Sprint
+* Implemented v4 schema in scratch org with custom fields and relationships
+* Discussed and solidified decisions made in prior groups regarding membership, ensuring flexibilitiy for a range of use cases
+
+Philly Sprint?
 * Reduced data model to 3 objects
 * Many, many discussions that all return to the same core data model
 * Feeling confident in creating a junction object between contact and membership
     * slightly less confident in how to address benefits
-
-### Future Contributions (AKA what were you unable to finish at the Sprint)
-* Write use cases
-* Build proof of concept
