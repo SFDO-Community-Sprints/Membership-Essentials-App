@@ -122,6 +122,7 @@ We've reviwed the list of requirements and confirmed that the model fits. Notes 
 * *how* does a member renew?
 
 ### Solutioning
+* [Metecho scratch org](https://metecho.herokuapp.com/repositories/membership-schema-and-benefits)
 * [Current model V4](https://drive.google.com/file/d/1zu1199WF7od-WmdEsRz2L1fSsu5cxvqJ/view?usp=sharing)
     * focuses on addressing membership concerns
     * Membership object provides:
@@ -168,12 +169,14 @@ Previous Data Models:
     * Catalogue of specific things an organization might give as part of a membership or sponsorship. Parent of Benefit
 
 ## Next Steps
+* Have Beta Testers use the v4 architecture as a base to build out their membership implementation
+* Collect feedback from those tests
 * Use cases / user stories
-* Prove out on model - in progress
-* Firm answer on the membership and its junction
 * Define MVP and Roadmap
 * List edge cases we will not support
+* Finish building out custom fields
 * List custom settings/automation to prioritize
+* Create example email alerts and templates that orgs could use as a starting point
 
 ## Code
 * Custom setting (or metadata) : based on product, assign related benefits to Opportunity
