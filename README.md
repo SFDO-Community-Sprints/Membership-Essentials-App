@@ -3,8 +3,8 @@
 ### Project Team (March 31, 2020)
 Help us give you the thanks you deserve! Please ensure that all contributing members of the team are included!
 * Team Leader(s): Kai Williams
-* GitHub Scribe(s): [Collin Zimmerman](/collinzimmerman)
-* List of all Contributors: [Evan Ponter](/RealEvanPonter), [Reede Stockton](/npsp-reedestockton), James Browne, [Mel Brockley](/MellifluousBee), [Chris Pifer](/selfuntitled)
+* GitHub Scribe(s): Evan Ponter, Collin Zimmerman
+* List of all Contributors: Evan Ponter, Reede Stockton, James Browne, Mel Brockley, Chris Pifer
 
 ### Project Team (Previous Sprint)
 Help us give you the thanks you deserve! Please ensure that all contributing members of the team are included!
@@ -51,6 +51,9 @@ We've reviwed the list of requirements and confirmed that the model fits. Notes 
 * Memberships without payment, eg, gift memberships & subscriptions
     * Benefit does not need to be linked to an Opportunity
     * Free memberships
+* Allow a member to upgrade their membership or obtain a renewal in advance of expiring
+    * prorated amounts
+    * handling partial membership time period
 * Easily allow interal Salesforce users to create membership orders from an opportunity or create memberships directly
 * Membership levels & products
     * Retains current flexiblity to use either a membership picklist on Membership (rather than Opportunity) or use various record types or Products to track this
@@ -116,6 +119,7 @@ We've reviwed the list of requirements and confirmed that the model fits. Notes 
     * End-user friendliness
     * Distance between Contact and Benefits
 * Rollups
+* *how* does a member renew?
 
 ### Solutioning
 * [Current model V4](https://drive.google.com/file/d/1zu1199WF7od-WmdEsRz2L1fSsu5cxvqJ/view?usp=sharing)
