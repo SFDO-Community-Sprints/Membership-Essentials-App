@@ -32,74 +32,80 @@ Having trouble? Salesforce.org staff and your fellow sprinters are here to help!
 ### Requirements
 We've reviwed the list of requirements and confirmed that the model fits. Notes below
 
+**Membership**
+* Track memberships or distinct types of memberships
+    * "Membership" object can encompass membership as well as sponsorship. And provides a high-level overview of allocated benefits and usage of those benefits
+    * Record Types could be used for define sponsorships, benefits, and other specific distinctions
 * Track retention, renewal and reacquire
-    * "Benefits" object can encompass membership as well as sponsorship. And provides a high-level overview of allocated benefits and usage of those benefits
-* automate labeling of membership opps as new, renewal, reacquire
-    * Could be a future project
-* Individual memberships
-    * Tracked w/ Membership RT Benefits object + contact benefit role junction object
-* Dual & Household memberships
-    * Supported using one Benefits object and a Contact Benefit Role object for each "member" or recipient
-* Multiple Contacts attached to a membership, not necessarily tied to a Account
-    * Supported via Contact benefit role; detached from Account 
-* benefits/or Membership can be assigned to specific or additional contacts - relevant for Organizational membership that grants benefits to a specific number of members
-    * Supported because Benefits don't flow down to Contacts via Account; Affiliations could be leveraged to automate if desired
+    * Custom fields for dates and statuses on custom object
+    * automate labeling of membership opps as new, renewal, reacquire (Could be a future project)
+ * Individual memberships
+    * Tracked w/ Membership object + Membership contact role junction object
+ * Dual & Household memberships
+    * Supported using one Membership object and a Contact Membership Role object for each "member" or recipient
+ * Organizational memberships
+    * Multiple Contacts attached to a membership, not necessarily tied to the same Account from opportunity or membership
+    * Supported via Contact membership role
+    * Membership can be assigned to specific or additional contacts - relevant for Organizational membership that grants membership to a specific number of members
+    * Supported because Memberships don't flow down to Contacts via Account; Affiliations could be leveraged to automate if desired
 * Memberships without payment, eg, gift memberships & subscriptions
     * Benefit does not need to be linked to an Opportunity
-* Free memberships 
-    * see above
+    * Free memberships
+* Easily allow interal Salesforce users to create membership orders from an opportunity or create memberships directly
 * Membership levels & products
-    * Retains current flexiblity to use either a membership picklist on Benefit (rather than Opportunity) or use various record types or Products to track this
-* Overlapping membership levels, especially re: discounted levels like Senior or Student 
-    * This is a business process decision to be made by the organization; could assign additional Benefit Items based on org business process. Example: senior + student discount; can be assigned additional Benefits Item; Benefits object could have a senior/student level picklist or simply choose one over the other, could use discouting in Opportunity Products.
-* Personal Benefit/non-tax deductible amount
+    * Retains current flexiblity to use either a membership picklist on Membership (rather than Opportunity) or use various record types or Products to track this
+* Keep track of multiple memberships assigned to a single contact
+    * could be multiple active memberships
+* Personal Membership/non-tax deductible amount
     * Flexiblity to use either Opportunity or Opportunity Product for this
-* Multiple memberships per contact
-    * Supported!
 * acknowledgements & receipting
-    * Payment acknowledgement/receiting continutes to be handled on the opporutnity, if desired Benefits emails could be created or automated
-* automate renewal creation
+    * Payment acknowledgement/receiting continutes to be handled on the opporutnity
+* membership card or other notifications
+    * Optional businss process
+    * Emails could be created or automated based on the Membership object attributes
+* automate renewal creation and reminders
     * Optional based on business processes (could automate this in many ways internally); not part of the initial package
-* automate renewal reminders
-    * See above
-* tying benefits to specific events, eg, seats, ads
-    * Have flexiblity to connect
-    * Could create a lookup relationship from benefit to campaign
+    * automate renewal reminder emails
 * marking memberships as lapsed
-    * End date field on Benefits object
+    * End date field on Membership object
 * grace period 
     * Defined by business process/future requirement
+    * See periodic/recurring payments requirement below
 * multi-year memberships
     * Defined by business process/future requirement
 * membership # associated with Contact(s)
-    * Optional business process, could live on Contact or custom object
-* membership card
-    * Optional businss process
-* suspending memberships
-    * Could suspend either at Benefits level or at Benefit Contact Role - could automate using Affiliation status for business
-* organizational memberships
-    * Supported
+    * Optional business process, could live on Membership Contact Role, Contact, Account, or custom object
+* suspending / cancelling memberships
+    * Could suspend either at Membership level (using picklist or setting the end date) or at Membership Contact Role
+    * could automate using Affiliation status for business (if organization member has organization membership and then leaves organization)
 * periodic/recurring payments for memberships
-    * Payments are separate from benefits
-* suspension of membership if recurring payment missed
-    * Optional; could be automated/future
+    * Payments are separate from memberships
+    * Can be handled on Opportunity with Payments, or even Recurring Donations (utilizing NPSP)
+    * suspension of membership if recurring payment missed (Optional; could be automated/future)
 * Communities compatibility/automation
     * Supports all licenses
+    * Membership records are decoupled from Sales Cloud object
+    * Deactivate community user if their membership expires/terminates/lapses
+
+**Benefits**
+* Overlapping membership levels, especially re: discounted levels like Senior or Student 
+    * This is a business process decision to be made by the organization; could assign additional Benefit Items based on org business process. Example: senior + student discount; can be assigned additional Benefits Item; Benefits object could have a senior/student level picklist or simply choose one over the other, could use discouting in Opportunity Products.
+* tying benefits to specific events, eg, seats, ads
+    * Have flexiblity to connect
+    * Could create a lookup relationship from benefit to campaign
+    * Membership comes with 10 course discounts per year. Wanted to keep track the total discounts used.
 * differentiate between membership benefit entitlements and actual receipt of benefits
     * Optional "benefits use" object could be built or simply use picklist on benefit item
 * track if member declines benefits - relates to tax-deductibility as well
     * Could be supported according to business processes
 * benefits over longer period of time, including over multiple events
     * Supported
-
-## Requirements to refine
 * Benefit/purchase rollovers - yes, could be moved to another Benefits object
-  * status in benefit Assignment - yes, could be picklist or additional object
+    * status in benefit Assignment - yes, could be picklist or additional object
 * Different benefits -> new vs. renewing 
     * business process decision
-* Membership records required for:
-  * Communities
-  * Org/Corporate memberships
+
+## Requirements to refine
 * BDI considerations 
 
 ![Image of MemberPosterPhoto.jpg](images/MemberPosterPhoto.jpg)
@@ -109,11 +115,7 @@ We've reviwed the list of requirements and confirmed that the model fits. Notes 
     * LDV performance issues
     * End-user friendliness
     * Distance between Contact and Benefits
-* Struggle to name objects that accomodates both membership & sponsorship
-* Migration of opportunity-centric model to custom object 
 * Rollups
-* Benefits object fitting too many roles (membership, sponsorship, line items)
-
 
 ### Solutioning
 * [Current model V4](https://drive.google.com/file/d/1zu1199WF7od-WmdEsRz2L1fSsu5cxvqJ/view?usp=sharing)
