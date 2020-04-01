@@ -1,0 +1,19 @@
+minimum_cumulusci_version: '3.9.1'
+project:
+    name: Membership-Management
+    package:
+        name:  Membership-Management
+        api_version: '48.0'
+    source_format: sfdx
+
+tasks:
+    robot:
+        options:
+            suites: robot/Membership-Management/tests
+            options:
+                outputdir: robot/Membership-Management/results
+
+    robot_testdoc:
+        options:
+            path: robot/Membership-Management/tests
+            output: robot/Membership-Management/doc/Membership-Management_tests.html
