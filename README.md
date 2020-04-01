@@ -51,6 +51,9 @@ We've reviwed the list of requirements and confirmed that the model fits. Notes 
 * Memberships without payment, eg, gift memberships & subscriptions
     * Benefit does not need to be linked to an Opportunity
     * Free memberships
+* Allow a member to upgrade their membership or obtain a renewal in advance of expiring
+    * prorated amounts
+    * handling partial membership time period
 * Easily allow interal Salesforce users to create membership orders from an opportunity or create memberships directly
 * Membership levels & products
     * Retains current flexiblity to use either a membership picklist on Membership (rather than Opportunity) or use various record types or Products to track this
@@ -116,6 +119,7 @@ We've reviwed the list of requirements and confirmed that the model fits. Notes 
     * End-user friendliness
     * Distance between Contact and Benefits
 * Rollups
+* *how* does a member renew?
 
 ### Solutioning
 * [Current model V4](https://drive.google.com/file/d/1zu1199WF7od-WmdEsRz2L1fSsu5cxvqJ/view?usp=sharing)
