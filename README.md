@@ -6,7 +6,7 @@ Help us give you the thanks you deserve! Please ensure that all contributing mem
 * GitHub Scribe(s): [Collin Zimmerman](/collinzimmerman)
 * List of all Contributors: [Evan Ponter](/RealEvanPonter), [Reede Stockton](/npsp-reedestockton), James Browne, [Mel Brockley](/MellifluousBee), [Chris Pifer](/selfuntitled)
 
-### Project Team
+### Project Team (Previous Sprint)
 Help us give you the thanks you deserve! Please ensure that all contributing members of the team are included!
 * Team Leader(s): 
 * GitHub Scribe(s): [Thomas Taylor](/tet3) & [Duncan McGovern](/D-McGovern)
