@@ -1,0 +1,29 @@
+.DS_Store
+.project
+.settings
+build.properties
+salesforce.schema
+Referenced Packages
+/destructiveChanges.xml
+/src.orig
+/test_results.json
+/test_results.xml
+/test_results_junit.xml
+/venv
+*.pyc
+**/.sfdx/
+**/.vscode/
+**/.idea/
+**/.mypy_cache/
+/config/
+log.html
+output.xml
+report.html
+/*.png
+robot/Membership-Management/results/
+.cci
+
+# LWC
+/src/lwc/jsconfig.json
+/src/lwc/.eslintrc.json
+/node_modules
