@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>End_Date_or_Does_Not_Expire</fullName>
+    <active>true</active>
+    <description>A membership must either have an End Date or have Does Not Expire selected.</description>
+    <errorConditionFormula>NOT(Does_Not_Expire__c) &amp;&amp; ISBLANK( End_Date__c )</errorConditionFormula>
+    <errorDisplayField>End_Date__c</errorDisplayField>
+    <errorMessage>Please populate the End Date or select Does Not Expire.</errorMessage>
+</ValidationRule>
