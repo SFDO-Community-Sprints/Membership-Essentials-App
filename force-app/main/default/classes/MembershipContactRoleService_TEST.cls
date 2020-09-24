@@ -14,19 +14,22 @@ private without sharing class MembershipContactRoleService_TEST {
                 Name = 'First Membership',
                 Account__c = accounts[0].Id,
                 Start_Date__c = Date.today(),
-                Does_Not_Expire__c = true
+                Does_Not_Expire__c = true,
+                Type__c = 'Corporate'
             ),
             new Membership__c(
                 Name = 'Expired Membership',
                 Account__c = accounts[0].Id,
                 Start_Date__c = Date.today() - 10,
-                End_Date__c = Date.today() - 5
+                End_Date__c = Date.today() - 5,
+                Type__c = 'Corporate'
             ),
             new Membership__c(
                 Name = 'Second Membership',
                 Account__c = accounts[1].Id,
                 Start_Date__c = Date.today(),
-                Does_Not_Expire__c = true
+                Does_Not_Expire__c = true,
+                Type__c = 'Household'
             )
         };
         insert memberships;

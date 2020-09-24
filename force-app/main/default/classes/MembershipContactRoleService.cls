@@ -1,6 +1,9 @@
 // This class is `without sharing` to ensure data integrity
 public without sharing class MembershipContactRoleService {
+    @TestVisible private ConfigurationService cs;
+
     public MembershipContactRoleService() {
+        cs = new ConfigurationService();
     }
 
     public void deactivateContactRolesForMovedContacts(
@@ -9,11 +12,14 @@ public without sharing class MembershipContactRoleService {
         // Locate the Memberships associated with the former
         // Households of these moved Contacts
 
+        List<String> applicableMembershipTypes = cs.getNonIndividualMembershipTypes();
+
         List<Membership_Contact_Role__c> mcrs = [
             SELECT Id, Contact__c, Membership__r.Account__c
             FROM Membership_Contact_Role__c
             WHERE Contact__c IN :movedContactsFromHouseholdsMap.keySet()
                   AND Membership__r.Account__c IN :movedContactsFromHouseholdsMap.values()
+                  AND Membership__r.Type__c IN :applicableMembershipTypes
         ];
         List<Membership_Contact_Role__c> toUpdate = new List<Membership_Contact_Role__c>();
 
@@ -34,10 +40,14 @@ public without sharing class MembershipContactRoleService {
     ) {
         // Locate all Household-type memberships for the Households to which Contacts
         // have been added.
+
+        List<String> applicableMembershipTypes = cs.getNonIndividualMembershipTypes();
+
         List<Membership__c> memberships = [
             SELECT Id, Name, Type__c, End_Date__c, Account__c
             FROM Membership__c
             WHERE Account__c IN :addedContactsToHouseholdsMap.values()
+                  AND Type__c IN :applicableMembershipTypes
                   AND (Start_Date__c <= :Date.today() OR Start_Date__c = null)
                   AND (End_Date__c >= :Date.today() OR Does_Not_Expire__c = true)
         ];
