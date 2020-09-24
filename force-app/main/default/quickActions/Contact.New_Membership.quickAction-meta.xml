@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QuickAction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fieldOverrides>
+        <field>Account__c</field>
+        <formula>Contact.AccountId</formula>
+    </fieldOverrides>
+    <fieldOverrides>
+        <field>Name</field>
+        <formula>Contact.LastName &amp; &quot;- Individual Membership&quot;</formula>
+    </fieldOverrides>
+    <fieldOverrides>
+        <field>Type__c</field>
+        <literalValue>Individual</literalValue>
+    </fieldOverrides>
+    <label>New Membership</label>
+    <optionsCreateFeedItem>true</optionsCreateFeedItem>
+    <quickActionLayout>
+        <layoutSectionStyle>TwoColumnsLeftToRight</layoutSectionStyle>
+        <quickActionLayoutColumns>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>Start_Date__c</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>End_Date__c</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>Does_Not_Expire__c</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+        </quickActionLayoutColumns>
+        <quickActionLayoutColumns/>
+    </quickActionLayout>
+    <targetObject>Membership__c</targetObject>
+    <targetParentField>Primary_Contact__c</targetParentField>
+    <type>Create</type>
+</QuickAction>
