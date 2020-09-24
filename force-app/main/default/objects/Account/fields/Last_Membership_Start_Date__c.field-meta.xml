@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Last_Membership_Start_Date__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>The Start Date of the most recent Membership associated to this Account</inlineHelpText>
+    <label>Last Membership Start Date</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Date</type>
+</CustomField>

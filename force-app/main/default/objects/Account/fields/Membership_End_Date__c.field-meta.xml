@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Membership_End_Date__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>The greatest End Date of any Membership associated with this Account</inlineHelpText>
+    <label>Membership End Date</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Date</type>
+</CustomField>

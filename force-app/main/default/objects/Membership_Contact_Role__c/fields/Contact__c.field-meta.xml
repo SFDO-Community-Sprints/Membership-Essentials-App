@@ -6,7 +6,7 @@
     <inlineHelpText>The Member Contact record</inlineHelpText>
     <label>Contact</label>
     <referenceTo>Contact</referenceTo>
-    <relationshipLabel>Membership Contact Roles</relationshipLabel>
+    <relationshipLabel>Memberships</relationshipLabel>
     <relationshipName>Membership_Contact_Roles</relationshipName>
     <relationshipOrder>1</relationshipOrder>
     <reparentableMasterDetail>false</reparentableMasterDetail>
