@@ -1,5 +1,5 @@
 public with sharing class ContactHandler extends TriggerHandler {
-    override void afterInsert() {
+    public override void afterInsert() {
         Map<Id, Id> contactsEnteringAccountsMap = new Map<Id, Id>();
 
         for (Contact c : (List<Contact>)Trigger.new) {
@@ -13,13 +13,13 @@ public with sharing class ContactHandler extends TriggerHandler {
         mcrs.addContactRolesForAddedContacts(contactsEnteringAccountsMap);
     }
 
-    override void afterUpdate() {
+    public override void afterUpdate() {
         // Handle reparented Contacts
         Map<Id, Id> contactsLeavingAccountsMap = new Map<Id, Id>();
         Map<Id, Id> contactsEnteringAccountsMap = new Map<Id, Id>();
 
         for (Contact c : (List<Contact>)Trigger.new) {
-            Contact old = (Map<Id, Contact>)Trigger.oldMap.get(c.Id);
+            Contact old = ((Map<Id, Contact>)Trigger.oldMap).get(c.Id);
             if (c.AccountId != old.AccountId && c.AccountId != null) {
                 contactsEnteringAccountsMap.put(c.Id, c.AccountId);
             }

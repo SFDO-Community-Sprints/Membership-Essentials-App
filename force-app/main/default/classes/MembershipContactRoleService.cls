@@ -1,4 +1,5 @@
-public with sharing class MembershipContactRoleService {
+// This class is `without sharing` to ensure data integrity
+public without sharing class MembershipContactRoleService {
     public MembershipContactRoleService() {
     }
 
@@ -34,7 +35,7 @@ public with sharing class MembershipContactRoleService {
         // Locate all Household-type memberships for the Households to which Contacts
         // have been added.
         List<Membership__c> memberships = [
-            SELECT Id, Type__c, End_Date__c
+            SELECT Id, Name, Type__c, End_Date__c, Account__c
             FROM Membership__c
             WHERE Account__c IN :addedContactsToHouseholdsMap.values()
                   AND (Start_Date__c <= :Date.today() OR Start_Date__c = null)
@@ -54,12 +55,17 @@ public with sharing class MembershipContactRoleService {
         // Iterate over Contacts and accumulate a list of new Membership Contact Roles.
         List<Membership_Contact_Role__c> toInsert = new List<Membership_Contact_Role__c>();
         for (Id contactId : addedContactsToHouseholdsMap.keySet()) {
+            if (!membershipMap.containsKey(addedContactsToHouseholdsMap.get(contactId))) {
+                continue;
+            }
+        
             for (Membership__c m : membershipMap.get(addedContactsToHouseholdsMap.get(contactId))) {
                 toInsert.add(
                     new Membership_Contact_Role__c(
+                        Name = m.Name + ' ' + String.valueOf(Date.today().year()),
                         Contact__c = contactId,
                         Membership__c = m.Id,
-                        Role = 'Household Member',
+                        Role__c = 'Household Member',
                         Start_Date__c = Date.today(),
                         End_Date__c = m.End_Date__c
                     )
