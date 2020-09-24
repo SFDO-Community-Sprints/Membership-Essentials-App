@@ -1,4 +1,9 @@
-### Membership Schema And Benefits
+# Membership Schema And Benefits
+
+### Project Team (Virtual Sprint September 2020)
+* Team Leader(s):  Chris Pifer
+* GitHub Scribe(s): David Reed
+* List of all Contributors: Duncan McGovern, Evan Ponter, Lynda En, Ryan Baba
 
 ### Project Team (Virtual Sprint March 31, 2020)
 Help us give you the thanks you deserve! Please ensure that all contributing members of the team are included!
