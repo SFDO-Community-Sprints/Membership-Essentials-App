@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Former</fullName>
+        <default>false</default>
+        <label>Former</label>
+    </customValue>
+    <customValue>
+        <fullName>Lapsed</fullName>
+        <default>false</default>
+        <label>Lapsed</label>
+    </customValue>
+    <customValue>
+        <fullName>Renewal</fullName>
+        <default>false</default>
+        <label>Renewal</label>
+    </customValue>
+    <customValue>
+        <fullName>Current</fullName>
+        <default>false</default>
+        <label>Current</label>
+    </customValue>
+    <masterLabel>Membership Status</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>
