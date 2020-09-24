@@ -26,6 +26,10 @@
                 <behavior>Edit</behavior>
                 <field>Opportunity__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Status__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -108,6 +112,10 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>Is_Primary__c</fields>
+        <fields>Role__c</fields>
+        <fields>Status__c</fields>
+        <fields>Type__c</fields>
         <relatedList>Membership_Contact_Role__c.Membership__c</relatedList>
     </relatedLists>
     <relatedLists>
@@ -124,7 +132,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h17000003Kbk2</masterLabel>
+        <masterLabel>00h11000002X8pk</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>
