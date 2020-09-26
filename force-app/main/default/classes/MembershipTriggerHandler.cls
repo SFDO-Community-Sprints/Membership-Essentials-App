@@ -9,9 +9,12 @@ public with sharing class MembershipTriggerHandler extends TriggerHandler {
     private Map<Id, Membership_Contact_Role__c> touchedRolesIds;
 
     public MembershipTriggerHandler(){
-        this.setMaxLoopCount(1);
         this.newMembershipsMap = (Map<Id, Membership__c>) Trigger.newMap;
-        this.oldMembershipsMap = (Map<Id, Membership__c>) Trigger.oldMap;
+        if (Trigger.oldMap != null) {
+            this.oldMembershipsMap = (Map<Id, Membership__c>) Trigger.oldMap;
+        } else {
+            this.oldMembershipsMap = new Map<Id, Membership__c>();
+        }
     }
 
     public override void afterInsert(){
@@ -39,20 +42,20 @@ public with sharing class MembershipTriggerHandler extends TriggerHandler {
         //check if we have any new records or changed contact roles
         for(Id newMembershipId : this.newMembershipsMap.keySet()) {
             Id newPrimContactId = newMembershipsMap.get(newMembershipId).Primary_Contact__c;
-            Id oldPrimContactId = oldMembershipsMap.get(newMembershipId).Primary_Contact__c;
+            Id oldPrimContactId = oldMembershipsMap.containsKey(newMembershipId) ? oldMembershipsMap.get(newMembershipId).Primary_Contact__c : null;
             //Three scenarios to manage - newly created, edited to new record, edited to null
             contactMembershipKey.add('' + newPrimContactId + newMembershipId);
             //New Membership Record
-            if (Trigger.isInsert || oldPrimContactId == null && newPrimContactId != null) {
+            if (oldPrimContactId == null && newPrimContactId != null) {
                 contactRolesForCreate.add(createRole(newPrimContactId, newMembershipId, true));
             }
             //Updated membership, values changed
-            if (Trigger.isUpdate && newPrimContactId != null && oldPrimContactId != null && newPrimContactId != oldPrimContactId) {
+            if (newPrimContactId != null && oldPrimContactId != null && newPrimContactId != oldPrimContactId) {
                 keyPairsToPromote.put(newPrimContactId, newMembershipId);
                 keyPairsToDemote.put(oldPrimContactId, newMembershipId);
             }
             //Updated membership changed to null
-            if (Trigger.isUpdate && newPrimContactId == null && oldPrimContactId != null) {
+            if (newPrimContactId == null && oldPrimContactId != null) {
                 keyPairsToDemote.put(oldPrimContactId, newMembershipId);
             }
         }
@@ -78,7 +81,8 @@ public with sharing class MembershipTriggerHandler extends TriggerHandler {
         Membership_Contact_Role__c mcr = new Membership_Contact_Role__c(
                 Contact__c = ContactId,
                 Membership__c = MembershipId,
-                Is_Primary__c = primary
+                Is_Primary__c = primary,
+                Start_Date__c = Date.today()
         );
         return mcr;
     }
