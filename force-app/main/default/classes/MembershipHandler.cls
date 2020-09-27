@@ -2,13 +2,13 @@
  * Created by ChrisPifer on 9/24/2020.
  */
 
-public with sharing class MembershipTriggerHandler extends TriggerHandler {
+public with sharing class MembershipHandler extends TriggerHandler {
 
     private Map<Id, Membership__c> newMembershipsMap;
     private Map<Id, Membership__c> oldMembershipsMap;
     private Map<Id, Membership_Contact_Role__c> touchedRolesIds;
 
-    public MembershipTriggerHandler(){
+    public MembershipHandler(){
         this.newMembershipsMap = (Map<Id, Membership__c>) Trigger.newMap;
         if (Trigger.oldMap != null) {
             this.oldMembershipsMap = (Map<Id, Membership__c>) Trigger.oldMap;
@@ -31,7 +31,10 @@ public with sharing class MembershipTriggerHandler extends TriggerHandler {
 
     private void managePrimaryContactRole (){
         List<Id> membershipContacts = new List<Id>();
-        Set<String> contactMembershipKey = new Set<String>();
+        Set<String> newContactMembershipKey = new Set<String>();
+        Set<String> oldContactMembershipKey = new Set<String>();
+        Set<String> foundMembershipKeys = new Set<String>();
+        Set<String> promotedMembershipKeys = new Set<String>();
         Map<Id, Id> keyPairsToPromote = new Map<Id, Id>();
         Map<Id, Id> keyPairsToDemote = new Map<Id, Id>();
         List<Membership_Contact_Role__c> contactRolesForCreate = new List<Membership_Contact_Role__c>();
@@ -44,7 +47,8 @@ public with sharing class MembershipTriggerHandler extends TriggerHandler {
             Id newPrimContactId = newMembershipsMap.get(newMembershipId).Primary_Contact__c;
             Id oldPrimContactId = oldMembershipsMap.containsKey(newMembershipId) ? oldMembershipsMap.get(newMembershipId).Primary_Contact__c : null;
             //Three scenarios to manage - newly created, edited to new record, edited to null
-            contactMembershipKey.add('' + newPrimContactId + newMembershipId);
+            newContactMembershipKey.add('' + newPrimContactId + newMembershipId);
+            oldContactMembershipKey.add('' + oldPrimContactId + newMembershipId);
             //New Membership Record
             if (oldPrimContactId == null && newPrimContactId != null) {
                 contactRolesForCreate.add(createRole(newPrimContactId, newMembershipId, true));
@@ -53,23 +57,33 @@ public with sharing class MembershipTriggerHandler extends TriggerHandler {
             if (newPrimContactId != null && oldPrimContactId != null && newPrimContactId != oldPrimContactId) {
                 keyPairsToPromote.put(newPrimContactId, newMembershipId);
                 keyPairsToDemote.put(oldPrimContactId, newMembershipId);
+                promotedMembershipKeys.add('' + newPrimContactId + newMembershipId);
             }
             //Updated membership changed to null
             if (newPrimContactId == null && oldPrimContactId != null) {
                 keyPairsToDemote.put(oldPrimContactId, newMembershipId);
             }
         }
-        contactRolesToDemote = [SELECT Id, Contact__c, Membership__c FROM Membership_Contact_Role__c WHERE
+        contactRolesToDemote = [SELECT Id, Name, Contact__c, Membership__c FROM Membership_Contact_Role__c WHERE
         Contact__c IN: keyPairsToDemote.keySet() AND Membership__c IN: keyPairsToDemote.values() ];
-        contactRolesToPromote = [SELECT Id, Contact__c, Membership__c FROM Membership_Contact_Role__c WHERE
+        contactRolesToPromote = [SELECT Id, Name, Contact__c, Membership__c FROM Membership_Contact_Role__c WHERE
         Contact__c IN: keyPairsToPromote.keySet() AND Membership__c IN: keyPairsToPromote.values() ];
+        for(Membership_Contact_Role__c mcr : contactRolesToPromote){
+            foundMembershipKeys.add('' + mcr.Contact__c + mcr.Membership__c);
+        }
+        for(String idKey : promotedMembershipKeys){
+            if(!foundMembershipKeys.contains(idKey)){
+                contactRolesForCreate.add(createRole(idKey.left(18), idKey.right(18), true ));
+            }
+        }
         for(Membership_Contact_Role__c mcr : contactRolesToDemote){
-            if(contactMembershipKey.contains('' + mcr.Contact__c + mcr.Membership__c)){
+            String thisKey = '' + mcr.Contact__c + mcr.Membership__c;
+            if(oldContactMembershipKey.contains(thisKey)){
                 contactRolesForUpdate.add(demoteRole(mcr));
             }
         }
         for(Membership_Contact_Role__c mcr : contactRolesToPromote){
-            if(contactMembershipKey.contains('' + mcr.Contact__c + mcr.Membership__c)) {
+            if(newContactMembershipKey.contains('' + mcr.Contact__c + mcr.Membership__c)) {
                 contactRolesForUpdate.add(promoteRole(mcr));
             }
         }
@@ -78,7 +92,15 @@ public with sharing class MembershipTriggerHandler extends TriggerHandler {
     }
 
     private Membership_Contact_Role__c createRole(Id ContactId, Id MembershipId, Boolean primary){
+        String defaultName = '';
+        if(primary){
+            defaultName = 'Primary Member';
+        } else {
+            defaultName = 'Member';
+        }
+
         Membership_Contact_Role__c mcr = new Membership_Contact_Role__c(
+                Name = defaultName,
                 Contact__c = ContactId,
                 Membership__c = MembershipId,
                 Is_Primary__c = primary,
@@ -88,12 +110,17 @@ public with sharing class MembershipTriggerHandler extends TriggerHandler {
     }
 
     private Membership_Contact_Role__c demoteRole(Membership_Contact_Role__c mcr){
+        if(mcr.name == 'Primary Member'){
+            mcr.name = 'Member';
+        }
         mcr.Is_Primary__c = false;
         return mcr;
     }
 
     private Membership_Contact_Role__c promoteRole(Membership_Contact_Role__c mcr){
+        mcr.Name = 'Primary Member';
         mcr.Is_Primary__c = true;
+        mcr.Start_Date__c = Date.today();
         return mcr;
     }
 }

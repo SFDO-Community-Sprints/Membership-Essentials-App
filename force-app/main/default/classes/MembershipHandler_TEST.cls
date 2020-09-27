@@ -1,5 +1,5 @@
 @isTest
-private without sharing class MembershipTriggerHandler_TEST {
+private without sharing class MembershipHandler_TEST {
     @testSetup
     private static void testSetup() {
         List<Account> accounts = new List<Account>{
