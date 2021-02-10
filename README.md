@@ -1,5 +1,9 @@
 # Membership Schema And Benefits
 
+### Project Team (Virtual Sprint February 2021)
+* Leader(s): Chris Pifer & Duncan McGovern
+* List of contributors: Amanda Styles, Jillian Niler, Rachel Whaley
+
 ### Project Team (Virtual Sprint September 2020)
 * Team Leader(s):  Chris Pifer
 * GitHub Scribe(s): David Reed
