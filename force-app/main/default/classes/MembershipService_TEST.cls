@@ -59,7 +59,7 @@ private without sharing class MembershipService_TEST {
         insert memberships;
         
         List<Account> acc_list = [
-            SELECT Id, Primary_Membership__c 
+            SELECT Id, Primary_Membership__c, Name, Primary_Membership__r.Name 
             FROM Account 
         ];
 

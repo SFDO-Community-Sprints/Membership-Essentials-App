@@ -16,7 +16,7 @@ public with sharing class MembershipHandler extends TriggerHandler{
             // primary is changed
 
             // if new and active, call service 
-            if(m.Primary__c = true 
+            if(m.Primary__c == true 
             && cs.getActiveMembershipStatuses().contains(m.Status__c)
             && (m.End_Date__c >= System.today() || m.Does_Not_Expire__c == true)) {
                 if(m.Primary_Contact__c != null) {
