@@ -17,8 +17,8 @@ public with sharing class MembershipHandler extends TriggerHandler{
 
             // if new and active, call service 
             if(m.Primary__c = true 
-            && cs.getActiveMembershipStatuses.contains(m.Status__c)
-            && (m.End_Date__c >= System.today() || m.Do_Not_Expire__c = true) {
+            && cs.getActiveMembershipStatuses().contains(m.Status__c)
+            && (m.End_Date__c >= System.today() || m.Does_Not_Expire__c == true)) {
                 if(m.Contact__c != null) {
                     contactSet.add(m.Contact__c);
                 }
