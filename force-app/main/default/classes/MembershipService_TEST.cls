@@ -24,7 +24,7 @@ private without sharing class MembershipService_TEST {
     @isTest
     private static void testMembershipInsert() {
         List<Account> acc = [
-            SELECT Id
+            SELECT Id, Name
             FROM Account 
         ];
 
@@ -36,21 +36,21 @@ private without sharing class MembershipService_TEST {
         List<Membership__c> memberships = new List<Membership__c>{
             new Membership__c(
                 Name = 'First Membership',
-                Account__c = acc_map.get('First Account'),
+                Account__c = acc_map.get('First Account').Id,
                 Start_Date__c = Date.today(),
                 Does_Not_Expire__c = true,
                 Type__c = 'Corporate'
             ),
             new Membership__c(
                 Name = 'Expired Membership',
-                Account__c = acc_map.get('First Account'),
+                Account__c = acc_map.get('First Account').Id,
                 Start_Date__c = Date.today() - 10,
                 End_Date__c = Date.today() - 5,
                 Type__c = 'Corporate'
             ),
             new Membership__c(
                 Name = 'Second Membership',
-                Account__c = acc_map.get('Second Account'),
+                Account__c = acc_map.get('Second Account').Id,
                 Start_Date__c = Date.today(),
                 Does_Not_Expire__c = true,
                 Type__c = 'Household'
@@ -58,12 +58,12 @@ private without sharing class MembershipService_TEST {
         };
         insert memberships;
         
-        List<Account> acc = [
+        List<Account> acc_list = [
             SELECT Id, Primary_Membership__c 
             FROM Account 
         ];
 
-        for (Account a : acc) {
+        for (Account a : acc_list) {
             if (a.Name == 'First Account') {
                 System.assertEquals(a.Primary_Membership__r.Name, 'First Membership', 
         'Expected first membership, not expired membership');
