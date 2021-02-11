@@ -4,8 +4,8 @@
 
 public with sharing class MembershipHandler extends TriggerHandler{
     public override void afterInsert(){
-        Set<Contact> contactSet = new Set<Contact>();
-        Set<Account> accountSet = new Set<Account>();
+        Set<Id> contactSet = new Set<Id>();
+        Set<Id> accountSet = new Set<Id>();
         ConfigurationService cs = new ConfigurationService();
 
         for(Membership__c m : (List<Membership__c>)Trigger.new){
@@ -19,8 +19,8 @@ public with sharing class MembershipHandler extends TriggerHandler{
             if(m.Primary__c = true 
             && cs.getActiveMembershipStatuses().contains(m.Status__c)
             && (m.End_Date__c >= System.today() || m.Does_Not_Expire__c == true)) {
-                if(m.Contact__c != null) {
-                    contactSet.add(m.Contact__c);
+                if(m.Primary_Contact__c != null) {
+                    contactSet.add(m.Primary_Contact__c);
                 }
                 if(m.Account__c != null) {
                     AccountSet.add(m.Account__c);
