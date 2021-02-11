@@ -9,7 +9,15 @@ public without sharing class MembershipService {
         cs = new ConfigurationService();
     }
 
-    public void rollupPrimaryMembership(Set<Id> contactIds){
+    public void rollupPrimaryMembershipContact(Set<Id> contactIds){
 
+    }
+
+    public void rollupPrimaryMembershipAccount(Set<Id> accountIds){
+        // for each account in the set
+            // look at all the memberships
+            // identify the one that is the primary
+            // set Primary_Membership__c on those accounts
+        // update accounts
     }
 }
