@@ -14,8 +14,6 @@ public without sharing class MembershipService {
     }
 
     public void rollupPrimaryMembershipAccount(Set<Id> accountIds){
-        // collect accounts to update
-        List<Account> to_update = new List<Account>();
         
         // grab all the memberships related that are primary and non-expired and put into a list
         List<Membership__c> mem_list = [
@@ -25,20 +23,21 @@ public without sharing class MembershipService {
             AND (Does_Not_Expire__c = true OR End_Date__c >= TODAY) // get rid of expired ones
             ORDER BY End_Date__c DESC NULLS FIRST // gets the not-expiring ones first
             ];
+        	// if multiple memberships meet this criteria, need to handle. 
+        
+        // list of all accounts in set
+        List<Account> acc_list = [SELECT Id, Primary_Membership__c FROM Account WHERE Id IN :accountIds];
+        Map<Id,Account> acc_map= new Map<Id, Account>(acc_list);
         
         for (Membership__c m : mem_list) {
-            Account a = [SELECT Id, Primary_Membership__c FROM Account WHERE Id = :m.Account__c];
+            Account a = acc_map.get(m.Account__c); 
             a.Primary_Membership__c = m.Id;
-            to_update.add(a);
+            acc_map.put(a.Id, a);
         }
         
-        //create a map that will hold the values of the list 
-		Map<Id,Account> accmap = new Map<Id,Account>();
-
-		//put all the values from the list to map. 
-		accmap.putall(to_update);
-		if(accmap.size()>0){
-			update accmap.values();
+     	// update accounts
+		if(acc_map.size()>0){
+			update acc_map.values();
         }
     	
 	}
