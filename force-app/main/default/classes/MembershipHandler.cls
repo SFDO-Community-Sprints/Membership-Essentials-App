@@ -23,7 +23,7 @@ public with sharing class MembershipHandler extends TriggerHandler{
                     contactSet.add(m.Primary_Contact__c);
                 }
                 if(m.Account__c != null) {
-                    AccountSet.add(m.Account__c);
+                    accountSet.add(m.Account__c);
                 }
             }
 
@@ -33,7 +33,7 @@ public with sharing class MembershipHandler extends TriggerHandler{
             ms.rollupPrimaryMembershipContact(contactSet);
         }
         if(accountSet.size() > 0) {
-            ms.rollupPrimaryMembershipAccount(AccountSet);
+            ms.rollupPrimaryMembershipAccount(accountSet);
         }
         
     }
