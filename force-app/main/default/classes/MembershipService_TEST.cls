@@ -39,21 +39,27 @@ private without sharing class MembershipService_TEST {
                 Account__c = acc_map.get('First Account').Id,
                 Start_Date__c = Date.today(),
                 Does_Not_Expire__c = true,
-                Type__c = 'Corporate'
+                Type__c = 'Corporate',
+                Primary__c = true,
+                Status__c = 'Current'
             ),
             new Membership__c(
                 Name = 'Expired Membership',
                 Account__c = acc_map.get('First Account').Id,
                 Start_Date__c = Date.today() - 10,
                 End_Date__c = Date.today() - 5,
-                Type__c = 'Corporate'
+                Type__c = 'Corporate',
+                Primary__c = true,
+                Status__c = 'Former'
             ),
             new Membership__c(
                 Name = 'Second Membership',
                 Account__c = acc_map.get('Second Account').Id,
                 Start_Date__c = Date.today(),
                 Does_Not_Expire__c = true,
-                Type__c = 'Household'
+                Type__c = 'Household',
+                Primary__c = true,
+                Status__c = 'Current'
             )
         };
         insert memberships;
@@ -65,18 +71,18 @@ private without sharing class MembershipService_TEST {
 
         for (Account a : acc_list) {
             if (a.Name == 'First Account') {
-                System.assertEquals(a.Primary_Membership__r.Name, 'First Membership', 
+                System.assertNotEquals(a.Primary_Membership__c, null, 'Mem field should not be null');
+                System.assertEquals('First Membership', a.Primary_Membership__r.Name,  
         'Expected first membership, not expired membership');
             }
             if (a.Name == 'Second Account') {
-                System.assertEquals(a.Primary_Membership__r.Name, 'Second Membership',
+                System.assertEquals('Second Membership', a.Primary_Membership__r.Name, 
         'Expected household to get second membership');
             }
             if (a.Name == 'Account Without Memberships') {
-                System.assertEquals(a.Primary_Membership__r.Name, null,
+                System.assertEquals(null, a.Primary_Membership__c, 
         'Expected no primary membership');
-            }
-            
+            }   
         }
 
         /*
