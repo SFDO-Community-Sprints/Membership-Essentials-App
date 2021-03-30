@@ -1,0 +1,599 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    
+    <actionOverrides>
+        
+        <actionName>Accept</actionName>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>Accept</actionName>
+        
+        <formFactor>Large</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>Accept</actionName>
+        
+        <formFactor>Small</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>CancelEdit</actionName>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>CancelEdit</actionName>
+        
+        <formFactor>Large</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>CancelEdit</actionName>
+        
+        <formFactor>Small</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>Clone</actionName>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>Clone</actionName>
+        
+        <formFactor>Large</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>Clone</actionName>
+        
+        <formFactor>Small</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>Delete</actionName>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>Delete</actionName>
+        
+        <formFactor>Large</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>Delete</actionName>
+        
+        <formFactor>Small</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>Edit</actionName>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>Edit</actionName>
+        
+        <formFactor>Large</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>Edit</actionName>
+        
+        <formFactor>Small</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>List</actionName>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>List</actionName>
+        
+        <formFactor>Large</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>List</actionName>
+        
+        <formFactor>Small</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>New</actionName>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>New</actionName>
+        
+        <formFactor>Large</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>New</actionName>
+        
+        <formFactor>Small</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>SaveEdit</actionName>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>SaveEdit</actionName>
+        
+        <formFactor>Large</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>SaveEdit</actionName>
+        
+        <formFactor>Small</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>Tab</actionName>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>Tab</actionName>
+        
+        <formFactor>Large</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>Tab</actionName>
+        
+        <formFactor>Small</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>View</actionName>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>View</actionName>
+        
+        <formFactor>Large</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>View</actionName>
+        
+        <formFactor>Small</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <allowInChatterGroups>true</allowInChatterGroups>
+    
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    
+    <deploymentStatus>Deployed</deploymentStatus>
+    
+    <description>Can represent the Members themselves that belong to a membership OR anyone involved with the Membership, using picklist values and other fields to define the role.</description>
+    
+    <enableActivities>true</enableActivities>
+    
+    <enableBulkApi>true</enableBulkApi>
+    
+    <enableFeeds>false</enableFeeds>
+    
+    <enableHistory>true</enableHistory>
+    
+    <enableLicensing>false</enableLicensing>
+    
+    <enableReports>true</enableReports>
+    
+    <enableSearch>true</enableSearch>
+    
+    <enableSharing>true</enableSharing>
+    
+    <enableStreamingApi>true</enableStreamingApi>
+    
+    <externalSharingModel>ControlledByParent</externalSharingModel>
+    
+    <label>Membership Contact Role</label>
+    
+    <nameField>
+        
+        <label>Membership Contact Role Name</label>
+        
+        <trackHistory>false</trackHistory>
+        
+        <type>Text</type>
+        
+    </nameField>
+    
+    <pluralLabel>Membership Contact Roles</pluralLabel>
+    
+    <searchLayouts/>
+    
+    <sharingModel>ControlledByParent</sharingModel>
+    
+    <visibility>Public</visibility>
+    
+<fields>
+        
+    <fullName>Contact__c</fullName>
+        
+    <description>The Contact record who holds the Membership</description>
+        
+    <externalId>false</externalId>
+        
+    <inlineHelpText>The Member Contact record</inlineHelpText>
+        
+    <label>Contact</label>
+        
+    <referenceTo>Contact</referenceTo>
+        
+    <relationshipLabel>Memberships</relationshipLabel>
+        
+    <relationshipName>Membership_Contact_Roles</relationshipName>
+        
+    <relationshipOrder>1</relationshipOrder>
+        
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+        
+    <trackHistory>false</trackHistory>
+        
+    <trackTrending>false</trackTrending>
+        
+    <type>MasterDetail</type>
+        
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+        
+</fields>
+    <fields>
+        
+    <fullName>Does_Not_Expire__c</fullName>
+        
+    <defaultValue>false</defaultValue>
+        
+    <externalId>false</externalId>
+        
+    <inlineHelpText>This Contact&apos;s Membership does not expire. Defaults to the expiry setting on the Membership.</inlineHelpText>
+        
+    <label>Does Not Expire</label>
+        
+    <trackHistory>false</trackHistory>
+        
+    <trackTrending>false</trackTrending>
+        
+    <type>Checkbox</type>
+        
+</fields>
+    <fields>
+        
+    <fullName>End_Date__c</fullName>
+        
+    <externalId>false</externalId>
+        
+    <label>End Date</label>
+        
+    <required>false</required>
+        
+    <trackHistory>false</trackHistory>
+        
+    <trackTrending>false</trackTrending>
+        
+    <type>Date</type>
+        
+</fields>
+    <fields>
+        
+    <fullName>Is_Primary__c</fullName>
+        
+    <defaultValue>false</defaultValue>
+        
+    <description>This Membership Contact is the primary point person for the Membership</description>
+        
+    <externalId>false</externalId>
+        
+    <inlineHelpText>This Membership Contact is the primary point person for the Membership</inlineHelpText>
+        
+    <label>Primary</label>
+        
+    <trackHistory>false</trackHistory>
+        
+    <trackTrending>false</trackTrending>
+        
+    <type>Checkbox</type>
+        
+</fields>
+    <fields>
+        
+    <fullName>Membership__c</fullName>
+        
+    <description>The Membership record to which the Member belongs</description>
+        
+    <externalId>false</externalId>
+        
+    <inlineHelpText>The Membership record to which the Member belongs</inlineHelpText>
+        
+    <label>Membership</label>
+        
+    <referenceTo>Membership__c</referenceTo>
+        
+    <relationshipLabel>Membership Contact Roles</relationshipLabel>
+        
+    <relationshipName>Membership_Contact_Roles</relationshipName>
+        
+    <relationshipOrder>0</relationshipOrder>
+        
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+        
+    <trackHistory>false</trackHistory>
+        
+    <trackTrending>false</trackTrending>
+        
+    <type>MasterDetail</type>
+        
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+        
+</fields>
+    <fields>
+        
+    <fullName>Role__c</fullName>
+        
+    <externalId>false</externalId>
+        
+    <label>Role</label>
+        
+    <required>false</required>
+        
+    <trackHistory>false</trackHistory>
+        
+    <trackTrending>false</trackTrending>
+        
+    <type>Picklist</type>
+        
+    <valueSet>
+            
+        <restricted>true</restricted>
+            
+        <valueSetDefinition>
+                
+            <sorted>false</sorted>
+                
+            <value>
+                    
+                <fullName>Named Member</fullName>
+                    
+                <default>false</default>
+                    
+                <label>Named Member</label>
+                    
+            </value>
+                
+            <value>
+                    
+                <fullName>Additional Member</fullName>
+                    
+                <default>false</default>
+                    
+                <label>Additional Member</label>
+                    
+            </value>
+                
+            <value>
+                    
+                <fullName>Spouse</fullName>
+                    
+                <default>false</default>
+                    
+                <label>Spouse</label>
+                    
+            </value>
+                
+            <value>
+                    
+                <fullName>Household Member</fullName>
+                    
+                <default>false</default>
+                    
+                <label>Household Member</label>
+                    
+            </value>
+                
+            <value>
+                    
+                <fullName>Employee</fullName>
+                    
+                <default>false</default>
+                    
+                <label>Employee</label>
+                    
+            </value>
+                
+        </valueSetDefinition>
+            
+    </valueSet>
+        
+</fields>
+    <fields>
+        
+    <fullName>Start_Date__c</fullName>
+        
+    <externalId>false</externalId>
+        
+    <label>Start Date</label>
+        
+    <required>false</required>
+        
+    <trackHistory>false</trackHistory>
+        
+    <trackTrending>false</trackTrending>
+        
+    <type>Date</type>
+        
+</fields>
+    <fields>
+        
+    <fullName>Status__c</fullName>
+        
+    <externalId>false</externalId>
+        
+    <label>Status</label>
+        
+    <required>false</required>
+        
+    <trackHistory>false</trackHistory>
+        
+    <trackTrending>false</trackTrending>
+        
+    <type>Picklist</type>
+        
+    <valueSet>
+            
+        <restricted>true</restricted>
+            
+        <valueSetName>Membership_Status</valueSetName>
+            
+    </valueSet>
+        
+</fields>
+    <fields>
+        
+    <fullName>Type__c</fullName>
+        
+    <externalId>false</externalId>
+        
+    <inlineHelpText>The Type of Membership this Contact has</inlineHelpText>
+        
+    <label>Type</label>
+        
+    <required>false</required>
+        
+    <trackHistory>false</trackHistory>
+        
+    <trackTrending>false</trackTrending>
+        
+    <type>Picklist</type>
+        
+    <valueSet>
+            
+        <restricted>true</restricted>
+            
+        <valueSetName>Membership_Type</valueSetName>
+            
+    </valueSet>
+        
+</fields>
+</CustomObject>
