@@ -17,3 +17,9 @@ tasks:
         options:
             path: robot/Membership-Management/tests
             output: robot/Membership-Management/doc/Membership-Management_tests.html
+
+flows:
+    deploy_unmanaged:
+        steps:
+            4:
+                task: None
