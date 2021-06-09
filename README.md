@@ -2,28 +2,6 @@
 
 For updated project overview and accomplishments by sprint, please refer to the Wiki & orient on the "Start Here" page.
 
-### Project Team (Virtual Sprint February 2021)
-* Leaders: Chris Pifer & Duncan McGovern
-* Scribe: Duncan McGovern
-* List of all Contributors: Jillian Niler, Amanda Styles, Rachel Whaley, Brandon Mead, Emily Wilson, Michael Beaty, Rex Clark
-
-### Project Team (Virtual Sprint September 2020)
-* Team Leader(s):  Chris Pifer
-* GitHub Scribe(s): David Reed
-* List of all Contributors: Duncan McGovern, Evan Ponter, Lynda En, Ryan Baba
-
-### Project Team (Virtual Sprint March 31, 2020)
-Help us give you the thanks you deserve! Please ensure that all contributing members of the team are included!
-* Team Leader(s): Kai Williams
-* GitHub Scribe(s): Evan Ponter, Collin Zimmerman
-* List of all Contributors: Evan Ponter, Reede Stockton, James Browne, Mel Brockley, Chris Pifer
-
-### Project Team (Previous Sprint)
-Help us give you the thanks you deserve! Please ensure that all contributing members of the team are included!
-* Team Leader(s): 
-* GitHub Scribe(s): [Thomas Taylor](/tet3) & [Duncan McGovern](/D-McGovern)
-* List of all Contributors: [Andrea Hanson](/andreahanson), Dean Graham, John Adams, Deepa Bedi, Shari Carlson Reily, [Michael Kolodner](/mkolodner), Brittany Neale, Amy Bucciferro
-
 ### Project Vision (Your first task as a team)
 A schema for memberships, sponsorship, renewals, payments, multiple members, families, benefits, etc, that actually works. Eventually automation etc.
 
@@ -40,6 +18,14 @@ A schema for memberships, sponsorship, renewals, payments, multiple members, fam
 The team would like to provide nonprofits and consultants with a framework for benefits including memberships and sponsorships that is separate from opportunities for both technical and operational considerations. These include benefits that are not tied to a financial contribution as well as the ability expose benefits objects to all SF license types (community, platform, etc). It also decouples purchasing a benefit from the benefit recipient(s).
 
 Having trouble? Salesforce.org staff and your fellow sprinters are here to help! Use one of your table's request signs and/or post in the Quip Chat to seek help, and we'll pop by.
+
+### Use of Metecho
+We have started to use Metecho in earnest in the June '21 sprint - link here (https://metecho.herokuapp.com/projects/membership-schema-and-benefits)
+
+Guidelines:
+* Create one Epic per Sprint, unless the team is working on very different sets of features/functionality that should live in 2 different GitHub branches
+* Create one Task per scratch org & pull request
+* Will still need to merge back into GitHub
 
 ### Requirements and Ongoing Concerns
 [See Requirements Wiki Page](https://github.com/SFDO-Community-Sprints/MembershipSchemaAndBenefits/wiki/Requirements)
@@ -70,6 +56,33 @@ Having trouble? Salesforce.org staff and your fellow sprinters are here to help!
   *   [Customize payment automation by stage](https://powerofus.force.com/s/idea/a1W80000006bnfMEAQ/customize-payment-automation-by-stage)
 * Code hasn't yet been created
 * Also see prior sprint work done during Amsterdam Sprint in 2019 https://github.com/SFDO-Community-Sprints/Membership-Management
+
+### Project Team (Virtual Sprint June 2021)
+* Leaders: Chris Pifer & Duncan McGovern
+* Scribe: Duncan McGovern
+* List of all contributors: Chris Pifer, Duncan McGovern, Ryan Baba, Paul Ginsberg
+
+### Project Team (Virtual Sprint February 2021)
+* Leaders: Chris Pifer & Duncan McGovern
+* Scribe: Duncan McGovern
+* List of all Contributors: Jillian Niler, Amanda Styles, Rachel Whaley, Brandon Mead, Emily Wilson, Michael Beaty, Rex Clark
+
+### Project Team (Virtual Sprint September 2020)
+* Team Leader(s):  Chris Pifer
+* GitHub Scribe(s): David Reed
+* List of all Contributors: Duncan McGovern, Evan Ponter, Lynda En, Ryan Baba
+
+### Project Team (Virtual Sprint March 31, 2020)
+Help us give you the thanks you deserve! Please ensure that all contributing members of the team are included!
+* Team Leader(s): Kai Williams
+* GitHub Scribe(s): Evan Ponter, Collin Zimmerman
+* List of all Contributors: Evan Ponter, Reede Stockton, James Browne, Mel Brockley, Chris Pifer
+
+### Project Team (Previous Sprint)
+Help us give you the thanks you deserve! Please ensure that all contributing members of the team are included!
+* Team Leader(s): 
+* GitHub Scribe(s): [Thomas Taylor](/tet3) & [Duncan McGovern](/D-McGovern)
+* List of all Contributors: [Andrea Hanson](/andreahanson), Dean Graham, John Adams, Deepa Bedi, Shari Carlson Reily, [Michael Kolodner](/mkolodner), Brittany Neale, Amy Bucciferro
 
 ### Project Team Accomplishments
 Sprint 2020 Virtual Sprint
