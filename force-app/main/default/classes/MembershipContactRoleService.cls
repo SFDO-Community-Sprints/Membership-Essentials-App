@@ -42,6 +42,7 @@ public without sharing class MembershipContactRoleService {
         // have been added.
 
         List<String> applicableMembershipTypes = cs.getNonIndividualMembershipTypes();
+        String householdMemberRole = cs.getHouseholdMemberRole();
 
         List<Membership__c> memberships = [
             SELECT Id, Name, Type__c, End_Date__c, Account__c
@@ -75,7 +76,7 @@ public without sharing class MembershipContactRoleService {
                         Name = m.Name + ' ' + String.valueOf(Date.today().year()),
                         Contact__c = contactId,
                         Membership__c = m.Id,
-                        Role__c = 'Household Member',
+                        Role__c = householdMemberRole,
                         Start_Date__c = Date.today(),
                         End_Date__c = m.End_Date__c
                     )
