@@ -2,6 +2,10 @@
 
 For updated project overview and accomplishments by sprint, please refer to the Wiki & orient on the "Start Here" page.
 
+### Project Team (Virtual Sprint June 2021)
+* Leaders: Chris Pifer & Duncan McGovern
+* List of all Contributers: Baba Ryan, Paul Ginsberg
+
 ### Project Team (Virtual Sprint February 2021)
 * Leaders: Chris Pifer & Duncan McGovern
 * Scribe: Duncan McGovern
