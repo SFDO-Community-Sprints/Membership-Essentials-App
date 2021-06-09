@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Primary_Membership__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Shows primary membership.</description>
+    <externalId>false</externalId>
+    <label>Primary Membership</label>
+    <referenceTo>Membership__c</referenceTo>
+    <relationshipLabel>Accounts</relationshipLabel>
+    <relationshipName>Accounts</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Lookup</type>
+</CustomField>
