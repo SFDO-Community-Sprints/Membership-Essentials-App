@@ -14,6 +14,10 @@
                 <behavior>Required</behavior>
                 <field>DeveloperName</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Unit__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -35,7 +39,7 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Days__c</field>
+                <field>Value__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>

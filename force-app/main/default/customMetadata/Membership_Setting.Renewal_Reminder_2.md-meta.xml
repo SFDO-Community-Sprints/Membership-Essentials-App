@@ -11,7 +11,11 @@
         <value xsi:type="xsd:string">End Date</value>
     </values>
     <values>
-        <field>Days__c</field>
+        <field>Unit__c</field>
+        <value xsi:type="xsd:string">Day</value>
+    </values>
+    <values>
+        <field>Value__c</field>
         <value xsi:type="xsd:double">7.0</value>
     </values>
 </CustomMetadata>
