@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>An email that is sent automatically to remind members to renew</description>
+    <encodingKey>UTF-8</encodingKey>
+    <name>Automated Membership Renewal Reminder (Sample)</name>
+    <relatedEntityType>Membership__c</relatedEntityType>
+    <style>none</style>
+    <subject>Reminder: Your {{{Organization.Name}}} Membership Expires Soon!</subject>
+    <type>custom</type>
+    <uiType>SFX</uiType>
+</EmailTemplate>
