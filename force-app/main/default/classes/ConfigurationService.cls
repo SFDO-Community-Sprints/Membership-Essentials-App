@@ -15,6 +15,10 @@ public without sharing class ConfigurationService {
     public List<String> getNonIndividualMembershipTypes() {
         return new List<String>{'Household', 'Corporate'};
     }
+    
+     public List<String> getActiveMembershipStatuses() {
+        return new List<String>{'Current','Renewal'};
+    }
 
     public String getHouseholdMemberRole() {
         return 'Household Member';
