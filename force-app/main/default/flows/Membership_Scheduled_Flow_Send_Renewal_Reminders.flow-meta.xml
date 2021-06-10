@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>Send out the first membership renewal reminder email</description>
+        <name>Send_Renewal_Reminder_1</name>
+        <label>Send Renewal Reminder 1</label>
+        <locationX>148</locationX>
+        <locationY>740</locationY>
+        <actionName>Membership__c.Membership_Renewal_Reminder_1</actionName>
+        <actionType>emailAlert</actionType>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <decisions>
+        <description>If today&apos;s date matches the date of the scheduled renewal reminder, send the email</description>
+        <name>Check_Whether_to_Send_Renewal_Reminder</name>
+        <label>Check Whether to Send Renewal Reminder</label>
+        <locationX>168</locationX>
+        <locationY>527</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Send_Renewal_Reminder</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Today</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Reminder1Date</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Send_Renewal_Reminder_1</targetReference>
+            </connector>
+            <label>Send Renewal Reminder</label>
+        </rules>
+    </decisions>
+    <description>Allows an admin to declaratively schedule automated renewal reminders. If you would like to adjust the timing of the reminders, you may clone this Flow and edit the schedule.</description>
+    <formulas>
+        <description>TEMPORARY - day to send reminder 1</description>
+        <name>Reminder1Date</name>
+        <dataType>Date</dataType>
+        <expression>IF(
+TEXT({!Get_First_Renewal_Reminder_1_Date.Context__c})=&quot;Before&quot; &amp;&amp; TEXT({!Get_First_Renewal_Reminder_1_Date.Date__c})=&quot;End Date&quot;,
+{!$Record.End_Date__c}-{!Get_First_Renewal_Reminder_1_Date.Days__c},
+null
+)</expression>
+    </formulas>
+    <formulas>
+        <name>Today</name>
+        <dataType>Date</dataType>
+        <expression>TODAY()</expression>
+    </formulas>
+    <interviewLabel>Membership - Scheduled Flow - Send Renewal Reminders {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Membership - Scheduled Flow - Send Renewal Reminders</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Get_First_Renewal_Reminder_1_Date</name>
+        <label>Get Renewal Reminder 1 Date</label>
+        <locationX>176</locationX>
+        <locationY>348</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Check_Whether_to_Send_Renewal_Reminder</targetReference>
+        </connector>
+        <filters>
+            <field>Label</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Renewal Reminder 1</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Membership_Setting__mdt</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>49</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>Get_First_Renewal_Reminder_1_Date</targetReference>
+        </connector>
+        <filters>
+            <field>Primary_Contact__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Renewal</stringValue>
+            </value>
+        </filters>
+        <object>Membership__c</object>
+        <schedule>
+            <frequency>Daily</frequency>
+            <startDate>2021-06-10</startDate>
+            <startTime>14:23:00.000Z</startTime>
+        </schedule>
+        <triggerType>Scheduled</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

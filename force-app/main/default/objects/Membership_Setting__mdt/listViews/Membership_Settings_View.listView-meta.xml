@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Membership_Settings_View</fullName>
+    <columns>MasterLabel</columns>
+    <columns>Value__c</columns>
+    <columns>Unit__c</columns>
+    <columns>Context__c</columns>
+    <columns>Date__c</columns>
+    <filterScope>Everything</filterScope>
+    <label>Membership Settings View</label>
+    <language>en_US</language>
+</ListView>

@@ -1,0 +1,8 @@
+<html><head>
+	<title></title>
+</head>
+<body style="height: auto; min-height: auto;">This is a reminder that your&nbsp;{{{Membership__c.Type__c}}} membership is set to expire in 30 days.&nbsp;<br />
+<br />
+You may renew online or [insert mailing instructions here].<br />
+<br />
+{{{Organization.Name}}}</body></html>
