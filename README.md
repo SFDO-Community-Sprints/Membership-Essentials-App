@@ -36,4 +36,4 @@ Using a combination of Cumulus & Metecho has contributed to open Tasks & unmerge
 * Code hasn't yet been created
 
 ### Project Team Accomplishments
-Please see the Wiki(https://github.com/SFDO-Community-Sprints/MembershipSchemaAndBenefits/wiki) where these are listed by year
+Please see the [Wiki](https://github.com/SFDO-Community-Sprints/MembershipSchemaAndBenefits/wiki) where these are listed by year
