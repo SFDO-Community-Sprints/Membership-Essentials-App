@@ -110,7 +110,7 @@ public virtual class TriggerHandler {
             this.isTriggerExecuting = false;
             return;
         } else {
-            this.isTriggerExecuting = true;
+            this.isTriggerExecuting = true; 
         }
 
         if((Trigger.isExecuting && Trigger.isBefore && Trigger.isInsert) ||

@@ -1,6 +1,7 @@
-public with sharing class ContactHandler extends TriggerHandler {
+public with sharing class ContactHandler extends TriggerHandler { 
     public override void afterInsert() {
         Map<Id, Id> contactsEnteringAccountsMap = new Map<Id, Id>();
+        List<String> membershipIds = new List<String>();
 
         for (Contact c : (List<Contact>)Trigger.new) {
             if (c.AccountId != null) {
