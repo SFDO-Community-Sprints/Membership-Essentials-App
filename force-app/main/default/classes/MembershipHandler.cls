@@ -1,14 +1,19 @@
 /**
- * Created by ChrisPifer on 9/24/2020.
- */
+* Created by ChrisPifer on 2/10/2021.
+*/
+ /*
+* Created by ChrisPifer on 9/24/2020.
+*/
 
-public with sharing class MembershipHandler extends TriggerHandler {
-
+public with sharing class MembershipHandler extends TriggerHandler{
+    
     private Map<Id, Membership__c> newMembershipsMap;
     private Map<Id, Membership__c> oldMembershipsMap;
     private Map<Id, Membership_Contact_Role__c> touchedRolesIds;
-
+    @TestVisible private ConfigurationService cs;
+    
     public MembershipHandler(){
+        cs = new ConfigurationService();
         this.newMembershipsMap = (Map<Id, Membership__c>) Trigger.newMap;
         if (Trigger.oldMap != null) {
             this.oldMembershipsMap = (Map<Id, Membership__c>) Trigger.oldMap;
@@ -16,19 +21,58 @@ public with sharing class MembershipHandler extends TriggerHandler {
             this.oldMembershipsMap = new Map<Id, Membership__c>();
         }
     }
-
+    
+    public override void afterInsert(){
+         managePrimaryContactRole();
+        
+        Set<Id> contactSet = new Set<Id>();
+        Set<Id> accountSet = new Set<Id>();
+       // ConfigurationService cs = new ConfigurationService();
+        
+        for(Membership__c m : (List<Membership__c>)Trigger.new){
+            //Anything we can do to prevent this running every time?!
+            // always check for changes: status, end date, primary, do not expire
+            // statuses = current or renewal
+            // if end date > Today or do not expire is changed
+            // primary is changed
+            
+            // if new and active, call service 
+            if(m.Primary__c == true 
+               && cs.getActiveMembershipStatuses().contains(m.Status__c)
+               && (m.End_Date__c >= System.today() || m.Does_Not_Expire__c == true)) {
+                   if(m.Primary_Contact__c != null) {
+                       contactSet.add(m.Primary_Contact__c);
+                   }
+                   if(m.Account__c != null) {
+                       accountSet.add(m.Account__c);
+                   }
+               }
+            
+        }
+        MembershipService ms = new MembershipService();
+        if(contactSet.size() > 0) {
+            ms.rollupPrimaryMembershipContact(contactSet);
+        }
+        if(accountSet.size() > 0) {
+            ms.rollupPrimaryMembershipAccount(accountSet);
+        }
+        
+    }
+   
+    
+    /*
     public override void afterInsert(){
         managePrimaryContactRole();
-    }
-
+    }*/
+    
     public override void afterUpdate(){
         managePrimaryContactRole();
     }
     /**
-     * If when a membership is created or updated and primary contact is set or changed
-     * Check for a primary contact membership role for that contact, create if missing.
-     */
-
+    * If when a membership is created or updated and primary contact is set or changed
+    * Check for a primary contact membership role for that contact, create if missing.
+    */
+    
     private void managePrimaryContactRole (){
         List<Id> membershipContacts = new List<Id>();
         Set<String> newContactMembershipKey = new Set<String>();
@@ -65,9 +109,9 @@ public with sharing class MembershipHandler extends TriggerHandler {
             }
         }
         contactRolesToDemote = [SELECT Id, Name, Contact__c, Membership__c FROM Membership_Contact_Role__c WHERE
-        Contact__c IN: keyPairsToDemote.keySet() AND Membership__c IN: keyPairsToDemote.values() ];
+                                Contact__c IN: keyPairsToDemote.keySet() AND Membership__c IN: keyPairsToDemote.values() ];
         contactRolesToPromote = [SELECT Id, Name, Contact__c, Membership__c FROM Membership_Contact_Role__c WHERE
-        Contact__c IN: keyPairsToPromote.keySet() AND Membership__c IN: keyPairsToPromote.values() ];
+                                 Contact__c IN: keyPairsToPromote.keySet() AND Membership__c IN: keyPairsToPromote.values() ];
         for(Membership_Contact_Role__c mcr : contactRolesToPromote){
             foundMembershipKeys.add('' + mcr.Contact__c + mcr.Membership__c);
         }
@@ -90,35 +134,35 @@ public with sharing class MembershipHandler extends TriggerHandler {
         update contactRolesForUpdate;
         insert contactRolesForCreate;
     }
-
+    
     private Membership_Contact_Role__c createRole(Id ContactId, Id MembershipId, Boolean primary){
         String defaultName = '';
         if(primary){
-            defaultName = 'Primary Member';
+            defaultName = cs.getPrimaryMember();
         } else {
-            defaultName = 'Member';
+            defaultName = cs.getMember();
         }
-
+        
         Membership_Contact_Role__c mcr = new Membership_Contact_Role__c(
-                Name = defaultName,
-                Contact__c = ContactId,
-                Membership__c = MembershipId,
-                Is_Primary__c = primary,
-                Start_Date__c = Date.today()
+            Name = defaultName,
+            Contact__c = ContactId,
+            Membership__c = MembershipId,
+            Is_Primary__c = primary,
+            Start_Date__c = Date.today()
         );
         return mcr;
     }
-
+    
     private Membership_Contact_Role__c demoteRole(Membership_Contact_Role__c mcr){
-        if(mcr.name == 'Primary Member'){
-            mcr.name = 'Member';
+        if(mcr.name == cs.getPrimaryMember()){
+            mcr.name = cs.getMember();
         }
         mcr.Is_Primary__c = false;
         return mcr;
     }
-
+    
     private Membership_Contact_Role__c promoteRole(Membership_Contact_Role__c mcr){
-        mcr.Name = 'Primary Member';
+        mcr.Name = cs.getPrimaryMember();
         mcr.Is_Primary__c = true;
         mcr.Start_Date__c = Date.today();
         return mcr;
