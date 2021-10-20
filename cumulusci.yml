@@ -17,3 +17,18 @@ tasks:
         options:
             path: robot/Membership-Management/tests
             output: robot/Membership-Management/doc/Membership-Management_tests.html
+
+    update_admin_profile:
+        options:
+            package_xml: lib/admin_profile.xml
+
+flows:
+  config_qa:
+    steps:
+      4:
+        task: load_dataset
+
+  config_dev:
+    steps:
+      4:
+        task: load_dataset
