@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Inactive_nonRenewable_requires_Successor</fullName>
+    <active>true</active>
+    <description>If the product is Renewable but is not Active, then a Successor product must be defined</description>
+    <errorConditionFormula>and(!IsActive, isRenewable__c,  ISBLANK( Successor_Product__c ))</errorConditionFormula>
+    <errorDisplayField>Successor_Product__c</errorDisplayField>
+    <errorMessage>If the product is Renewable but is not Active, then a Successor product must be defined</errorMessage>
+</ValidationRule>
