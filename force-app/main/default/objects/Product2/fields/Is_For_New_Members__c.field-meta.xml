@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Is_For_New_Members__c</fullName>
+    <defaultValue>true</defaultValue>
+    <description>If FALSE, then this product cannot be sold to a new member, but can be renewed for existing members with this product.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Set to FALSE if existing members can renew this product, but it cannot be sold to new members for the first time</inlineHelpText>
+    <label>Is For New Members</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

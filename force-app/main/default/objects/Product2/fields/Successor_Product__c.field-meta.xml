@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Successor_Product__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>If this product has Active = FALSE, and isRenewable is TRUE, then there must be a successor product which is the product that will be added by renewal automation</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Select an active membership product which will be used as the renewal product selection when this product is no longer active</inlineHelpText>
+    <label>Successor Product</label>
+    <lookupFilter>
+        <active>false</active>
+        <filterItems>
+            <field>Product2.IsActive</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </filterItems>
+        <filterItems>
+            <field>Product2.Id</field>
+            <operation>notEqual</operation>
+            <valueField>$Source.Id</valueField>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Product2</referenceTo>
+    <relationshipLabel>Prior Products</relationshipLabel>
+    <relationshipName>Prior_Products</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>
