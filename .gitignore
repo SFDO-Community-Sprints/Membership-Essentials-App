@@ -15,6 +15,7 @@ Referenced Packages
 **/.vscode/
 **/.idea/
 **/.mypy_cache/
+**/.sf
 /config/
 log.html
 output.xml
