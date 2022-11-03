@@ -17,7 +17,7 @@ public without sharing class ConfigurationService {
     }
     
      public List<String> getActiveMembershipStatuses() {
-        return new List<String>{'Current','Renewal'};
+        return new List<String>{'Current'};
     }
 
     public String getHouseholdMemberRole() {
