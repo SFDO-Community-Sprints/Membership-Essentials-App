@@ -31,7 +31,7 @@ public without sharing class MembershipService {
         
         for (Membership__c m : mem_list) {
             Account a = acc_map.get(m.Account__c); 
-            a.Membership__c = m.Id;
+            a.Primary_Membership__c = m.Id;
             acc_map.put(a.Id, a);
         }
         
@@ -48,7 +48,7 @@ public without sharing class MembershipService {
         Integer lapsePeriod = 30;
         List<Membership_Setting__mdt> settings = getMemSetting();
         if (!settings.isEmpty() && settings[0].Lapse_Period__c != null && settings[0].Lapse_Period__c > 0) {
-            lapsePeriod = settings[0].Lapse_Period__c;
+            lapsePeriod = (Integer)(settings[0].Lapse_Period__c);
         }
 
         Date todayDate = Date.today();
@@ -63,7 +63,7 @@ public without sharing class MembershipService {
             // Lapse Period has passed and Status is still Lapsed.
             if (mem.End_Date__c < todayDate && mem.Status__c == 'Current') {
                 tmpMem.Status__c = 'Lapsed';
-            } else if (mem.End_Date__c < finalDate && mem.Status == 'Lapsed') {
+            } else if (mem.End_Date__c < finalDate && mem.Status__c == 'Lapsed') {
                 tmpMem.Status__c = 'Former';
             }
             if (tmpMem.Status__c != null) {
@@ -80,7 +80,7 @@ public without sharing class MembershipService {
         }
 
         // Create contact list for update.
-        List<Membership_Contact_Role__c> roles = [SELECT Contact__c 
+        List<Membership_Contact_Role__c> roles = [SELECT Membership__c, Contact__c 
                 FROM Membership_Contact_Role__c 
                 WHERE Membership__c IN :memberships];
         for (Membership_Contact_Role__c role : roles) {
