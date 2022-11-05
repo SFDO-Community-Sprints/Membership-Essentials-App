@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Lapse_Period__c</fullName>
+    <description>Used by scheduled job.</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>Number of days after End Date that the membership remains in Lapsed state.  After this period, the status changes to Former.  If no value is specified, the default value is 30 days.</inlineHelpText>
+    <label>Lapse Period</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

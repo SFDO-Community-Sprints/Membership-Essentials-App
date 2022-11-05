@@ -92,7 +92,7 @@ public without sharing class MembershipService {
         }
 
         // Update memberships and related records as needed.
-        update memberships;
+        update memsToUpdate.values();
         if (!contactsToUpdate.isEmpty()) {
             update contactsToUpdate;
         }
