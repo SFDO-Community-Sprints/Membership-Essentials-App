@@ -17,3 +17,37 @@ tasks:
         options:
             path: robot/Membership-Management/tests
             output: robot/Membership-Management/doc/Membership-Management_tests.html
+
+    activate_standard_pricebook:
+        description: Activate standard price book
+        class_path: cumulusci.tasks.apex.anon.AnonymousApexTask
+        options:
+            apex: >
+                pricebook2 book = [SELECT Id FROM pricebook2 WHERE isStandard = true];
+                book.isActive = true;
+                update book;
+
+    load_membership_products:
+        class_path: cumulusci.tasks.bulkdata.generate_and_load_data_from_yaml.GenerateAndLoadDataFromYaml
+        group: OSC
+        options:
+            generator_yaml: snowfakery_samples/OSC/MembershipSchemaAndBenefits_PricebookProducts.recipe.yml
+    
+    load_membership_opportunities:
+        class_path: cumulusci.tasks.bulkdata.generate_and_load_data_from_yaml.GenerateAndLoadDataFromYaml
+        group: OSC
+        options:
+            generator_yaml: snowfakery_samples/OSC/MembershipSchemaAndBenefits_basic.recipe.yml
+            num_records: 10
+            num_records_tablename: Opportunity
+
+flows:
+    osc_memberships_project:
+        description: OSC Membership Schema and Benefits project
+        steps:
+            1: 
+                task: activate_standard_pricebook
+            2:
+                task: load_membership_products
+            3:
+                task: load_membership_opportunities
