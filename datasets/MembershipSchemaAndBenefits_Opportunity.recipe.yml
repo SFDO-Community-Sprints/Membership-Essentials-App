@@ -22,12 +22,13 @@
 
 ### ----------- [               CLI RUN                ]---------- ###
 
-# cci task run snowfakery --recipe snowfakery_samples/OSC/MembershipSchemaAndBenefits_basic.recipe.yml --drop_missing_schema True --org membership
-# snowfakery --output-format json --output-file foo.json snowfakery_samples/OSC/MembershipSchemaAndBenefits_basic.recipe.yml --plugin-option org_name membership
+# cci task run snowfakery --recipe datasets/MembershipSchemaAndBenefits_basic.recipe.yml --drop_missing_schema True --org membership
+# snowfakery --output-format json --output-file foo.json datasets/MembershipSchemaAndBenefits_Opportunity.recipe.yml --plugin-option org_name membership
 
 ### ----------- [            Recipe Starts             ]---------- ###
 
-- plugin: snowfakery.standard_plugins.Salesforce.SOQLDataset
+# - plugin: snowfakery.standard_plugins.Salesforce.SOQLDataset
+- plugin: snowfakery.standard_plugins.Salesforce.SalesforceQuery
 
 - object: temp
   fields:
@@ -35,6 +36,38 @@
       date_between:
         start_date: -1y
         end_date: today
+    __firstname:
+      fake: firstname
+    __lastname:
+      fake: lastname
+
+- object: Account
+  fields:
+    # MembershipSchemaAndBenefits custom fields -- expected to be handled by Apex
+    First_Membership_Start_Date__c: ${{temp.__oppDate}}
+    Membership_End_Date__c: ${{temp.__oppDate+relativedelta(months=12)}}
+    Membership_Status__c:
+      random_choice:
+        - Former
+        - Lapsed
+        - Renewal
+        - Current
+    Membership_Type__c: 
+      random_choice:
+        - Individual
+        - Household
+        - Corporate
+    Name: 
+      if:
+        - choice:
+            when: ${{Membership_Type__c == 'Individual'}}
+            pick: ${{temp.__firstname}} ${{temp.__lastname}} Household
+        - choice:
+            when: ${{Membership_Type__c == 'Household'}}
+            pick: ${{temp.__firstname}} ${{temp.__lastname}} Household
+        - choice:
+            when: ${{Membership_Type__c == 'Corporate'}}
+            pick: ${{fake.company}}
 
 - object: Contact
   fields:
@@ -42,46 +75,15 @@
     Last_Membership_Start_Date__c: ${{temp.__oppDate}}
     First_Membership_Start_Date__c: ${{temp.__oppDate}}
     Membership_End_Date__c: ${{temp.__oppDate+relativedelta(months=12)}}
-    Membership_Status__c: 
-      random_choice:
-        - Former
-        - Lapsed
-        - Renewal
-        - Current
-    Membership_Type__c:
-      random_choice:
-        - Individual
-        - Household
-        - Corporate
-    FirstName: ${{fake.firstname}}
-    LastName: ${{fake.lastname}}
+    Membership_Status__c: ${{Account.Membership_Status__c}}
+    Membership_Type__c: ${{Account.Membership_Type__c}}
+    FirstName: ${{temp.__firstname}}
+    LastName: ${{temp.__lastname}}
     Email: ${{fake.email}}
     AccountId:
-      - object: Account
-        fields:
-          Name: 
-            if:
-              - choice:
-                  when: ${{Contact.Membership_Type__c == 'Individual'}}
-                  pick: ${{Contact.FirstName}} ${{Contact.LastName}} Household
-              - choice:
-                  when: ${{Contact.Membership_Type__c == 'Household'}}
-                  pick: ${{Contact.FirstName}} ${{Contact.LastName}} Household
-              - choice:
-                  when: ${{Contact.Membership_Type__c == 'Corporate'}}
-                  pick: ${{fake.company}}
-
-        # MembershipSchemaAndBenefits custom fields -- expected to be handled by Apex
-          First_Membership_Start_Date__c: ${{temp.__oppDate}}
-          Membership_End_Date__c: ${{temp.__oppDate+relativedelta(months=12)}}
-          Membership_Status__c: ${{Contact.Membership_Status__c}}
-          Membership_Type__c: ${{Contact.Membership_Type__c}}
-
-          # Primary_Membership__c: # Apex automated
-          #   reference: Membership__c
+      reference: Account
 
 - object: Opportunity
-  count: 1
   fields:
     Type: Membership
     CloseDate: ${{temp.__oppDate}}
@@ -91,7 +93,7 @@
 
     StageName: Closed Won
     # Contact
-    Name: ${{Account.Name}}-${{Type}}-${{(CloseDate).year}}
+    Name: ${{Account.Name}}-${{Type}}-${{CloseDate}}
     AccountId:
       reference: Account
    
@@ -105,17 +107,15 @@
     #     - Reacquire
     
     __pricebookentry_from_salesforce:
-      SOQLDataset.shuffle:
+      SalesforceQuery.random_record:
         fields: UnitPrice 
         from: PricebookEntry
-        where: Product2.Name = '${{Contact.Membership_Type__c}} Membership'
+        where: Product2.Name like '% Membership' 
     Amount: ${{__pricebookentry_from_salesforce.UnitPrice}}
 
-    __pricebook_from_salesforce:
-      SOQLDataset.shuffle:
-        fields: Id 
+    Pricebook2Id: 
+      SalesforceQuery.random_record:
         from: Pricebook2
-    Pricebook2Id: ${{__pricebook_from_salesforce.Id}}
 
 - object: OpportunityLineItem
   fields:
@@ -128,10 +128,10 @@
       reference: Opportunity
 
     __pricebookentry_from_salesforce:
-      SOQLDataset.shuffle:
+      SalesforceQuery.random_record:
         fields: Id, UnitPrice, Product2Id
         from: PricebookEntry
-        where: Product2.name like '${{Contact.Membership_Type__c}} membership' 
+        where: Product2.Name like '% Membership' 
     UnitPrice: ${{__pricebookentry_from_salesforce.UnitPrice}}
 
     Product2Id: ${{__pricebookentry_from_salesforce.Product2Id}}
@@ -140,10 +140,10 @@
       - object: Membership__c
         fields:
           __product_from_salesforce:
-            SOQLDataset.shuffle:
+            SalesforceQuery.random_record:
               fields: Id, Name
               from: Product2
-              where: name like '${{Contact.Membership_Type__c}} membership'
+              where: Name like '% Membership'
           name: ${{Account.Name}}-${{__product_from_salesforce.Name}}
           Origin__c:
             random_choice:
