@@ -44,11 +44,11 @@ tasks:
         class_path: cumulusci.tasks.bulkdata.generate_and_load_data_from_yaml.GenerateAndLoadDataFromYaml
         group: OSC
         options:
-            generator_yaml: datasets/MembershipSchemaAndBenefits_Opportunity.recip.yml
+            generator_yaml: datasets/MembershipSchemaAndBenefits_Opportunity.recipe.yml
             num_records_tablename: Account
-            num_records: 4
+            num_records: 100
             drop_missing_schema: true
-            batch_size: 8
+            batch_size: 10
             data_generation_options:
                 org_name: membership
 

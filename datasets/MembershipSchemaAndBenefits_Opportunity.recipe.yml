@@ -13,7 +13,7 @@
 ### ----------- [ MembershipSchemaAndBenefits_basic.recipe.yml Summary ]---------- ###
 # Household Account with two contacts
 # Query Standard Price Book, PricebookEntry, Product2
-# Pick one out of [3] products called "Individual Membership", "Houshold Membership", "Corporate Membership"
+# Pick one out of [3] products called "Individual Membership", "Household Membership", "Corporate Membership"
 # Membership record is specific to a related account and opportunity records.
 # Membership Contact role differenciates the membership details on each household member.
 # There is an apex trigger handler that creates a membership contact role for primary contact.
@@ -27,7 +27,6 @@
 
 ### ----------- [            Recipe Starts             ]---------- ###
 
-# - plugin: snowfakery.standard_plugins.Salesforce.SOQLDataset
 - plugin: snowfakery.standard_plugins.Salesforce.SalesforceQuery
 
 - object: temp
@@ -40,6 +39,23 @@
       fake: firstname
     __lastname:
       fake: lastname
+    __pricebookentry_from_salesforce:
+      SalesforceQuery.random_record:
+        fields: Id, UnitPrice, Product2Id, Product2.Name 
+        from: PricebookEntry
+        where: Product2.Name like '% Membership' 
+    __membershipType: 
+      if:
+        - choice: 
+            when: ${{__pricebookentry_from_salesforce.Product2.Name == 'Individual Membership'}}
+            pick: Individual
+        - choice: 
+            when: ${{__pricebookentry_from_salesforce.Product2.Name == 'Household Membership'}}
+            pick: Household
+        - choice: 
+            when: ${{__pricebookentry_from_salesforce.Product2.Name == 'Corporate Membership'}}
+            pick: Corporate
+            
 
 - object: Account
   fields:
@@ -52,21 +68,21 @@
         - Lapsed
         - Renewal
         - Current
-    Membership_Type__c: 
-      random_choice:
-        - Individual
-        - Household
-        - Corporate
+    Membership_Type__c: ${{temp.__membershipType}}
+      # random_choice:
+      #   - Individual
+      #   - Household
+      #   - Corporate
     Name: 
       if:
         - choice:
-            when: ${{Membership_Type__c == 'Individual'}}
+            when: ${{temp.__membershipType == 'Individual'}}
             pick: ${{temp.__firstname}} ${{temp.__lastname}} Household
         - choice:
-            when: ${{Membership_Type__c == 'Household'}}
+            when: ${{temp.__membershipType == 'Household'}}
             pick: ${{temp.__firstname}} ${{temp.__lastname}} Household
         - choice:
-            when: ${{Membership_Type__c == 'Corporate'}}
+            when: ${{temp.__membershipType == 'Corporate'}}
             pick: ${{fake.company}}
 
 - object: Contact
@@ -93,7 +109,7 @@
 
     StageName: Closed Won
     # Contact
-    Name: ${{Account.Name}}-${{Type}}-${{CloseDate}}
+    Name: ${{Account.Name}}-${{Account.Membership_Type__c}}-${{CloseDate}}
     AccountId:
       reference: Account
    
@@ -106,12 +122,7 @@
     #     - Renewal
     #     - Reacquire
     
-    __pricebookentry_from_salesforce:
-      SalesforceQuery.random_record:
-        fields: UnitPrice 
-        from: PricebookEntry
-        where: Product2.Name like '% Membership' 
-    Amount: ${{__pricebookentry_from_salesforce.UnitPrice}}
+    Amount: ${{temp.__pricebookentry_from_salesforce.UnitPrice}}
 
     Pricebook2Id: 
       SalesforceQuery.random_record:
@@ -127,24 +138,13 @@
     OpportunityId:
       reference: Opportunity
 
-    __pricebookentry_from_salesforce:
-      SalesforceQuery.random_record:
-        fields: Id, UnitPrice, Product2Id
-        from: PricebookEntry
-        where: Product2.Name like '% Membership' 
-    UnitPrice: ${{__pricebookentry_from_salesforce.UnitPrice}}
-
-    Product2Id: ${{__pricebookentry_from_salesforce.Product2Id}}
+    UnitPrice: ${{Opportunity.Amount}}
+    Product2Id: ${{temp.__pricebookentry_from_salesforce.Product2Id}}
 # Membership__c:
     Membership__c:
       - object: Membership__c
         fields:
-          __product_from_salesforce:
-            SalesforceQuery.random_record:
-              fields: Id, Name
-              from: Product2
-              where: Name like '% Membership'
-          name: ${{Account.Name}}-${{__product_from_salesforce.Name}}
+          name: ${{Account.Name}}-${{temp.__pricebookentry_from_salesforce.Product2.Name}}
           Origin__c:
             random_choice:
               - New
@@ -160,13 +160,13 @@
           Type__c:
             if:
               - choice: 
-                  when: ${{__product_from_salesforce.Name == 'Individual Membership'}}
+                  when: ${{temp.__pricebookentry_from_salesforce.Product2.Name == 'Individual Membership'}}
                   pick: Individual
               - choice: 
-                  when: ${{__product_from_salesforce.Name == 'Household Membership'}}
+                  when: ${{temp.__pricebookentry_from_salesforce.Product2.Name == 'Household Membership'}}
                   pick: Household
               - choice: 
-                  when: ${{__product_from_salesforce.Name == 'Corporate Membership'}}
+                  when: ${{temp.__pricebookentry_from_salesforce.Product2.Name == 'Corporate Membership'}}
                   pick: Corporate
 
           Does_Not_Expire__c: false
@@ -175,6 +175,13 @@
 
           Account__c:
             reference: Account
+
+          Primary_Contact__c:
+            reference: Contact
+          Opportunity__c:
+            reference: Opportunity
+          Product__c: ${{temp.__pricebookentry_from_salesforce.Product2Id}}
+
 
           # Apex automated
           # - object: Membership_Contact_Role__c

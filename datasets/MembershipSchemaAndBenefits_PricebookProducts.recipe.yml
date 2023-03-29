@@ -4,7 +4,7 @@
 
 
 ### ----------- [ MembershipSchemaAndBenefits_basic.recipe.yml Summary ]---------- ###
-# Create [3] products called "Individual Membership", "Houshold Membership", "Corporate Membership"
+# Create [3] products called "Individual Membership", "Household Membership", "Corporate Membership"
 # Create 3 Price book entries to the standard price book
 # https://github.com/SFDO-Community-Sprints/MembershipSchemaAndBenefits
 # Run at the pre-configuration
@@ -44,7 +44,7 @@
 - object: Product2
   nickname: p2
   fields:
-    Name: Houshold Membership
+    Name: Household Membership
     ProductCode: HSHLD-MEMBER-ANNUAL
     Description: 
       fake.text:
