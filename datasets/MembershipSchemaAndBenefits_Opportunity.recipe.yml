@@ -22,7 +22,7 @@
 
 ### ----------- [               CLI RUN                ]---------- ###
 
-# cci task run snowfakery --recipe datasets/MembershipSchemaAndBenefits_basic.recipe.yml --drop_missing_schema True --org membership
+# cci task run snowfakery --recipe datasets/MembershipSchemaAndBenefits_Opportunity.recipe.yml --drop_missing_schema True --org membership
 # snowfakery --output-format json --output-file foo.json datasets/MembershipSchemaAndBenefits_Opportunity.recipe.yml --plugin-option org_name membership
 
 ### ----------- [            Recipe Starts             ]---------- ###
