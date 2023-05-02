@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Active_Contacts__c</fullName>
+    <description>GitHub #27</description>
+    <externalId>false</externalId>
+    <label>Active Contacts</label>
+    <summaryFilterItems>
+        <field>Membership_Contact_Role__c.Status__c</field>
+        <operation>equals</operation>
+        <value>Renewal, Current</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Membership_Contact_Role__c.Membership__c</summaryForeignKey>
+    <summaryOperation>count</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>
