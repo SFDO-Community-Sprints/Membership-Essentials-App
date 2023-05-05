@@ -9,7 +9,7 @@ project:
 tasks:
     robot:
         options:
-            suites: ro›bot/Membership-Management/tests
+            suites: robot/Membership-Management/tests
             options:
                 outputdir: robot/Membership-Management/results
 
