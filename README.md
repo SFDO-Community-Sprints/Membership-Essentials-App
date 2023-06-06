@@ -16,6 +16,9 @@ A schema for memberships, sponsorship, renewals, payments, multiple members, fam
 * **Use these questions to form a clear vision statement of 3-5 sentences (rough guideline).** 
 Focusing on membership, whioch will be in a separate non-NPSP package (to avoid dependencies); this includes a primary Membership object to list current membership and Membership Contact Roles to list the various connections as there may be more than one member; financial aspects will included later builds but are not part of the MVP.
 
+### Install Steps and Current Functionality
+[See Wiki](https://github.com/SFDO-Community-Sprints/MembershipSchemaAndBenefits/wiki/Membership-Package-Documentation)
+
 ### Solutioning
 [See Solutioning Wiki Page](https://github.com/SFDO-Community-Sprints/MembershipSchemaAndBenefits/wiki/Solutioning)
 
