@@ -2,7 +2,9 @@
 For accomplishments by sprint, please refer to the Wiki.
 
 ### Project Vision 
-A schema for memberships, sponsorship, renewals, payments, multiple members, families, benefits, etc, that actually works. Eventually automation etc.
+Membership can mean something different for each organizations, but managing memberships has never been straightforward in Salesforce. 
+
+The goal of the membership management project is to build a common data model and supporting automations for managing memberships in Salesforce. The goal is for the model to support everything from museums and alumni associations to  sustaining donor programs and community gardens.
 
 * **What is the big problem that your project is trying to solve?**
     The existing NPSP membership data model is very lightweight and doesn't meet many orgs' needs. We seek to design a data model that is flexible and extensible for a wide range of membership and entitlement models including memberships and sponsonships. 
