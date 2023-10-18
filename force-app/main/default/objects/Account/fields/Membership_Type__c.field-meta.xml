@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Membership_Type__c</fullName>
+    <description>Account&apos;s current membership type based on the type of the related membership with the greatest end date</description>
     <externalId>false</externalId>
-    <inlineHelpText>This Account&apos;s current Membership Type, set based on the Type of the related Membership with the greatest End Date</inlineHelpText>
+    <inlineHelpText>Select a membership type for this account based on the type of the related membership with the greatest end date</inlineHelpText>
     <label>Membership Type</label>
     <required>false</required>
     <trackFeedHistory>false</trackFeedHistory>

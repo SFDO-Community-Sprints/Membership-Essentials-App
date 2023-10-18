@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Term__c</fullName>
+    <description>Specifies whether the term is calculated in days, weeks, months, or years. Tied to Term.</description>
     <externalId>false</externalId>
     <label>Term</label>
     <precision>18</precision>

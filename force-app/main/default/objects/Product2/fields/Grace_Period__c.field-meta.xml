@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Grace_Period__c</fullName>
-    <description>The number of days after an expiration that a membership status will be updated to &quot;Lapsed&quot; before changing to &quot;Expired&quot;.</description>
+    <description>Number of days after an expiration date that the membership status will be set to &quot;Lapsed&quot; before changing to &quot;Expired&quot;</description>
     <externalId>false</externalId>
+    <inlineHelpText>Amount of days this product&apos;s status will be set to &quot;Lapsed&quot; before it changes to &quot;Expired&quot;</inlineHelpText>
     <label>Grace Period (Days)</label>
     <precision>18</precision>
     <required>false</required>
