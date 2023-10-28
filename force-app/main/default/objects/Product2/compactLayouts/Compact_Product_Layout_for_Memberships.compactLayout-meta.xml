@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Compact_Product_Layout_for_Memberships</fullName>
+    <fields>Name</fields>
+    <fields>ProductCode</fields>
+    <fields>Family</fields>
+    <fields>Term__c</fields>
+    <fields>Term_Unit__c</fields>
+    <label>Compact Product Layout for Memberships</label>
+</CompactLayout>
