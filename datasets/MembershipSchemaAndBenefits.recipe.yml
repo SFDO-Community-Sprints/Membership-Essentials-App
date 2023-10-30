@@ -37,7 +37,7 @@
     Type: Membership
     CloseDate:
       date_between:
-        start_date: -1y
+        start_date: -3y
         end_date: today
     Description:
       fake.text:
@@ -151,12 +151,7 @@
               - Renewed
               - Reacquired
           Primary__c: true
-          Status__c:
-            random_choice:
-              - Former
-              - Lapsed
-              - Renewal
-              - Current
+
           Type__c:
             if:
               - choice:
@@ -172,7 +167,19 @@
           Does_Not_Expire__c: false
           Start_Date__c: ${{Opportunity.CloseDate}}
           End_Date__c: ${{date(Start_Date__c)+relativedelta(months=12)}}
-
+          Status__c:
+            if:
+              - choice:
+                  when: ${{date(End_Date__c) < today}}
+                  pick: 
+                    random_choice:
+                      - Former
+                      - Lapsed
+              - choice:
+                  pick: 
+                    random_choice:
+                      - Current
+                      - Renewal
           Account__c:
             reference: Account
 

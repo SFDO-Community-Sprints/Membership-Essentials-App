@@ -24,4 +24,6 @@ flows:
         steps:
             3: 
                 task: assign_permission_sets 
-                options: api_names Manage_Memberships
+                options: 
+                    api_names: Manage_Memberships
+
