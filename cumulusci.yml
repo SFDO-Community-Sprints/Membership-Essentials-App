@@ -17,3 +17,11 @@ tasks:
         options:
             path: robot/Membership-Management/tests
             output: robot/Membership-Management/doc/Membership-Management_tests.html
+
+
+flows:
+    dev_org:
+        steps:
+            3: 
+                task: assign_permission_sets 
+                options: api_names Manage_Memberships
