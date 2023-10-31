@@ -128,16 +128,16 @@
     </actionOverrides>
     <actionOverrides>
         <actionName>View</actionName>
-        <comment>Action override created by Lightning App Builder during activation.</comment>
-        <content>Membership_Form_Submission_Record_Page</content>
+        <comment>Action override updated by Lightning App Builder during activation.</comment>
+        <content>Membership_Form_Submission_Record_Page1</content>
         <formFactor>Large</formFactor>
         <skipRecordTypeSelect>false</skipRecordTypeSelect>
         <type>Flexipage</type>
     </actionOverrides>
     <actionOverrides>
         <actionName>View</actionName>
-        <comment>Action override created by Lightning App Builder during activation.</comment>
-        <content>Membership_Form_Submission_Record_Page</content>
+        <comment>Action override updated by Lightning App Builder during activation.</comment>
+        <content>Membership_Form_Submission_Record_Page1</content>
         <formFactor>Small</formFactor>
         <skipRecordTypeSelect>false</skipRecordTypeSelect>
         <type>Flexipage</type>
