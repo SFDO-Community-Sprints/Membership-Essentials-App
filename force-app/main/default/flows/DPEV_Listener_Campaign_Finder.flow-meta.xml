@@ -5,6 +5,9 @@
         <label>Was a Campaign Found?</label>
         <locationX>182</locationX>
         <locationY>386</locationY>
+        <defaultConnector>
+            <targetReference>Update_Campaign_Finder_Field</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>Yes</name>
@@ -98,6 +101,26 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
+        <name>Update_Campaign_Finder_Field</name>
+        <label>Update Campaign Finder Field</label>
+        <locationX>314</locationX>
+        <locationY>494</locationY>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_the_Membership_Form_Submission_Record.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Campaign_Finder_Ran__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <object>Membership_Form_Submission__c</object>
+    </recordUpdates>
+    <recordUpdates>
         <name>Update_MFS_record</name>
         <label>Update MFS record</label>
         <locationX>50</locationX>
@@ -126,5 +149,5 @@
         <object>BPEV_Membership_Form_Submission__e</object>
         <triggerType>PlatformEvent</triggerType>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
 </Flow>

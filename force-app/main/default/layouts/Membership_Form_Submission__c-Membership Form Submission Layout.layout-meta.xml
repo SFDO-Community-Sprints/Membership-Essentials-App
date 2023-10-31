@@ -134,6 +134,10 @@
                 <behavior>Edit</behavior>
                 <field>Source_Campaign_Name__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Campaign_Finder_Ran__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
