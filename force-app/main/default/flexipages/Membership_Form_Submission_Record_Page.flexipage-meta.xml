@@ -166,7 +166,7 @@
             </componentInstanceProperties>
             <componentInstanceProperties>
                 <name>horizontalAlignment</name>
-                <value>true</value>
+                <value>false</value>
             </componentInstanceProperties>
             <componentInstanceProperties>
                 <name>label</name>
