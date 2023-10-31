@@ -43,7 +43,7 @@
         <inputAssignments>
             <field>Product2Id</field>
             <value>
-                <elementReference>Create_Opportunity_Line_Item</elementReference>
+                <elementReference>Membership_Form_Submission_Record.Product__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
