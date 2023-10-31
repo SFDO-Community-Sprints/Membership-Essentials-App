@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <assignments>
+        <name>debug</name>
+        <label>debug</label>
+        <locationX>176</locationX>
+        <locationY>431</locationY>
+        <assignmentItems>
+            <assignToReference>Send_New_Updated_Membership_Platform_Event</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>hello</stringValue>
+            </value>
+        </assignmentItems>
+    </assignments>
     <interviewLabel>Membership Form Submission - After Save - New {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Membership Form Submission - AFTER - Create/Update MFS</label>
     <processMetadataValues>
@@ -26,6 +39,9 @@
         <label>Send New/Updated Membership Platform Event</label>
         <locationX>176</locationX>
         <locationY>323</locationY>
+        <connector>
+            <targetReference>debug</targetReference>
+        </connector>
         <inputAssignments>
             <field>Membership_Form_Submission_Id__c</field>
             <value>
