@@ -1,7 +1,7 @@
 {
   "orgName": "Membership-Management - Dev Org",
   "edition": "Developer",
-  "features": ["AddCustomObjects":"30"],
+  "features": ["NumPlatformEvents":"20"],
   "settings": {
     "lightningExperienceSettings": {
       "enableS1DesktopEnabled": true
