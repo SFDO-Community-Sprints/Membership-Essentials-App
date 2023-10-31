@@ -3,8 +3,11 @@
     <decisions>
         <name>Is_Account_Lookup_Set</name>
         <label>Is Account Lookup Set?</label>
-        <locationX>858</locationX>
+        <locationX>982</locationX>
         <locationY>278</locationY>
+        <defaultConnector>
+            <targetReference>Call_Account_Platform_Event</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>No Account</defaultConnectorLabel>
         <rules>
             <name>Account_Exists</name>
@@ -25,8 +28,11 @@
     <decisions>
         <name>Is_Contact_Lookup_Set</name>
         <label>Is Contact Lookup Set?</label>
-        <locationX>611</locationX>
+        <locationX>726</locationX>
         <locationY>386</locationY>
+        <defaultConnector>
+            <targetReference>Call_Contact_Platform_Event</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>No Contact</defaultConnectorLabel>
         <rules>
             <name>Contact_Exists</name>
@@ -47,8 +53,11 @@
     <decisions>
         <name>Is_Opportunity_Lookup_Set</name>
         <label>Is Opportunity Lookup Set?</label>
-        <locationX>182</locationX>
+        <locationX>248</locationX>
         <locationY>602</locationY>
+        <defaultConnector>
+            <targetReference>Call_Create_Opp_Platform_Event</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>No Opportunity</defaultConnectorLabel>
         <rules>
             <name>Opportunity_Exists</name>
@@ -69,8 +78,11 @@
     <decisions>
         <name>Is_Product_Lookup_Set</name>
         <label>Is Product Lookup Set?</label>
-        <locationX>380</locationX>
+        <locationX>479</locationX>
         <locationY>494</locationY>
+        <defaultConnector>
+            <targetReference>Call_Product_Platform_Event</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>No Product</defaultConnectorLabel>
         <rules>
             <name>Product_Exists</name>
@@ -93,6 +105,9 @@
         <label>Is the Campaign Lookup Set?</label>
         <locationX>50</locationX>
         <locationY>710</locationY>
+        <defaultConnector>
+            <targetReference>Call_Find_Campaign_Platform_Event</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>No Campaign</defaultConnectorLabel>
         <rules>
             <name>Campaign_Exists</name>
@@ -129,10 +144,84 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <description>Calls the DPEV Account Find/Create Platform Event</description>
+        <name>Call_Account_Platform_Event</name>
+        <label>Call Account Platform Event</label>
+        <locationX>1238</locationX>
+        <locationY>386</locationY>
+        <inputAssignments>
+            <field>Record_Id__c</field>
+            <value>
+                <elementReference>GET_Membership_Form_Submission_Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>DPEV_Account__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <description>Calls the DPEV Contact Finder Platform event</description>
+        <name>Call_Contact_Platform_Event</name>
+        <label>Call Contact Platform Event</label>
+        <locationX>974</locationX>
+        <locationY>494</locationY>
+        <inputAssignments>
+            <field>Membership_Form_Submission_Id__c</field>
+            <value>
+                <elementReference>GET_Membership_Form_Submission_Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>DPEV_Contact_Finder__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <description>Calls the Platform Event that triggers the create Opportunity flow</description>
+        <name>Call_Create_Opp_Platform_Event</name>
+        <label>Call Create Opp Platform Event</label>
+        <locationX>446</locationX>
+        <locationY>710</locationY>
+        <inputAssignments>
+            <field>Record_Id__c</field>
+            <value>
+                <elementReference>GET_Membership_Form_Submission_Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>DPEV_Create_Opportunity__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Call_Find_Campaign_Platform_Event</name>
+        <label>Call Find Campaign Platform Event</label>
+        <locationX>182</locationX>
+        <locationY>818</locationY>
+        <inputAssignments>
+            <field>Record_Id__c</field>
+            <value>
+                <elementReference>GET_Membership_Form_Submission_Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>DPEV_Find_Campaign__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <description>Call Find Product Platform Event</description>
+        <name>Call_Product_Platform_Event</name>
+        <label>Call Product Platform Event</label>
+        <locationX>710</locationX>
+        <locationY>602</locationY>
+        <inputAssignments>
+            <field>Record_Id__c</field>
+            <value>
+                <elementReference>GET_Membership_Form_Submission_Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>DPEV_Product_Finder__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
     <recordLookups>
         <name>GET_Membership_Form_Submission_Record</name>
         <label>GET Membership Form Submission Record</label>
-        <locationX>858</locationX>
+        <locationX>982</locationX>
         <locationY>170</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -150,7 +239,7 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>732</locationX>
+        <locationX>856</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>GET_Membership_Form_Submission_Record</targetReference>
