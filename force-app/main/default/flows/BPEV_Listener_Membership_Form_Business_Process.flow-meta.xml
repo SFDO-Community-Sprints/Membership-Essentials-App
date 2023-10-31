@@ -1,5 +1,112 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <decisions>
+        <name>Is_Account_Lookup_Set</name>
+        <label>Is Account Lookup Set?</label>
+        <locationX>858</locationX>
+        <locationY>278</locationY>
+        <defaultConnectorLabel>No Account</defaultConnectorLabel>
+        <rules>
+            <name>Account_Exists</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GET_Membership_Form_Submission_Record.Account__r.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Is_Contact_Lookup_Set</targetReference>
+            </connector>
+            <label>Account Exists</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Is_Contact_Lookup_Set</name>
+        <label>Is Contact Lookup Set?</label>
+        <locationX>611</locationX>
+        <locationY>386</locationY>
+        <defaultConnectorLabel>No Contact</defaultConnectorLabel>
+        <rules>
+            <name>Contact_Exists</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GET_Membership_Form_Submission_Record.Contact__r.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Is_Product_Lookup_Set</targetReference>
+            </connector>
+            <label>Contact Exists</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Is_Opportunity_Lookup_Set</name>
+        <label>Is Opportunity Lookup Set?</label>
+        <locationX>182</locationX>
+        <locationY>602</locationY>
+        <defaultConnectorLabel>No Opportunity</defaultConnectorLabel>
+        <rules>
+            <name>Opportunity_Exists</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GET_Membership_Form_Submission_Record.Opportunity__r.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Is_the_Campaign_Lookup_Set</targetReference>
+            </connector>
+            <label>Opportunity Exists</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Is_Product_Lookup_Set</name>
+        <label>Is Product Lookup Set?</label>
+        <locationX>380</locationX>
+        <locationY>494</locationY>
+        <defaultConnectorLabel>No Product</defaultConnectorLabel>
+        <rules>
+            <name>Product_Exists</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GET_Membership_Form_Submission_Record.Product__r.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Is_Opportunity_Lookup_Set</targetReference>
+            </connector>
+            <label>Product Exists</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Is_the_Campaign_Lookup_Set</name>
+        <label>Is the Campaign Lookup Set?</label>
+        <locationX>50</locationX>
+        <locationY>710</locationY>
+        <defaultConnectorLabel>No Campaign</defaultConnectorLabel>
+        <rules>
+            <name>Campaign_Exists</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GET_Membership_Form_Submission_Record.Campaign__r.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>Campaign Exists</label>
+        </rules>
+    </decisions>
     <description>Checks for existing population of lookup fields on the Membership Form record and triggers platform events for creation if necessary.</description>
     <interviewLabel>BPEV Listener  - Membership Form Business Process {!$Flow.CurrentDateTime}</interviewLabel>
     <label>BPEV Listener  - Membership Form Business Process</label>
@@ -25,9 +132,12 @@
     <recordLookups>
         <name>GET_Membership_Form_Submission_Record</name>
         <label>GET Membership Form Submission Record</label>
-        <locationX>176</locationX>
+        <locationX>858</locationX>
         <locationY>170</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Is_Account_Lookup_Set</targetReference>
+        </connector>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -40,7 +150,7 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>50</locationX>
+        <locationX>732</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>GET_Membership_Form_Submission_Record</targetReference>
@@ -48,5 +158,5 @@
         <object>BPEV_Membership_Form_Submission__e</object>
         <triggerType>PlatformEvent</triggerType>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
 </Flow>
