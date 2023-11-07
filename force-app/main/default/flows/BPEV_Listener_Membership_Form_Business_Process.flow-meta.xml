@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <assignments>
+        <name>Set_Log_Message</name>
+        <label>Set Log Message</label>
+        <locationX>974</locationX>
+        <locationY>494</locationY>
+        <assignmentItems>
+            <assignToReference>ContactEventFire.Log_Message__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>&quot;Fired Create/Find Contact&quot;</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Create_Records_6</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <name>Is_Account_Lookup_Set</name>
         <label>Is Account Lookup Set?</label>
@@ -31,7 +47,7 @@
         <locationX>726</locationX>
         <locationY>386</locationY>
         <defaultConnector>
-            <targetReference>Call_Contact_Platform_Event</targetReference>
+            <targetReference>Set_Log_Message</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No Contact</defaultConnectorLabel>
         <rules>
@@ -164,7 +180,7 @@
         <name>Call_Contact_Platform_Event</name>
         <label>Call Contact Platform Event</label>
         <locationX>974</locationX>
-        <locationY>494</locationY>
+        <locationY>710</locationY>
         <inputAssignments>
             <field>Membership_Form_Submission_Id__c</field>
             <value>
@@ -218,6 +234,16 @@
         <object>DPEV_Product_Finder__e</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
+    <recordCreates>
+        <name>Create_Records_6</name>
+        <label>Create Records 6</label>
+        <locationX>974</locationX>
+        <locationY>602</locationY>
+        <connector>
+            <targetReference>Call_Contact_Platform_Event</targetReference>
+        </connector>
+        <inputReference>ContactEventFire</inputReference>
+    </recordCreates>
     <recordLookups>
         <name>GET_Membership_Form_Submission_Record</name>
         <label>GET Membership Form Submission Record</label>
@@ -248,4 +274,12 @@
         <triggerType>PlatformEvent</triggerType>
     </start>
     <status>Active</status>
+    <variables>
+        <name>ContactEventFire</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Event_Log__c</objectType>
+    </variables>
 </Flow>
