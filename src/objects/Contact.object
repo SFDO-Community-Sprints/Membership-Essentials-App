@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        
+    <fullName>First_Membership_Start_Date__c</fullName>
+        
+    <externalId>false</externalId>
+        
+    <inlineHelpText>The start date of the oldest Membership associated to this Contact</inlineHelpText>
+        
+    <label>First Membership Start Date</label>
+        
+    <required>false</required>
+        
+    <trackFeedHistory>false</trackFeedHistory>
+        
+    <type>Date</type>
+        
+</fields>
+    <fields>
+        
+    <fullName>Last_Membership_Start_Date__c</fullName>
+        
+    <externalId>false</externalId>
+        
+    <inlineHelpText>The start date of the most recent Membership associated with this Contact</inlineHelpText>
+        
+    <label>Last Membership Start Date</label>
+        
+    <required>false</required>
+        
+    <trackFeedHistory>false</trackFeedHistory>
+        
+    <type>Date</type>
+        
+</fields>
+    <fields>
+        
+    <fullName>Membership_End_Date__c</fullName>
+        
+    <externalId>false</externalId>
+        
+    <inlineHelpText>The greatest End Date of any Membership Contact Role associated with this Contact</inlineHelpText>
+        
+    <label>Membership End Date</label>
+        
+    <required>false</required>
+        
+    <trackFeedHistory>false</trackFeedHistory>
+        
+    <type>Date</type>
+        
+</fields>
+    <fields>
+        
+    <fullName>Membership_Status__c</fullName>
+        
+    <externalId>false</externalId>
+        
+    <inlineHelpText>The Contact&apos;s current memberships status</inlineHelpText>
+        
+    <label>Membership Status</label>
+        
+    <required>false</required>
+        
+    <trackFeedHistory>false</trackFeedHistory>
+        
+    <type>Picklist</type>
+        
+    <valueSet>
+            
+        <restricted>true</restricted>
+            
+        <valueSetName>Membership_Status</valueSetName>
+            
+    </valueSet>
+        
+</fields>
+    <fields>
+        
+    <fullName>Membership_Type__c</fullName>
+        
+    <externalId>false</externalId>
+        
+    <inlineHelpText>This Contact&apos;s current Membership Type, based on the most recent active Membership</inlineHelpText>
+        
+    <label>Membership Type</label>
+        
+    <required>false</required>
+        
+    <trackFeedHistory>false</trackFeedHistory>
+        
+    <type>Picklist</type>
+        
+    <valueSet>
+            
+        <restricted>true</restricted>
+            
+        <valueSetName>Membership_Type</valueSetName>
+            
+    </valueSet>
+        
+</fields>
+</CustomObject>

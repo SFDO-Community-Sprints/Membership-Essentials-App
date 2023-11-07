@@ -1,0 +1,650 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    
+    <actionOverrides>
+        
+        <actionName>Accept</actionName>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>Accept</actionName>
+        
+        <formFactor>Large</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>Accept</actionName>
+        
+        <formFactor>Small</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>CancelEdit</actionName>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>CancelEdit</actionName>
+        
+        <formFactor>Large</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>CancelEdit</actionName>
+        
+        <formFactor>Small</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>Clone</actionName>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>Clone</actionName>
+        
+        <formFactor>Large</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>Clone</actionName>
+        
+        <formFactor>Small</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>Delete</actionName>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>Delete</actionName>
+        
+        <formFactor>Large</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>Delete</actionName>
+        
+        <formFactor>Small</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>Edit</actionName>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>Edit</actionName>
+        
+        <formFactor>Large</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>Edit</actionName>
+        
+        <formFactor>Small</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>List</actionName>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>List</actionName>
+        
+        <formFactor>Large</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>List</actionName>
+        
+        <formFactor>Small</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>New</actionName>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>New</actionName>
+        
+        <formFactor>Large</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>New</actionName>
+        
+        <formFactor>Small</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>SaveEdit</actionName>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>SaveEdit</actionName>
+        
+        <formFactor>Large</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>SaveEdit</actionName>
+        
+        <formFactor>Small</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>Tab</actionName>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>Tab</actionName>
+        
+        <formFactor>Large</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>Tab</actionName>
+        
+        <formFactor>Small</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>View</actionName>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>View</actionName>
+        
+        <formFactor>Large</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <actionOverrides>
+        
+        <actionName>View</actionName>
+        
+        <formFactor>Small</formFactor>
+        
+        <type>Default</type>
+        
+    </actionOverrides>
+    
+    <allowInChatterGroups>true</allowInChatterGroups>
+    
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    
+    <deploymentStatus>Deployed</deploymentStatus>
+    
+    <description>Object to hold memberships and related items (sponsorships, benefits, etc)</description>
+    
+    <enableActivities>true</enableActivities>
+    
+    <enableBulkApi>true</enableBulkApi>
+    
+    <enableFeeds>false</enableFeeds>
+    
+    <enableHistory>true</enableHistory>
+    
+    <enableLicensing>false</enableLicensing>
+    
+    <enableReports>true</enableReports>
+    
+    <enableSearch>true</enableSearch>
+    
+    <enableSharing>true</enableSharing>
+    
+    <enableStreamingApi>true</enableStreamingApi>
+    
+    <externalSharingModel>Private</externalSharingModel>
+    
+    <label>Membership</label>
+    
+    <nameField>
+        
+        <label>Membership Name</label>
+        
+        <trackHistory>false</trackHistory>
+        
+        <type>Text</type>
+        
+    </nameField>
+    
+    <pluralLabel>Memberships</pluralLabel>
+    
+    <searchLayouts/>
+    
+    <sharingModel>ReadWrite</sharingModel>
+    
+    <visibility>Public</visibility>
+    
+<fields>
+        
+    <fullName>Account__c</fullName>
+        
+    <deleteConstraint>SetNull</deleteConstraint>
+        
+    <externalId>false</externalId>
+        
+    <label>Account</label>
+        
+    <referenceTo>Account</referenceTo>
+        
+    <relationshipLabel>Memberships</relationshipLabel>
+        
+    <relationshipName>Memberships</relationshipName>
+        
+    <required>false</required>
+        
+    <trackHistory>false</trackHistory>
+        
+    <trackTrending>false</trackTrending>
+        
+    <type>Lookup</type>
+        
+</fields>
+    <fields>
+        
+    <fullName>Does_Not_Expire__c</fullName>
+        
+    <defaultValue>false</defaultValue>
+        
+    <externalId>false</externalId>
+        
+    <label>Does Not Expire</label>
+        
+    <trackHistory>false</trackHistory>
+        
+    <trackTrending>false</trackTrending>
+        
+    <type>Checkbox</type>
+        
+</fields>
+    <fields>
+        
+    <fullName>End_Date__c</fullName>
+        
+    <externalId>false</externalId>
+        
+    <label>End Date</label>
+        
+    <required>false</required>
+        
+    <trackHistory>false</trackHistory>
+        
+    <trackTrending>false</trackTrending>
+        
+    <type>Date</type>
+        
+</fields>
+    <fields>
+        
+    <fullName>Opportunity__c</fullName>
+        
+    <deleteConstraint>SetNull</deleteConstraint>
+        
+    <externalId>false</externalId>
+        
+    <label>Opportunity</label>
+        
+    <referenceTo>Opportunity</referenceTo>
+        
+    <relationshipLabel>Memberships</relationshipLabel>
+        
+    <relationshipName>Memberships</relationshipName>
+        
+    <required>false</required>
+        
+    <trackHistory>false</trackHistory>
+        
+    <trackTrending>false</trackTrending>
+        
+    <type>Lookup</type>
+        
+</fields>
+    <fields>
+        
+    <fullName>Origin__c</fullName>
+        
+    <externalId>false</externalId>
+        
+    <label>Origin</label>
+        
+    <required>false</required>
+        
+    <trackHistory>false</trackHistory>
+        
+    <trackTrending>false</trackTrending>
+        
+    <type>Picklist</type>
+        
+    <valueSet>
+            
+        <restricted>true</restricted>
+            
+        <valueSetDefinition>
+                
+            <sorted>false</sorted>
+                
+            <value>
+                    
+                <fullName>New</fullName>
+                    
+                <default>false</default>
+                    
+                <label>New</label>
+                    
+            </value>
+                
+            <value>
+                    
+                <fullName>Renewed</fullName>
+                    
+                <default>false</default>
+                    
+                <label>Renewed</label>
+                    
+            </value>
+                
+            <value>
+                    
+                <fullName>Reacquired</fullName>
+                    
+                <default>false</default>
+                    
+                <label>Reacquired</label>
+                    
+            </value>
+                
+        </valueSetDefinition>
+            
+    </valueSet>
+        
+</fields>
+    <fields>
+        
+    <fullName>Primary_Contact__c</fullName>
+        
+    <deleteConstraint>SetNull</deleteConstraint>
+        
+    <externalId>false</externalId>
+        
+    <label>Primary Contact</label>
+        
+    <referenceTo>Contact</referenceTo>
+        
+    <relationshipLabel>Memberships</relationshipLabel>
+        
+    <relationshipName>Memberships</relationshipName>
+        
+    <required>false</required>
+        
+    <trackHistory>false</trackHistory>
+        
+    <trackTrending>false</trackTrending>
+        
+    <type>Lookup</type>
+        
+</fields>
+    <fields>
+        
+    <fullName>Product__c</fullName>
+        
+    <deleteConstraint>SetNull</deleteConstraint>
+        
+    <externalId>false</externalId>
+        
+    <label>Product</label>
+        
+    <referenceTo>Product2</referenceTo>
+        
+    <relationshipLabel>Memberships</relationshipLabel>
+        
+    <relationshipName>Memberships</relationshipName>
+        
+    <required>false</required>
+        
+    <trackHistory>false</trackHistory>
+        
+    <trackTrending>false</trackTrending>
+        
+    <type>Lookup</type>
+        
+</fields>
+    <fields>
+        
+    <fullName>Start_Date__c</fullName>
+        
+    <externalId>false</externalId>
+        
+    <label>Start Date</label>
+        
+    <required>false</required>
+        
+    <trackHistory>false</trackHistory>
+        
+    <trackTrending>false</trackTrending>
+        
+    <type>Date</type>
+        
+</fields>
+    <fields>
+        
+    <fullName>Status__c</fullName>
+        
+    <externalId>false</externalId>
+        
+    <label>Status</label>
+        
+    <required>false</required>
+        
+    <trackHistory>false</trackHistory>
+        
+    <trackTrending>false</trackTrending>
+        
+    <type>Picklist</type>
+        
+    <valueSet>
+            
+        <restricted>true</restricted>
+            
+        <valueSetName>Membership_Status</valueSetName>
+            
+    </valueSet>
+        
+</fields>
+    <fields>
+        
+    <fullName>Type__c</fullName>
+        
+    <externalId>false</externalId>
+        
+    <label>Type</label>
+        
+    <required>false</required>
+        
+    <trackHistory>false</trackHistory>
+        
+    <trackTrending>false</trackTrending>
+        
+    <type>Picklist</type>
+        
+    <valueSet>
+            
+        <restricted>true</restricted>
+            
+        <valueSetDefinition>
+                
+            <sorted>false</sorted>
+                
+            <value>
+                    
+                <fullName>Individual</fullName>
+                    
+                <default>false</default>
+                    
+                <label>Individual</label>
+                    
+            </value>
+                
+            <value>
+                    
+                <fullName>Household</fullName>
+                    
+                <default>false</default>
+                    
+                <label>Household</label>
+                    
+            </value>
+                
+            <value>
+                    
+                <fullName>Corporate</fullName>
+                    
+                <default>false</default>
+                    
+                <label>Corporate</label>
+                    
+            </value>
+                
+        </valueSetDefinition>
+            
+    </valueSet>
+        
+</fields>
+    <validationRules>
+        
+    <fullName>End_Date_or_Does_Not_Expire</fullName>
+        
+    <active>true</active>
+        
+    <description>A membership must either have an End Date or have Does Not Expire selected.</description>
+        
+    <errorConditionFormula>NOT(Does_Not_Expire__c) &amp;&amp; ISBLANK( End_Date__c )</errorConditionFormula>
+        
+    <errorDisplayField>End_Date__c</errorDisplayField>
+        
+    <errorMessage>Please populate the End Date or select Does Not Expire.</errorMessage>
+        
+</validationRules>
+    <listViews>
+        
+    <fullName>All</fullName>
+        
+    <filterScope>Everything</filterScope>
+        
+    <label>All</label>
+        
+</listViews>
+</CustomObject>
