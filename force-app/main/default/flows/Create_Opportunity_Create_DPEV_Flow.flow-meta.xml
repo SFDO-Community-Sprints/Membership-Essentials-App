@@ -34,6 +34,12 @@
         <label>Create Opportunity Line Item</label>
         <locationX>176</locationX>
         <locationY>386</locationY>
+        <connector>
+            <targetReference>Update_MFS_Success</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Update_MFS_Failed_2</targetReference>
+        </faultConnector>
         <inputAssignments>
             <field>OpportunityId</field>
             <value>
@@ -64,6 +70,9 @@
         <connector>
             <targetReference>Create_Opportunity_Line_Item</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Update_MFS_Failed</targetReference>
+        </faultConnector>
         <inputAssignments>
             <field>AccountId</field>
             <value>
@@ -86,6 +95,12 @@
             <field>CloseDate</field>
             <value>
                 <elementReference>Date_Today</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Name</field>
+            <value>
+                <stringValue>Membership</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -117,6 +132,78 @@
         <object>Membership_Form_Submission__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordUpdates>
+        <name>Update_MFS_Failed</name>
+        <label>Update - MFS - Failed</label>
+        <locationX>704</locationX>
+        <locationY>386</locationY>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Record_Id__c</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Failure_Information__c</field>
+            <value>
+                <stringValue>Failed to create opportunity</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status__c</field>
+            <value>
+                <stringValue>Failed</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Membership_Form_Submission__c</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_MFS_Failed_2</name>
+        <label>Update - MFS - Failed</label>
+        <locationX>440</locationX>
+        <locationY>494</locationY>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Record_Id__c</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Failure_Information__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status__c</field>
+            <value>
+                <stringValue>Failed</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Membership_Form_Submission__c</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_MFS_Success</name>
+        <label>Update - MFS - Success</label>
+        <locationX>176</locationX>
+        <locationY>494</locationY>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Record_Id__c</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Opportunity__c</field>
+            <value>
+                <elementReference>Create_Opportunity_Record</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Form_Submission__c</object>
+    </recordUpdates>
     <start>
         <locationX>50</locationX>
         <locationY>0</locationY>
