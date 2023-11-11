@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Contact__c</fullName>
-    <description>The Contact record who holds the Membership</description>
     <externalId>false</externalId>
-    <inlineHelpText>The Member Contact record</inlineHelpText>
+    <inlineHelpText>Select a contact for this membership contact role</inlineHelpText>
     <label>Contact</label>
     <referenceTo>Contact</referenceTo>
     <relationshipLabel>Memberships</relationshipLabel>
