@@ -4,16 +4,16 @@
         <name>Was_a_Campaign_Found</name>
         <label>Was a Campaign Found?</label>
         <locationX>182</locationX>
-        <locationY>386</locationY>
+        <locationY>494</locationY>
         <defaultConnector>
-            <targetReference>Update_Campaign_Finder_Field</targetReference>
+            <targetReference>Update_MFS_record_failure</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>Yes</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Find_Existing_Campaign.Id</leftValueReference>
+                <leftValueReference>Find_Existing_Campaign</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -21,6 +21,38 @@
             </conditions>
             <connector>
                 <targetReference>Update_MFS_record</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Was_campaign_source_code_or_name_indicated</name>
+        <label>Was campaign source code or name indicated?</label>
+        <locationX>380</locationX>
+        <locationY>278</locationY>
+        <defaultConnector>
+            <targetReference>Update_MFS_record_Skipped</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_2</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_the_Membership_Form_Submission_Record.Source_Code__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_the_Membership_Form_Submission_Record.Source_Campaign_Name__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Find_Existing_Campaign</targetReference>
             </connector>
             <label>Yes</label>
         </rules>
@@ -50,7 +82,7 @@
         <name>Find_Existing_Campaign</name>
         <label>Find Existing Campaign</label>
         <locationX>182</locationX>
-        <locationY>278</locationY>
+        <locationY>386</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Was_a_Campaign_Found</targetReference>
@@ -83,11 +115,11 @@
     <recordLookups>
         <name>Get_the_Membership_Form_Submission_Record</name>
         <label>Get the Membership Form Submission Record</label>
-        <locationX>182</locationX>
+        <locationX>380</locationX>
         <locationY>170</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Find_Existing_Campaign</targetReference>
+            <targetReference>Was_campaign_source_code_or_name_indicated</targetReference>
         </connector>
         <filters>
             <field>Id</field>
@@ -101,10 +133,10 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
-        <name>Update_Campaign_Finder_Field</name>
-        <label>Update Campaign Finder Field</label>
-        <locationX>314</locationX>
-        <locationY>494</locationY>
+        <name>Update_MFS_record</name>
+        <label>Update MFS record</label>
+        <locationX>50</locationX>
+        <locationY>602</locationY>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -113,25 +145,11 @@
             </value>
         </filters>
         <inputAssignments>
-            <field>Campaign_Finder_Ran__c</field>
+            <field>Campaign_Import_Status__c</field>
             <value>
-                <booleanValue>true</booleanValue>
+                <stringValue>Imported</stringValue>
             </value>
         </inputAssignments>
-        <object>Membership_Form_Submission__c</object>
-    </recordUpdates>
-    <recordUpdates>
-        <name>Update_MFS_record</name>
-        <label>Update MFS record</label>
-        <locationX>50</locationX>
-        <locationY>494</locationY>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>Get_the_Membership_Form_Submission_Record.Id</elementReference>
-            </value>
-        </filters>
         <inputAssignments>
             <field>Campaign__c</field>
             <value>
@@ -140,8 +158,60 @@
         </inputAssignments>
         <object>Membership_Form_Submission__c</object>
     </recordUpdates>
+    <recordUpdates>
+        <name>Update_MFS_record_failure</name>
+        <label>Update MFS record - failure</label>
+        <locationX>314</locationX>
+        <locationY>602</locationY>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_the_Membership_Form_Submission_Record.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Campaign_Import_Status__c</field>
+            <value>
+                <stringValue>Failed</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Failure_Information__c</field>
+            <value>
+                <stringValue>A campaign was specified but not found</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status__c</field>
+            <value>
+                <stringValue>Failed</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Membership_Form_Submission__c</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_MFS_record_Skipped</name>
+        <label>Update MFS record - Skipped</label>
+        <locationX>578</locationX>
+        <locationY>386</locationY>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_the_Membership_Form_Submission_Record.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Campaign_Import_Status__c</field>
+            <value>
+                <stringValue>Skipped</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Membership_Form_Submission__c</object>
+    </recordUpdates>
     <start>
-        <locationX>56</locationX>
+        <locationX>254</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_the_Membership_Form_Submission_Record</targetReference>

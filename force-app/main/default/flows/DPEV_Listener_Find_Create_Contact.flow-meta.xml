@@ -3,7 +3,7 @@
     <decisions>
         <name>Contact_Exists</name>
         <label>Contact Exists?</label>
-        <locationX>182</locationX>
+        <locationX>314</locationX>
         <locationY>386</locationY>
         <defaultConnector>
             <targetReference>Update_MFS</targetReference>
@@ -13,7 +13,7 @@
             <name>No_Create</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Get_MFS_Contact.Id</leftValueReference>
+                <leftValueReference>Get_MFS_Contact</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
@@ -61,6 +61,9 @@
         <connector>
             <targetReference>Update_MFS_Create</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Update_MFS_Error</targetReference>
+        </faultConnector>
         <inputAssignments>
             <field>Email</field>
             <value>
@@ -116,7 +119,7 @@
         <description>Get the Contact from the MFS record</description>
         <name>Get_MFS_Contact</name>
         <label>Get MFS Contact</label>
-        <locationX>182</locationX>
+        <locationX>314</locationX>
         <locationY>278</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -136,7 +139,7 @@
     <recordLookups>
         <name>Get_MFS_record</name>
         <label>Get MFS record</label>
-        <locationX>182</locationX>
+        <locationX>314</locationX>
         <locationY>170</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -156,7 +159,7 @@
     <recordUpdates>
         <name>Update_MFS</name>
         <label>Update MFS</label>
-        <locationX>314</locationX>
+        <locationX>578</locationX>
         <locationY>494</locationY>
         <filters>
             <field>Id</field>
@@ -193,8 +196,31 @@
         </inputAssignments>
         <object>Membership_Form_Submission__c</object>
     </recordUpdates>
+    <recordUpdates>
+        <name>Update_MFS_Error</name>
+        <label>Update MFS - Error</label>
+        <locationX>314</locationX>
+        <locationY>602</locationY>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Membership_Form_Submission_Id__c</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Failure_Information__c</field>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status__c</field>
+            <value>
+                <stringValue>Failed</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Membership_Form_Submission__c</object>
+    </recordUpdates>
     <start>
-        <locationX>56</locationX>
+        <locationX>188</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_MFS_record</targetReference>
@@ -202,5 +228,5 @@
         <object>DPEV_Contact_Finder__e</object>
         <triggerType>PlatformEvent</triggerType>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
 </Flow>

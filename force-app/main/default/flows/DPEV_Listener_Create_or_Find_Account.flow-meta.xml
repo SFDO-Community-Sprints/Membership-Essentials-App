@@ -1,10 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <decisions>
+        <name>Is_account_name_populated</name>
+        <label>Is account name populated?</label>
+        <locationX>578</locationX>
+        <locationY>278</locationY>
+        <defaultConnector>
+            <targetReference>Update_MFS_Account_status</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Membership_Form_Submission.OrganizationName__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Account</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Is_Account_Null</name>
         <label>Is Account Null</label>
-        <locationX>182</locationX>
-        <locationY>386</locationY>
+        <locationX>314</locationX>
+        <locationY>494</locationY>
         <defaultConnector>
             <targetReference>Update_Membership_Form_Submission</targetReference>
         </defaultConnector>
@@ -51,10 +76,13 @@
         <name>Create_Account</name>
         <label>Create Account</label>
         <locationX>50</locationX>
-        <locationY>494</locationY>
+        <locationY>602</locationY>
         <connector>
             <targetReference>Update_Membership_Form_Submission_Create</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Update_MFS_record_Failed</targetReference>
+        </faultConnector>
         <inputAssignments>
             <field>Name</field>
             <value>
@@ -67,8 +95,8 @@
     <recordLookups>
         <name>Get_Account</name>
         <label>Get Account</label>
-        <locationX>182</locationX>
-        <locationY>278</locationY>
+        <locationX>314</locationX>
+        <locationY>386</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Is_Account_Null</targetReference>
@@ -87,11 +115,11 @@
     <recordLookups>
         <name>Get_Membership_Form_Submission</name>
         <label>Get Membership Form Submission</label>
-        <locationX>182</locationX>
+        <locationX>578</locationX>
         <locationY>170</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_Account</targetReference>
+            <targetReference>Is_account_name_populated</targetReference>
         </connector>
         <filters>
             <field>Id</field>
@@ -107,8 +135,8 @@
     <recordUpdates>
         <name>Update_Membership_Form_Submission</name>
         <label>Update Membership Form Submission</label>
-        <locationX>314</locationX>
-        <locationY>494</locationY>
+        <locationX>578</locationX>
+        <locationY>602</locationY>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -116,6 +144,12 @@
                 <elementReference>$Record.Record_Id__c</elementReference>
             </value>
         </filters>
+        <inputAssignments>
+            <field>Account_Import_Status__c</field>
+            <value>
+                <stringValue>Imported</stringValue>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <field>Account__c</field>
             <value>
@@ -129,7 +163,7 @@
         <name>Update_Membership_Form_Submission_Create</name>
         <label>Update Membership Form Submission - Create</label>
         <locationX>50</locationX>
-        <locationY>602</locationY>
+        <locationY>710</locationY>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -138,6 +172,12 @@
             </value>
         </filters>
         <inputAssignments>
+            <field>Account_Import_Status__c</field>
+            <value>
+                <stringValue>Imported</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Account__c</field>
             <value>
                 <elementReference>Create_Account</elementReference>
@@ -145,8 +185,61 @@
         </inputAssignments>
         <object>Membership_Form_Submission__c</object>
     </recordUpdates>
+    <recordUpdates>
+        <name>Update_MFS_Account_status</name>
+        <label>Update MFS Account status</label>
+        <locationX>842</locationX>
+        <locationY>386</locationY>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Record_Id__c</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Account_Import_Status__c</field>
+            <value>
+                <stringValue>Skipped</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Membership_Form_Submission__c</object>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Handles failed to create errors</description>
+        <name>Update_MFS_record_Failed</name>
+        <label>Update MFS record - Failed</label>
+        <locationX>314</locationX>
+        <locationY>710</locationY>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Record_Id__c</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Account_Import_Status__c</field>
+            <value>
+                <stringValue>Failed</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Failure_Information__c</field>
+            <value>
+                <stringValue>Failed to create account</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status__c</field>
+            <value>
+                <stringValue>Failed</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Membership_Form_Submission__c</object>
+    </recordUpdates>
     <start>
-        <locationX>56</locationX>
+        <locationX>452</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_Membership_Form_Submission</targetReference>
@@ -154,5 +247,5 @@
         <object>DPEV_Account__e</object>
         <triggerType>PlatformEvent</triggerType>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
 </Flow>
