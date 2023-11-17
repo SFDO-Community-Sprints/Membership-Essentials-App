@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Account_Import_Status__c</fullName>
+    <description>Records the status of the Account import</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Records the status of the Account import</inlineHelpText>
+    <label>Account Import Status</label>
+    <length>255</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
