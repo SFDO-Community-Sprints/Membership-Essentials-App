@@ -1,0 +1,88 @@
+### ------------- [          ORDER OF INSERT         ]------------ ###
+# 1-0. Product2 [3]
+# 1-1. PricebookEntry [3]
+
+
+### ----------- [ MembershipSchemaAndBenefits_basic.recipe.yml Summary ]---------- ###
+# Create [3] products called "Individual Membership", "Household Membership", "Corporate Membership"
+# Create 3 Price book entries to the standard price book
+# https://github.com/SFDO-Community-Sprints/MembershipSchemaAndBenefits
+# Run at the pre-configuration
+
+
+### ----------- [               CLI RUN                ]---------- ###
+
+# cci task run snowfakery --recipe datasets/MembershipSchemaAndBenefits_PricebookProducts.recipe.yml --org dev
+# snowfakery --output-format json --output-file src/foo.json datasets/MembershipSchemaAndBenefits_PricebookProducts.recipe.yml --plugin-option org_name dev
+### ----------- [            Recipe Starts             ]---------- ###
+
+- plugin: snowfakery.standard_plugins.Salesforce.SOQLDataset
+
+- object: Product2
+  nickname: p1
+  fields:
+    Name: Individual Membership
+    ProductCode: INDVDL-MEMBER-ANNUAL
+    Description: 
+      fake.text:
+        max_nb_chars: 50
+    StockKeepingUnit: #sku
+    Family: Annual Membership
+
+- object: PricebookEntry
+  fields:
+    IsActive: true
+    UnitPrice: 250
+    Product2Id: 
+      reference: p1
+    __pricebook_from_salesforce:
+      SOQLDataset.shuffle:
+        fields: Id 
+        from: Pricebook2
+    Pricebook2Id: ${{__pricebook_from_salesforce.Id}}
+        
+- object: Product2
+  nickname: p2
+  fields:
+    Name: Household Membership
+    ProductCode: HSHLD-MEMBER-ANNUAL
+    Description: 
+      fake.text:
+        max_nb_chars: 50
+    StockKeepingUnit: #sku
+    Family: Annual Membership  
+
+- object: PricebookEntry
+  fields:
+    IsActive: true
+    UnitPrice: 250
+    Product2Id: 
+      reference: p2
+    __pricebook_from_salesforce:
+      SOQLDataset.shuffle:
+        fields: Id 
+        from: Pricebook2
+    Pricebook2Id: ${{__pricebook_from_salesforce.Id}}
+
+- object: Product2
+  nickname: p3
+  fields:
+    Name: Corporate Membership
+    ProductCode: CRPRT-MEMBER-ANNUAL
+    Description: 
+      fake.text:
+        max_nb_chars: 50
+    StockKeepingUnit: #sku
+    Family: Annual Membership  
+
+- object: PricebookEntry
+  fields:
+    IsActive: true
+    UnitPrice: 250
+    Product2Id: 
+      reference: p3
+    __pricebook_from_salesforce:
+      SOQLDataset.shuffle:
+        fields: Id 
+        from: Pricebook2
+    Pricebook2Id: ${{__pricebook_from_salesforce.Id}}

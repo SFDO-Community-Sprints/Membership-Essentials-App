@@ -3,7 +3,7 @@ project:
     name: Membership-Management
     package:
         name:  Membership-Management
-        api_version: '48.0'
+        api_version: '55.0'
     source_format: sfdx
 
 tasks:
@@ -17,3 +17,51 @@ tasks:
         options:
             path: robot/Membership-Management/tests
             output: robot/Membership-Management/doc/Membership-Management_tests.html
+
+    assign_membership_perm:
+        description:
+        class_path: cumulusci.tasks.salesforce.users.permsets.AssignPermissionSets
+        options:
+            api_names: Manage_Memberships
+
+    activate_standard_pricebook:
+        description: Activate standard price book
+        class_path: cumulusci.tasks.apex.anon.AnonymousApexTask
+        group: OSC
+        options:
+            apex: 
+                pricebook2 book = [SELECT Id FROM pricebook2 WHERE isStandard = true];
+                book.isActive = true;
+                update book;
+
+    load_membership_products:
+        class_path: cumulusci.tasks.bulkdata.generate_and_load_data_from_yaml.GenerateAndLoadDataFromYaml
+        group: OSC
+        options:
+            generator_yaml: datasets/MembershipSchemaAndBenefits_PricebookProducts.recipe.yml
+    
+    load_membership_opportunities:
+        class_path: cumulusci.tasks.bulkdata.generate_and_load_data_from_yaml.GenerateAndLoadDataFromYaml
+        group: OSC
+        options:
+            generator_yaml: datasets/MembershipSchemaAndBenefits_Opportunity.recipe.yml
+            num_records_tablename: Account
+            num_records: 100
+            drop_missing_schema: true
+            batch_size: 10
+            data_generation_options:
+                org_name: membership
+
+flows:
+    osc_memberships_project:
+        description: OSC Membership Schema and Benefits project
+        steps:
+            1:
+                task: assign_membership_perm
+            2: 
+                task: activate_standard_pricebook
+            3:
+                task: load_membership_products
+            4:
+                task: load_membership_opportunities
+            
