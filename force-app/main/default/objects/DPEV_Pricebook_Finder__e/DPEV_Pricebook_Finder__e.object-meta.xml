@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Launches the price-book finder flow</description>
+    <eventType>HighVolume</eventType>
+    <label>DPEV - Pricebook Finder</label>
+    <pluralLabel>DPEV - Pricebook Finders</pluralLabel>
+    <publishBehavior>PublishAfterCommit</publishBehavior>
+</CustomObject>

@@ -1,12 +1,97 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <assignments>
+        <name>Update_MFS_Error</name>
+        <label>Update MFS - Error</label>
+        <locationX>314</locationX>
+        <locationY>710</locationY>
+        <assignmentItems>
+            <assignToReference>Get_Membership_Form_Submission.Status__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Failed</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Get_Membership_Form_Submission.Failure_Information__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Failed to Create Account</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Membership_Form_Submission</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Update_MFS_Skip</name>
+        <label>Update MFS - Skip</label>
+        <locationX>842</locationX>
+        <locationY>386</locationY>
+        <assignmentItems>
+            <assignToReference>Get_Membership_Form_Submission.Account_Import_Status__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Skipped</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Membership_Form_Submission</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Update_MFS_Success</name>
+        <label>Update MFS - Success</label>
+        <locationX>50</locationX>
+        <locationY>710</locationY>
+        <assignmentItems>
+            <assignToReference>Get_Membership_Form_Submission.Account_Import_Status__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Imported</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Get_Membership_Form_Submission.Account__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Create_Account</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Membership_Form_Submission</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Update_MFS_Success_found</name>
+        <label>Update MFS - Success</label>
+        <locationX>578</locationX>
+        <locationY>602</locationY>
+        <assignmentItems>
+            <assignToReference>Get_Membership_Form_Submission.Account_Import_Status__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Imported</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Get_Membership_Form_Submission.Account__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Account.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Membership_Form_Submission</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <name>Is_account_name_populated</name>
         <label>Is account name populated?</label>
         <locationX>578</locationX>
         <locationY>278</locationY>
         <defaultConnector>
-            <targetReference>Update_MFS_Account_status</targetReference>
+            <targetReference>Update_MFS_Skip</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -31,7 +116,7 @@
         <locationX>314</locationX>
         <locationY>494</locationY>
         <defaultConnector>
-            <targetReference>Update_Membership_Form_Submission</targetReference>
+            <targetReference>Update_MFS_Success_found</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No, Find</defaultConnectorLabel>
         <rules>
@@ -78,10 +163,10 @@
         <locationX>50</locationX>
         <locationY>602</locationY>
         <connector>
-            <targetReference>Update_Membership_Form_Submission_Create</targetReference>
+            <targetReference>Update_MFS_Success</targetReference>
         </connector>
         <faultConnector>
-            <targetReference>Update_MFS_record_Failed</targetReference>
+            <targetReference>Update_MFS_Error</targetReference>
         </faultConnector>
         <inputAssignments>
             <field>Name</field>
@@ -136,107 +221,8 @@
         <name>Update_Membership_Form_Submission</name>
         <label>Update Membership Form Submission</label>
         <locationX>578</locationX>
-        <locationY>602</locationY>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.Record_Id__c</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>Account_Import_Status__c</field>
-            <value>
-                <stringValue>Imported</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Account__c</field>
-            <value>
-                <elementReference>Get_Account.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Membership_Form_Submission__c</object>
-    </recordUpdates>
-    <recordUpdates>
-        <description>After account is created, associate it with the MFS</description>
-        <name>Update_Membership_Form_Submission_Create</name>
-        <label>Update Membership Form Submission - Create</label>
-        <locationX>50</locationX>
-        <locationY>710</locationY>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.Record_Id__c</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>Account_Import_Status__c</field>
-            <value>
-                <stringValue>Imported</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Account__c</field>
-            <value>
-                <elementReference>Create_Account</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Membership_Form_Submission__c</object>
-    </recordUpdates>
-    <recordUpdates>
-        <name>Update_MFS_Account_status</name>
-        <label>Update MFS Account status</label>
-        <locationX>842</locationX>
-        <locationY>386</locationY>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.Record_Id__c</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>Account_Import_Status__c</field>
-            <value>
-                <stringValue>Skipped</stringValue>
-            </value>
-        </inputAssignments>
-        <object>Membership_Form_Submission__c</object>
-    </recordUpdates>
-    <recordUpdates>
-        <description>Handles failed to create errors</description>
-        <name>Update_MFS_record_Failed</name>
-        <label>Update MFS record - Failed</label>
-        <locationX>314</locationX>
-        <locationY>710</locationY>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.Record_Id__c</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>Account_Import_Status__c</field>
-            <value>
-                <stringValue>Failed</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Failure_Information__c</field>
-            <value>
-                <stringValue>Failed to create account</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Status__c</field>
-            <value>
-                <stringValue>Failed</stringValue>
-            </value>
-        </inputAssignments>
-        <object>Membership_Form_Submission__c</object>
+        <locationY>1076</locationY>
+        <inputReference>Get_Membership_Form_Submission</inputReference>
     </recordUpdates>
     <start>
         <locationX>452</locationX>
