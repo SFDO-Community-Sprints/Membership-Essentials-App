@@ -1,12 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <assignments>
+        <name>Update_MFS_Error</name>
+        <label>Update MFS - Error</label>
+        <locationX>314</locationX>
+        <locationY>602</locationY>
+        <assignmentItems>
+            <assignToReference>Get_MFS_Record.Failure_Information__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Product SKU was specified but no product was found</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Get_MFS_Record.Status__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Failed</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Get_MFS_Record.Product_Import_Status__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Failed</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_MFS</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Update_MFS_Skipped2</name>
+        <label>Update MFS - Skipped</label>
+        <locationX>578</locationX>
+        <locationY>386</locationY>
+        <assignmentItems>
+            <assignToReference>Get_MFS_Record.Product_Import_Status__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Skipped</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_MFS</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Update_MFS_Sucess</name>
+        <label>Update MFS - Sucess</label>
+        <locationX>50</locationX>
+        <locationY>602</locationY>
+        <assignmentItems>
+            <assignToReference>Get_MFS_Record.Product_Import_Status__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Imported</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Get_MFS_Record.Product__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Products.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_MFS</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <name>Is_there_a_product_SKU</name>
         <label>Is there a product SKU?</label>
         <locationX>380</locationX>
         <locationY>278</locationY>
         <defaultConnector>
-            <targetReference>Update_MFS_Skipped</targetReference>
+            <targetReference>Update_MFS_Skipped2</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -31,7 +100,7 @@
         <locationX>182</locationX>
         <locationY>494</locationY>
         <defaultConnector>
-            <targetReference>Update_MFS_Failure</targetReference>
+            <targetReference>Update_MFS_Error</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -45,7 +114,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Update_MFS_Success</targetReference>
+                <targetReference>Update_MFS_Sucess</targetReference>
             </connector>
             <label>Yes</label>
         </rules>
@@ -112,82 +181,11 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
-        <name>Update_MFS_Failure</name>
-        <label>Update MFS - Failure</label>
-        <locationX>314</locationX>
-        <locationY>602</locationY>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.Record_Id__c</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>Failure_Information__c</field>
-            <value>
-                <stringValue>Product SKU was specified but no product was found</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Product_Import_Status__c</field>
-            <value>
-                <stringValue>Failed</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Status__c</field>
-            <value>
-                <stringValue>Failed</stringValue>
-            </value>
-        </inputAssignments>
-        <object>Membership_Form_Submission__c</object>
-    </recordUpdates>
-    <recordUpdates>
-        <name>Update_MFS_Skipped</name>
-        <label>Update MFS - Skipped</label>
-        <locationX>578</locationX>
-        <locationY>386</locationY>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.Record_Id__c</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>Product_Import_Status__c</field>
-            <value>
-                <stringValue>Skipped</stringValue>
-            </value>
-        </inputAssignments>
-        <object>Membership_Form_Submission__c</object>
-    </recordUpdates>
-    <recordUpdates>
-        <name>Update_MFS_Success</name>
-        <label>Update MFS - Success</label>
-        <locationX>50</locationX>
-        <locationY>602</locationY>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.Record_Id__c</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>Product_Import_Status__c</field>
-            <value>
-                <stringValue>Imported</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Product__c</field>
-            <value>
-                <elementReference>Get_Products.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Membership_Form_Submission__c</object>
+        <name>Update_MFS</name>
+        <label>Update MFS</label>
+        <locationX>380</locationX>
+        <locationY>878</locationY>
+        <inputReference>Get_MFS_Record</inputReference>
     </recordUpdates>
     <start>
         <locationX>254</locationX>

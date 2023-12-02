@@ -1,12 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <assignments>
+        <name>Update_MFS_Error_Create</name>
+        <label>Update MFS - Error</label>
+        <locationX>314</locationX>
+        <locationY>602</locationY>
+        <assignmentItems>
+            <assignToReference>Get_MFS_record.Status__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Failed</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Get_MFS_record.Failure_Information__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Unable to create contact record</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_MFS</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Update_MFS_Success</name>
+        <label>Update MFS - Success</label>
+        <locationX>50</locationX>
+        <locationY>602</locationY>
+        <assignmentItems>
+            <assignToReference>Get_MFS_record.Contact__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Create_Contact</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_MFS</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Update_MFS_Sucess</name>
+        <label>Update MFS - Sucess</label>
+        <locationX>578</locationX>
+        <locationY>494</locationY>
+        <assignmentItems>
+            <assignToReference>Get_MFS_record.Contact__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_MFS_Contact.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_MFS</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <name>Contact_Exists</name>
         <label>Contact Exists?</label>
         <locationX>314</locationX>
         <locationY>386</locationY>
         <defaultConnector>
-            <targetReference>Update_MFS</targetReference>
+            <targetReference>Update_MFS_Sucess</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Yes, Find</defaultConnectorLabel>
         <rules>
@@ -59,10 +114,10 @@
         <locationX>50</locationX>
         <locationY>494</locationY>
         <connector>
-            <targetReference>Update_MFS_Create</targetReference>
+            <targetReference>Update_MFS_Success</targetReference>
         </connector>
         <faultConnector>
-            <targetReference>Update_MFS_Error</targetReference>
+            <targetReference>Update_MFS_Error_Create</targetReference>
         </faultConnector>
         <inputAssignments>
             <field>Email</field>
@@ -159,65 +214,9 @@
     <recordUpdates>
         <name>Update_MFS</name>
         <label>Update MFS</label>
-        <locationX>578</locationX>
-        <locationY>494</locationY>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>Get_MFS_record.Id</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>Contact__c</field>
-            <value>
-                <elementReference>Get_MFS_Contact.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Membership_Form_Submission__c</object>
-    </recordUpdates>
-    <recordUpdates>
-        <name>Update_MFS_Create</name>
-        <label>Update MFS - Create</label>
-        <locationX>50</locationX>
-        <locationY>602</locationY>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>Get_MFS_record.Id</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>Contact__c</field>
-            <value>
-                <elementReference>Create_Contact</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Membership_Form_Submission__c</object>
-    </recordUpdates>
-    <recordUpdates>
-        <name>Update_MFS_Error</name>
-        <label>Update MFS - Error</label>
         <locationX>314</locationX>
-        <locationY>602</locationY>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.Membership_Form_Submission_Id__c</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>Failure_Information__c</field>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Status__c</field>
-            <value>
-                <stringValue>Failed</stringValue>
-            </value>
-        </inputAssignments>
-        <object>Membership_Form_Submission__c</object>
+        <locationY>884</locationY>
+        <inputReference>Get_MFS_record</inputReference>
     </recordUpdates>
     <start>
         <locationX>188</locationX>
