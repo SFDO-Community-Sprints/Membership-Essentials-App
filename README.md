@@ -39,3 +39,23 @@ Using a combination of Cumulus & Metecho has contributed to open Tasks & unmerge
 
 ### Project Team Accomplishments
 Please see the [Wiki](https://github.com/SFDO-Community-Sprints/MembershipSchemaAndBenefits/wiki) where these are listed by year
+
+## Tooling
+### Tools for Participating
+Most people who participate in this project have access to [VS Code](https://code.visualstudio.com/Download).
+
+You can install this project from source for now, but it will installable soon.
+
+We have orgs ready for you to use during a sprint. You can request access in Slack.
+
+We keep track of next steps in GitHub issues and using Metecho.
+
+
+### Tools for Contributing
+The items checked below are needed to actively contribute to the project.
+[Find more details about these tools](https://sfdo-community-sprints.github.io/docs/tools/)
+- [X] GitHub
+- [X] Metecho
+- [ ] CumulusCI
+- [ ] Google Drive
+
