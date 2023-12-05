@@ -1,0 +1,151 @@
+- var: __membership
+  fields:
+    type:
+      random_choice:
+        - Individual
+        - Household
+        - Corporate
+    date:
+      date_between:
+        start_date: -3y
+        end_date: today
+
+- var: Person
+  value:
+    - object: __person
+      fields:
+          FirstName:
+            fake: FirstName
+          LastName:
+            fake: LastName
+          MembershipType:
+            ${{ __membership.type}}
+          Email:
+            fake: Email
+          AccountName:
+            if:
+            - choice:
+                when: ${{ __membership.type== 'Corporate'}}
+                pick: ${{fake.company}}
+            - choice:
+                pick: ${{FirstName}} ${{LastName}} Household
+- object: Account
+  
+  fields:
+    Name:
+      ${{__person.AccountName}}
+  friends:
+  - object: Contact
+    count:
+        if:
+        - choice:
+            when: ${{ __membership.type == 'Corporate'}}
+            pick: 
+              random_number:
+                min: 1
+                max: 10
+        - choice:
+            pick:
+              random_number:
+                min: 1
+                max: 3
+        fields:
+          # MembershipSchemaAndBenefits custom fields -- expected to be handled by Apex
+          Last_Membership_Start_Date__c: ${{Opportunity.CloseDate}}
+          First_Membership_Start_Date__c: ${{Opportunity.CloseDate}}
+          Membership_End_Date__c: ${{date(Opportunity.CloseDate)+relativedelta(months=12)}}
+          Membership_Status__c:
+            random_choice:
+              - Former
+              - Lapsed # in grace period (CMDT that doesn't exist yet --> 30 days)
+              - Renewal # needs to renew (last 30 days before end date)
+              - Current
+          Membership_Type__c:
+            random_choice:
+              - Individual
+              - Household
+              - Corporate
+          FirstName: ${{__person.firstname}}
+          LastName: ${{__person.lastname}}
+          Email: ${{__person.email}}
+
+  - object: Opportunity # this is only for opps with products - no plain opps
+    count: 1
+    fields:
+      Type: Membership
+      CloseDate: ${{__membership.Date}}
+      Description:
+        fake.text:
+          max_nb_chars: 100
+
+      StageName: Closed Won
+      # Contact
+
+  - object: __pricebookentry_from_salesforce
+    fields:
+      __pbe:
+        SOQLDataset.shuffle:
+          fields: Id, UnitPrice, Product2Id, Pricebook2Id, Product2.name
+          from: PricebookEntry
+          where: Product2.name like '${{Contact.Membership_Type__c}} membership'
+      UnitPrice: ${{__pbe.UnitPrice}}
+      Product2Id: ${{__pbe.Product2Id}}
+      Pricebook2Id: ${{__pbe.Pricebook2Id}}
+
+  - object: OpportunityLineItem
+    count: 1
+    fields:
+      Quantity: 1
+      Description:
+        fake.text:
+          max_nb_chars: 30
+
+      OpportunityId:
+        reference: Opportunity
+      Membership__c:
+        - object: Membership__c
+          fields:
+            Product__c: ${{__pricebookentry_ccifrom_salesforce.Product2Id}}
+            name: ${{Account.Name}}-${{__pricebookentry_from_salesforce.Product2.name}}
+            Origin__c:
+              random_choice:
+                - New
+                - Renewed
+                - Reacquired
+            Primary__c: true
+
+            Type__c: ${{ __membership.type}}
+            Does_Not_Expire__c: 
+              random_choice:
+                - true: 4
+                - false: 1
+            Start_Date__c: ${{Opportunity.CloseDate}}
+            End_Date__c: ${{date(Start_Date__c)+relativedelta(months=12)}}
+            Status__c:
+              if:
+                - choice:
+                    when: ${{date(End_Date__c) < today}}
+                    pick: 
+                      random_choice:
+                        - Former
+                        - Lapsed
+                - choice:
+                    pick: 
+                      random_choice:
+                        - Current
+                        - Renewal
+            Account__c:
+              reference: Account
+
+            # Apex automated
+            # - object: Membership_Contact_Role__c
+            #   fields:
+            #     Name: STRING
+            #     Start_Date__c: DATE
+            #     End_Date__c: DATE
+            #     Role__c: PICKLIST
+
+            #     Is_Primary__c: BOOLEAN
+
+            #     Membership__c: REFERENCE
+            #     Contact__c: REFERENCE
