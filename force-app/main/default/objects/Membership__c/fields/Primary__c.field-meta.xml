@@ -2,9 +2,9 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Primary__c</fullName>
     <defaultValue>false</defaultValue>
-    <description>Indicates primary membership</description>
+    <description>Indicates that this is the primary membership for this account</description>
     <externalId>false</externalId>
-    <inlineHelpText>Select if this is the primary membership</inlineHelpText>
+    <inlineHelpText>Check this box if this is the primary membership for this account</inlineHelpText>
     <label>Primary</label>
     <trackFeedHistory>false</trackFeedHistory>
     <trackHistory>false</trackHistory>

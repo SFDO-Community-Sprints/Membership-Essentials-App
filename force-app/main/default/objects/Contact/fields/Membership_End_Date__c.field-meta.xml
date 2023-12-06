@@ -3,7 +3,7 @@
     <fullName>Membership_End_Date__c</fullName>
     <description>Displays the greatest end date of any membership associated with this contact</description>
     <externalId>false</externalId>
-    <inlineHelpText>Displays the greatest end date of any membership associated with this contact</inlineHelpText>
+    <inlineHelpText>Select the greatest end date of any membership associated with this contact</inlineHelpText>
     <label>Membership End Date</label>
     <required>false</required>
     <trackFeedHistory>false</trackFeedHistory>

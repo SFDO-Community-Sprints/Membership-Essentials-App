@@ -2,8 +2,9 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Downgrade_Path__c</fullName>
     <deleteConstraint>SetNull</deleteConstraint>
-    <description>Downgrade options for this product</description>
+    <description>List the downgrade options for this product with descriptions here</description>
     <externalId>false</externalId>
+    <inlineHelpText>Select a downgrade path product</inlineHelpText>
     <label>Downgrade Path</label>
     <referenceTo>Product2</referenceTo>
     <relationshipLabel>Products (Downgrade Path)</relationshipLabel>

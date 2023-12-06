@@ -3,7 +3,7 @@
     <fullName>Last_Membership_Start_Date__c</fullName>
     <description>The start date of the most recent membership associated with this contact</description>
     <externalId>false</externalId>
-    <inlineHelpText>The start date of the most recent membership associated with this contact</inlineHelpText>
+    <inlineHelpText>Select the start date of the most recent membership associated with this contact</inlineHelpText>
     <label>Last Membership Start Date</label>
     <required>false</required>
     <trackFeedHistory>false</trackFeedHistory>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>End_Date__c</fullName>
-    <description>Select the membership start date</description>
+    <description>The date on which the membership ends (if applicable)</description>
     <externalId>false</externalId>
-    <inlineHelpText>Select the membership end date (if applicable)</inlineHelpText>
+    <inlineHelpText>Add the membership end date (if applicable). If this membership doesn&apos;t have an end date, select the Does Not Expire checkbox to save the record.</inlineHelpText>
     <label>End Date</label>
     <required>false</required>
     <trackFeedHistory>false</trackFeedHistory>

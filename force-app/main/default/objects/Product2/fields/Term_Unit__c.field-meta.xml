@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Term_Unit__c</fullName>
+    <description>Specifies whether the term is calculated in days, weeks, months, or years. Tied to Term.</description>
     <externalId>false</externalId>
+    <inlineHelpText>Select a term unit to define a term length for this product</inlineHelpText>
     <label>Term Unit</label>
     <required>false</required>
     <trackHistory>false</trackHistory>
