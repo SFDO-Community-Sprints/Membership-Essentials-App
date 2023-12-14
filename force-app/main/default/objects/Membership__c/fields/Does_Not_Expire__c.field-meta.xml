@@ -2,7 +2,9 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Does_Not_Expire__c</fullName>
     <defaultValue>false</defaultValue>
+    <description>Check this box on memberships without an end date</description>
     <externalId>false</externalId>
+    <inlineHelpText>Check this box if this membership has no end date</inlineHelpText>
     <label>Does Not Expire</label>
     <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>

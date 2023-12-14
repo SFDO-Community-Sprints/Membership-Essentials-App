@@ -2,8 +2,9 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Primary_Contact__c</fullName>
     <deleteConstraint>SetNull</deleteConstraint>
+    <description>The primary contact for this membership</description>
     <externalId>false</externalId>
-    <inlineHelpText>Select the primary contact for this membership</inlineHelpText>
+    <inlineHelpText>Select or create a contact who will be the primary contact for this membership</inlineHelpText>
     <label>Primary Contact</label>
     <referenceTo>Contact</referenceTo>
     <relationshipLabel>Memberships</relationshipLabel>

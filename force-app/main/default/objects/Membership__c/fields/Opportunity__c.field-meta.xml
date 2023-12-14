@@ -2,7 +2,9 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Opportunity__c</fullName>
     <deleteConstraint>SetNull</deleteConstraint>
+    <description>The opportunity that this membership is tied to</description>
     <externalId>false</externalId>
+    <inlineHelpText>Select or create an opportunity to add this membership to</inlineHelpText>
     <label>Opportunity</label>
     <referenceTo>Opportunity</referenceTo>
     <relationshipLabel>Memberships</relationshipLabel>
