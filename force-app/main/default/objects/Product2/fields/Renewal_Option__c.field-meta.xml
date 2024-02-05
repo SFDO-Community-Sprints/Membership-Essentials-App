@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Renewal_Option__c</fullName>
+    <description>Renewal options for this product: One-Time, Fixed-Term, Renewable, and Lifetime</description>
     <externalId>false</externalId>
+    <inlineHelpText>Select a renewal option for this product</inlineHelpText>
     <label>Renewal Option</label>
     <required>false</required>
     <trackHistory>false</trackHistory>

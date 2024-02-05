@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Membership_Status__c</fullName>
+    <description>Contact membership status options: Current, Lapsed, Former, and Renewal.</description>
     <externalId>false</externalId>
-    <inlineHelpText>The Contact&apos;s current memberships status</inlineHelpText>
+    <inlineHelpText>Select the current membership status. This should match the type of the most recent active.</inlineHelpText>
     <label>Membership Status</label>
     <required>false</required>
-    <trackFeedHistory>false</trackFeedHistory>
     <type>Picklist</type>
     <valueSet>
         <restricted>true</restricted>

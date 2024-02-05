@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Membership_Type__c</fullName>
+    <description>Contact membership type options based on the most recent active membership: Individual, Household, and Corporate.</description>
     <externalId>false</externalId>
-    <inlineHelpText>This Contact&apos;s current Membership Type, based on the most recent active Membership</inlineHelpText>
+    <inlineHelpText>Select the current membership type. This should match the type of the most recent active Memberhip.</inlineHelpText>
     <label>Membership Type</label>
     <required>false</required>
-    <trackFeedHistory>false</trackFeedHistory>
     <type>Picklist</type>
     <valueSet>
         <restricted>true</restricted>

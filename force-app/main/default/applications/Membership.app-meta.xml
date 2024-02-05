@@ -14,8 +14,10 @@
     <tabs>standard-Account</tabs>
     <tabs>standard-Contact</tabs>
     <tabs>standard-Opportunity</tabs>
+    <tabs>standard-Campaign</tabs>
     <tabs>Membership__c</tabs>
     <tabs>Membership_Contact_Role__c</tabs>
+    <tabs>Membership_Form_Submission__c</tabs>
     <tabs>standard-Product2</tabs>
     <tabs>standard-Pricebook2</tabs>
     <tabs>standard-report</tabs>

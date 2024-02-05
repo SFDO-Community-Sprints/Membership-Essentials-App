@@ -2,7 +2,9 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Product__c</fullName>
     <deleteConstraint>SetNull</deleteConstraint>
+    <description>Product(s) that are tied to this membership</description>
     <externalId>false</externalId>
+    <inlineHelpText>Select membership product(s)</inlineHelpText>
     <label>Product</label>
     <referenceTo>Product2</referenceTo>
     <relationshipLabel>Memberships</relationshipLabel>
