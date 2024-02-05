@@ -7,7 +7,7 @@
       "enableS1DesktopEnabled": true
     },
     "chatterSettings": {
-      "enableChatter": true
+      "enableChatter": false
     },
     "userManagementSettings": {
       "enableNewProfileUI": true
