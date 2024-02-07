@@ -4,7 +4,7 @@
     <decisions>
         <name>Is_Account_Lookup_Set</name>
         <label>Is Account Lookup Set?</label>
-        <locationX>1539</locationX>
+        <locationX>1636</locationX>
         <locationY>278</locationY>
         <defaultConnector>
             <targetReference>Call_Account_Platform_Event</targetReference>
@@ -36,10 +36,10 @@
     <decisions>
         <name>Is_Contact_Lookup_Set</name>
         <label>Is Contact Lookup Set?</label>
-        <locationX>1180</locationX>
+        <locationX>1374</locationX>
         <locationY>386</locationY>
         <defaultConnector>
-            <targetReference>Is_Recipient_Lookup_Set</targetReference>
+            <targetReference>Copy_1_of_Call_Contact_Platform_Event</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No Contact</defaultConnectorLabel>
         <rules>
@@ -53,7 +53,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Is_Product_Lookup_Set</targetReference>
+                <targetReference>Is_Recipient_Lookup_Set</targetReference>
             </connector>
             <label>Contact Exists</label>
         </rules>
@@ -62,7 +62,7 @@
         <name>Is_Pricebook_Entry_Lookup_Set</name>
         <label>Is The Pricebook Entry Lookup Set?</label>
         <locationX>380</locationX>
-        <locationY>710</locationY>
+        <locationY>818</locationY>
         <defaultConnector>
             <targetReference>Call_the_Pricebook_Entry_Finder</targetReference>
         </defaultConnector>
@@ -87,7 +87,7 @@
         <name>Is_Product_Lookup_Set</name>
         <label>Is Product Lookup Set?</label>
         <locationX>858</locationX>
-        <locationY>494</locationY>
+        <locationY>602</locationY>
         <defaultConnector>
             <targetReference>Call_Product_Platform_Event</targetReference>
         </defaultConnector>
@@ -118,28 +118,24 @@
     <decisions>
         <name>Is_Recipient_Lookup_Set</name>
         <label>Is Recipient Lookup Set?</label>
-        <locationX>1502</locationX>
+        <locationX>1114</locationX>
         <locationY>494</locationY>
+        <defaultConnector>
+            <targetReference>Call_Contact_Platform_Event</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Recipient_Contact_Exists</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>GET_Membership_Form_Submission_Record.Recipient_Contact__r.FirstName</leftValueReference>
-                <operator>EqualTo</operator>
+                <leftValueReference>GET_Membership_Form_Submission_Record.Recipient_Contact__r.Id</leftValueReference>
+                <operator>IsNull</operator>
                 <rightValue>
-                    <elementReference>GET_Membership_Form_Submission_Record.RecipientFirstName__c</elementReference>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>GET_Membership_Form_Submission_Record.Recipient_Contact__r.LastName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <elementReference>GET_Membership_Form_Submission_Record.RecipientLastName__c</elementReference>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Call_Contact_Platform_Event</targetReference>
+                <targetReference>Is_Product_Lookup_Set</targetReference>
             </connector>
             <label>Recipient Contact Exists</label>
         </rules>
@@ -148,7 +144,7 @@
         <name>Is_the_Campaign_Lookup_Set</name>
         <label>Is the Campaign Lookup Set?</label>
         <locationX>611</locationX>
-        <locationY>602</locationY>
+        <locationY>710</locationY>
         <defaultConnector>
             <targetReference>Call_Find_Campaign_Platform_Event</targetReference>
         </defaultConnector>
@@ -180,7 +176,7 @@
         <name>Is_The_Opportunity_Lookup_Set</name>
         <label>Is The Opportunity Lookup Set?</label>
         <locationX>182</locationX>
-        <locationY>818</locationY>
+        <locationY>926</locationY>
         <defaultConnector>
             <targetReference>Call_The_Opportunity_Platform_Event</targetReference>
         </defaultConnector>
@@ -258,7 +254,7 @@
         <name>Call_Find_Campaign_Platform_Event</name>
         <label>Call Find Campaign Platform Event</label>
         <locationX>842</locationX>
-        <locationY>710</locationY>
+        <locationY>818</locationY>
         <inputAssignments>
             <field>Record_Id__c</field>
             <value>
@@ -273,7 +269,7 @@
         <name>Call_Product_Platform_Event</name>
         <label>Call Product Platform Event</label>
         <locationX>1106</locationX>
-        <locationY>602</locationY>
+        <locationY>710</locationY>
         <inputAssignments>
             <field>Record_Id__c</field>
             <value>
@@ -287,7 +283,7 @@
         <name>Call_The_Opportunity_Platform_Event</name>
         <label>Call The Opportunity Platform Event</label>
         <locationX>314</locationX>
-        <locationY>926</locationY>
+        <locationY>1034</locationY>
         <inputAssignments>
             <field>Record_Id__c</field>
             <value>
@@ -301,7 +297,7 @@
         <name>Call_the_Pricebook_Entry_Finder</name>
         <label>Call the Pricebook Entry Finder</label>
         <locationX>578</locationX>
-        <locationY>818</locationY>
+        <locationY>926</locationY>
         <inputAssignments>
             <field>Record_Id__c</field>
             <value>
@@ -311,10 +307,25 @@
         <object>DPEV_Pricebook_Finder__e</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
+    <recordCreates>
+        <description>Calls the DPEV Contact Finder Platform event</description>
+        <name>Copy_1_of_Call_Contact_Platform_Event</name>
+        <label>Copy 1 of Call Contact Platform Event</label>
+        <locationX>1634</locationX>
+        <locationY>494</locationY>
+        <inputAssignments>
+            <field>Membership_Form_Submission_Id__c</field>
+            <value>
+                <elementReference>GET_Membership_Form_Submission_Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>DPEV_Contact_Finder__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
     <recordLookups>
         <name>GET_Membership_Form_Submission_Record</name>
         <label>GET Membership Form Submission Record</label>
-        <locationX>1539</locationX>
+        <locationX>1636</locationX>
         <locationY>170</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -336,7 +347,7 @@
         <name>Update_MFS_status_Imported</name>
         <label>Update MFS status - Imported</label>
         <locationX>50</locationX>
-        <locationY>926</locationY>
+        <locationY>1034</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -357,7 +368,7 @@
         <object>Membership_Form_Submission__c</object>
     </recordUpdates>
     <start>
-        <locationX>1413</locationX>
+        <locationX>1510</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>GET_Membership_Form_Submission_Record</targetReference>
