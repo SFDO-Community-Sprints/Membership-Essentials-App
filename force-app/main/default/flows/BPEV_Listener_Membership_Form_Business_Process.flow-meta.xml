@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
     <decisions>
         <name>Is_Account_Lookup_Set</name>
         <label>Is Account Lookup Set?</label>
-        <locationX>1374</locationX>
+        <locationX>1539</locationX>
         <locationY>278</locationY>
         <defaultConnector>
             <targetReference>Call_Account_Platform_Event</targetReference>
@@ -35,10 +36,10 @@
     <decisions>
         <name>Is_Contact_Lookup_Set</name>
         <label>Is Contact Lookup Set?</label>
-        <locationX>1114</locationX>
+        <locationX>1180</locationX>
         <locationY>386</locationY>
         <defaultConnector>
-            <targetReference>Call_Contact_Platform_Event</targetReference>
+            <targetReference>Is_Recipient_Lookup_Set</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No Contact</defaultConnectorLabel>
         <rules>
@@ -115,6 +116,35 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Is_Recipient_Lookup_Set</name>
+        <label>Is Recipient Lookup Set?</label>
+        <locationX>1502</locationX>
+        <locationY>494</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Recipient_Contact_Exists</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GET_Membership_Form_Submission_Record.Recipient_Contact__r.FirstName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>GET_Membership_Form_Submission_Record.RecipientFirstName__c</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GET_Membership_Form_Submission_Record.Recipient_Contact__r.LastName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>GET_Membership_Form_Submission_Record.RecipientLastName__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Call_Contact_Platform_Event</targetReference>
+            </connector>
+            <label>Recipient Contact Exists</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Is_the_Campaign_Lookup_Set</name>
         <label>Is the Campaign Lookup Set?</label>
         <locationX>611</locationX>
@@ -172,6 +202,7 @@
         </rules>
     </decisions>
     <description>Checks for existing population of lookup fields on the Membership Form record and triggers platform events for creation if necessary.</description>
+    <environments>Default</environments>
     <interviewLabel>BPEV Listener  - Membership Form Business Process {!$Flow.CurrentDateTime}</interviewLabel>
     <label>BPEV Listener  - Membership Form Business Process</label>
     <processMetadataValues>
@@ -197,7 +228,7 @@
         <description>Calls the DPEV Account Find/Create Platform Event</description>
         <name>Call_Account_Platform_Event</name>
         <label>Call Account Platform Event</label>
-        <locationX>1634</locationX>
+        <locationX>1898</locationX>
         <locationY>386</locationY>
         <inputAssignments>
             <field>Record_Id__c</field>
@@ -213,7 +244,7 @@
         <name>Call_Contact_Platform_Event</name>
         <label>Call Contact Platform Event</label>
         <locationX>1370</locationX>
-        <locationY>494</locationY>
+        <locationY>602</locationY>
         <inputAssignments>
             <field>Membership_Form_Submission_Id__c</field>
             <value>
@@ -283,12 +314,13 @@
     <recordLookups>
         <name>GET_Membership_Form_Submission_Record</name>
         <label>GET Membership Form Submission Record</label>
-        <locationX>1374</locationX>
+        <locationX>1539</locationX>
         <locationY>170</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Is_Account_Lookup_Set</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -305,6 +337,7 @@
         <label>Update MFS status - Imported</label>
         <locationX>50</locationX>
         <locationY>926</locationY>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -324,7 +357,7 @@
         <object>Membership_Form_Submission__c</object>
     </recordUpdates>
     <start>
-        <locationX>1248</locationX>
+        <locationX>1413</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>GET_Membership_Form_Submission_Record</targetReference>
@@ -332,5 +365,5 @@
         <object>BPEV_Membership_Form_Submission__e</object>
         <triggerType>PlatformEvent</triggerType>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
 </Flow>
