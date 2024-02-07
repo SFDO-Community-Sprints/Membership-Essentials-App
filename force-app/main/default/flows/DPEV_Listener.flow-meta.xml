@@ -27,8 +27,8 @@
         </rules>
     </decisions>
     <decisions>
-        <name>Is_OppotunityProduct_same_as_Membership_Product</name>
-        <label>Is OppotunityProduct same as Membership Product?</label>
+        <name>Is_OpportunityProduct_same_as_Membership_Product</name>
+        <label>Is OpportunityProduct same as Membership Product?</label>
         <locationX>578</locationX>
         <locationY>494</locationY>
         <defaultConnector>
@@ -84,11 +84,12 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Copy_1_of_Create_DPEV_Membership_Downgrade_PE</targetReference>
+                <targetReference>Create_DPEV_Membership_Downgrade_PE</targetReference>
             </connector>
             <label>Downgrade</label>
         </rules>
     </decisions>
+    <description>Platform Event triggered Flow that evaluates the next action to take in Membership processing</description>
     <environments>Default</environments>
     <interviewLabel>DPEV Listener {!$Flow.CurrentDateTime}</interviewLabel>
     <label>BPEV Listener - Create Membership Transaction Process</label>
@@ -112,21 +113,7 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordCreates>
-        <description>Creates a Platform Event where Record_Id__c = Id of the found Membership record</description>
-        <name>Copy_1_of_Create_DPEV_Membership_Downgrade_PE</name>
-        <label>Copy 1 of Create DPEV - Membership Downgrade PE</label>
-        <locationX>842</locationX>
-        <locationY>710</locationY>
-        <inputAssignments>
-            <field>Record_Id__c</field>
-            <value>
-                <elementReference>Get_Membership.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <object>DPEV_Membership_Downgrade__e</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
+        <description>Create a</description>
         <name>Create_DPEV_Extend_Membership</name>
         <label>Create DPEV - Extend Membership</label>
         <locationX>314</locationX>
@@ -138,6 +125,21 @@
             </value>
         </inputAssignments>
         <object>DPEV_Extend_Membership__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <description>Creates a Platform Event where Record_Id__c = Id of the OpportunityLineItem</description>
+        <name>Create_DPEV_Membership_Downgrade_PE</name>
+        <label>Create DPEV - Membership Downgrade PE</label>
+        <locationX>842</locationX>
+        <locationY>710</locationY>
+        <inputAssignments>
+            <field>Record_Id__c</field>
+            <value>
+                <elementReference>$Record.Record_Id__c</elementReference>
+            </value>
+        </inputAssignments>
+        <object>DPEV_Membership_Downgrade__e</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
@@ -156,7 +158,7 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
-        <description>Creates a Platform Event where Record_Id__c = Id of the found Membership record</description>
+        <description>Creates a Platform Event where Record_Id__c = Id of the OpportunityLineItem</description>
         <name>Create_DPEV_Membership_Upgrade_PE</name>
         <label>Create DPEV - Membership Upgrade PE</label>
         <locationX>578</locationX>
@@ -164,7 +166,7 @@
         <inputAssignments>
             <field>Record_Id__c</field>
             <value>
-                <elementReference>Get_Membership.Id</elementReference>
+                <elementReference>$Record.Record_Id__c</elementReference>
             </value>
         </inputAssignments>
         <object>DPEV_Membership_Upgrade__e</object>
@@ -178,7 +180,7 @@
         <locationY>386</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Is_OppotunityProduct_same_as_Membership_Product</targetReference>
+            <targetReference>Is_OpportunityProduct_same_as_Membership_Product</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
