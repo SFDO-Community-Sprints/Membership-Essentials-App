@@ -34,6 +34,10 @@
                 <behavior>Edit</behavior>
                 <field>Membership__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Membership_Finder_Ran__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
