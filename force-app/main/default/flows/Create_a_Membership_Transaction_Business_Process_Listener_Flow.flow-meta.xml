@@ -14,10 +14,10 @@
             <name>Opportunity_Product_Product</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Opportunity_Line_Item_Query.Product2Id</leftValueReference>
-                <operator>EqualTo</operator>
+                <leftValueReference>Query_Membership_Record</leftValueReference>
+                <operator>IsNull</operator>
                 <rightValue>
-                    <elementReference>QueryMembership.Product__r.Id</elementReference>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -156,11 +156,9 @@
                 <elementReference>Opportunity_Line_Item_Query.Membership__c</elementReference>
             </value>
         </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Membership__c</object>
-        <outputReference>QueryMembership</outputReference>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>Product__c</queriedFields>
-        <queriedFields>Opportunity__c</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
         <locationX>254</locationX>
