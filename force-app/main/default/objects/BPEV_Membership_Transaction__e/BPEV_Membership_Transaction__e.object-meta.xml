@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Platform Event that triggers logic based upon the Opportunity Line Item provided</description>
+    <eventType>HighVolume</eventType>
+    <label>BPEV - Membership Transaction</label>
+    <pluralLabel>BPEV - Membership Transactions</pluralLabel>
+    <publishBehavior>PublishAfterCommit</publishBehavior>
+</CustomObject>
