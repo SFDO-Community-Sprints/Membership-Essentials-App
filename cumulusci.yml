@@ -3,7 +3,7 @@ project:
     name: Membership-Management
     package:
         name:  Membership-Management
-        api_version: '59.0'
+        api_version: '48.0'
     source_format: sfdx
 
 tasks:
