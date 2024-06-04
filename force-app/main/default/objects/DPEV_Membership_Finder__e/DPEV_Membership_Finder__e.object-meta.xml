@@ -3,7 +3,7 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <description>Find a membership record to update using data from a supplied record id</description>
     <eventType>HighVolume</eventType>
-    <label>DPEV Membership Finder</label>
-    <pluralLabel>DPEV Membership Finders</pluralLabel>
+    <label>DPEV - Membership Finder</label>
+    <pluralLabel>DPEV - Membership Finders</pluralLabel>
     <publishBehavior>PublishAfterCommit</publishBehavior>
 </CustomObject>
