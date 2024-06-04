@@ -2,8 +2,9 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Primary_Membership__c</fullName>
     <deleteConstraint>SetNull</deleteConstraint>
-    <description>Shows primary membership.</description>
+    <description>Indicates the primary membership for this account</description>
     <externalId>false</externalId>
+    <inlineHelpText>Select a membership to be the primary membership for this account</inlineHelpText>
     <label>Primary Membership</label>
     <referenceTo>Membership__c</referenceTo>
     <relationshipLabel>Accounts</relationshipLabel>
