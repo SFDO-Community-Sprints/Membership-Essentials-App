@@ -140,6 +140,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>OpportunityLineItem.Membership_Finder_Ran__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>OpportunityLineItem.Membership__c</field>
         <readable>true</readable>
