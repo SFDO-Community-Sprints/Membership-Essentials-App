@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
     <deploymentStatus>Deployed</deploymentStatus>
-    <description>Business process for membership form submission.</description>
+    <description>Data processing event for running the data changes necessary to process a membership upgrade.</description>
     <eventType>HighVolume</eventType>
-    <label>BPEV - Create Membership Form Submission</label>
-    <pluralLabel>BPEV - Membership Form Submission</pluralLabel>
+    <label>DPEV - Membership Upgrade</label>
+    <pluralLabel>DPEV - Membership Upgrades</pluralLabel>
     <publishBehavior>PublishAfterCommit</publishBehavior>
 </CustomObject>

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Opportunity_Line_Item_Id__c</fullName>
+    <fullName>Record_Id__c</fullName>
+    <description>ID of the triggering object</description>
     <externalId>false</externalId>
     <isFilteringDisabled>false</isFilteringDisabled>
     <isNameField>false</isNameField>
     <isSortingDisabled>false</isSortingDisabled>
-    <label>Opportunity Line Item Id</label>
-    <length>20</length>
+    <label>Record Id</label>
+    <length>18</length>
     <required>false</required>
     <type>Text</type>
     <unique>false</unique>
