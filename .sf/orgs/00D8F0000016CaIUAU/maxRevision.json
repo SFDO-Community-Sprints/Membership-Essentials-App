@@ -1,0 +1,17 @@
+{
+  "serverMaxRevisionCounter": 98,
+  "sourceMembers": {
+    "Profile__Admin": {
+      "serverRevisionCounter": 98,
+      "lastRetrievedFromServer": 98,
+      "memberType": "Profile",
+      "isNameObsolete": false
+    },
+    "Layout__Contact-Contact Layout for Memberships": {
+      "serverRevisionCounter": 88,
+      "lastRetrievedFromServer": 88,
+      "memberType": "Layout",
+      "isNameObsolete": false
+    }
+  }
+}
