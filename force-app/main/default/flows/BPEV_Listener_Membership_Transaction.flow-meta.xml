@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>60.0</apiVersion>
+    <decisions>
+        <name>Compare_Opportunity_and_Membership_Products</name>
+        <label>Compare Opportunity and Membership Products</label>
+        <locationX>842</locationX>
+        <locationY>602</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Opportunity_Product_Membership_Product_are_the_same</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Query_for_Opportunity_Line_Item.Product2Id</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Query_for_Opportunity_Line_Item.Membership__r.Product__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Fire_Membership_Renewal_Platform_Event</targetReference>
+            </connector>
+            <label>Opportunity Product &amp; Membership Product are the same</label>
+        </rules>
+        <rules>
+            <name>Opportunity_Product_Membership_Product_do_not_match</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Query_for_Opportunity_Line_Item.Product2Id</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>Query_for_Opportunity_Line_Item.Membership__r.Product__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Determine_if_Membership_Renewal_is_an_Upgrade_or_a_Downgrade</targetReference>
+            </connector>
+            <label>Opportunity Product &amp; Membership Product do not match</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Based on the Membership Tier value, determine if the renewal membership is an Upgrade or a Downgrade</description>
+        <name>Determine_if_Membership_Renewal_is_an_Upgrade_or_a_Downgrade</name>
+        <label>Determine if Membership Renewal is an Upgrade or a Downgrade</label>
+        <locationX>842</locationX>
+        <locationY>710</locationY>
+        <defaultConnectorLabel>Membership Renewal</defaultConnectorLabel>
+        <rules>
+            <name>Membership_Upgrade</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_New_Product_ID.Membership_Tier__c</leftValueReference>
+                <operator>LessThan</operator>
+                <rightValue>
+                    <elementReference>Get_Old_Product_ID.Product2.Membership_Tier__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Fire_Membership_Upgrade_Platform_Event</targetReference>
+            </connector>
+            <label>Membership Upgrade</label>
+        </rules>
+        <rules>
+            <name>Membership_Downgrade</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_New_Product_ID.Membership_Tier__c</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <elementReference>Get_Old_Product_ID.Product2.Membership_Tier__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Fire_Membership_Downgrade_Platform_Event1</targetReference>
+            </connector>
+            <label>Membership Downgrade</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Membership_Next_Steps</name>
+        <label>Membership Next Steps</label>
+        <locationX>842</locationX>
+        <locationY>494</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Membership_not_populated</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Query_for_Opportunity_Line_Item.Membership__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Fire_Membership_Finder_Platform_Event</targetReference>
+            </connector>
+            <label>Membership not populated</label>
+        </rules>
+        <rules>
+            <name>Membership_is_populated</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Query_for_Opportunity_Line_Item.Membership__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Compare_Opportunity_and_Membership_Products</targetReference>
+            </connector>
+            <label>Membership is populated</label>
+        </rules>
+    </decisions>
+    <description>Listens for the BPEV-Membership Transaction and queries the Opportunity Line item before determining next steps</description>
+    <environments>Default</environments>
+    <interviewLabel>BPEV Listener - Membership Transaction {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>BPEV Listener - Membership Transaction</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>Fire_Membership_Downgrade_Platform_Event1</name>
+        <label>Fire Membership Downgrade Platform Event</label>
+        <locationX>842</locationX>
+        <locationY>818</locationY>
+        <object>DPEV_Membership_Downgrade__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Fire_Membership_Finder_Platform_Event</name>
+        <label>Fire Membership Finder Platform Event</label>
+        <locationX>50</locationX>
+        <locationY>602</locationY>
+        <object>DPEV_Membership_Finder__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Fire_Membership_Renewal_Platform_Event</name>
+        <label>Fire Membership Renewal Platform Event</label>
+        <locationX>314</locationX>
+        <locationY>710</locationY>
+        <object>DPEV_Membership_Renewal__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Fire_Membership_Upgrade_Platform_Event</name>
+        <label>Fire Membership Upgrade Platform Event</label>
+        <locationX>578</locationX>
+        <locationY>818</locationY>
+        <object>DPEV_Membership_Upgrade__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordLookups>
+        <name>Get_New_Product_ID</name>
+        <label>Get New Product ID</label>
+        <locationX>842</locationX>
+        <locationY>386</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Membership_Next_Steps</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Query_for_Opportunity_Line_Item.Product2.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Product2</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Old_Product_ID</name>
+        <label>Get Old Product ID</label>
+        <locationX>842</locationX>
+        <locationY>278</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_New_Product_ID</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.New_Product_ID__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Product2History</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get the line item provided in the Record Id Field of the BPEV - Membership Transaction</description>
+        <name>Query_for_Opportunity_Line_Item</name>
+        <label>Query for Opportunity Line Item</label>
+        <locationX>842</locationX>
+        <locationY>170</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Old_Product_ID</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Record_Id__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>OpportunityLineItem</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>716</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Query_for_Opportunity_Line_Item</targetReference>
+        </connector>
+        <object>BPEV_Membership_Transaction__e</object>
+        <triggerType>PlatformEvent</triggerType>
+    </start>
+    <status>Draft</status>
+</Flow>
