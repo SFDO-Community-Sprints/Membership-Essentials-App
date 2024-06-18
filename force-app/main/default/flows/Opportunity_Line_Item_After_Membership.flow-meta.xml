@@ -26,7 +26,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Create_Membership_Transaction_Business_Process_Event</targetReference>
+                <targetReference>Fire_BPEV_Membership_Transaction</targetReference>
             </connector>
             <label>Create new Membership</label>
         </rules>
@@ -55,9 +55,9 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordCreates>
-        <description>create the membership</description>
-        <name>Create_Membership_Transaction_Business_Process_Event</name>
-        <label>Create Membership Transaction Business Process Event</label>
+        <description>Creates Platform Event Record - BPEV - Membership Transaction</description>
+        <name>Fire_BPEV_Membership_Transaction</name>
+        <label>Fire BPEV - Membership Transaction</label>
         <locationX>50</locationX>
         <locationY>431</locationY>
         <inputAssignments>
