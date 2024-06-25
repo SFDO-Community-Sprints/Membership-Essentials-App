@@ -183,12 +183,16 @@
                 <behavior>Edit</behavior>
                 <field>Price_Book_Entry__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Recipient__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Account_Import_Status__c</field>
-            </layoutItems>            
+            </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Source_Code__c</field>
@@ -204,6 +208,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Product_Import_Status__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Recipient_Import_Status__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -247,7 +255,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h8F000004BIMn</masterLabel>
+        <masterLabel>00h01000003MHOY</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>
