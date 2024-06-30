@@ -11,7 +11,7 @@
             <assignToReference>Get_the_related_Membership.Product__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>recordid</elementReference>
+                <elementReference>$Record.Record_Id__c</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -51,10 +51,26 @@
     <description>A flow called by the platform events to upgrade the membership by updating the opportunity product on the membership record</description>
     <environments>Default</environments>
     <formulas>
+        <description>Assumes based on Close Date of opportunity, will need adjusting if using end of month or more specific options
+Doesn&apos;t calculated for leap years</description>
         <name>CalculateNewEndDate</name>
         <dataType>Date</dataType>
-        <expression>/*{!Get_Membership_Opportunity_Product.Opportunity.CloseDate}{!Get_Membership_Opportunity_Product.Product2.Term__c}{!Get_Membership_Opportunity_Product.Product2.Term_Unit__c}*/
-{!$Flow.CurrentDate}</expression>
+        <expression>IF(
+    ISPICKVAL({!Get_Membership_Opportunity_Product.Product2.Term_Unit__c}, &quot;Month&quot;), 
+    ADDMONTHS({!Get_Membership_Opportunity_Product.Opportunity.CloseDate}, {!Get_Membership_Opportunity_Product.Product2.Term__c}),
+    
+    IF(
+        ISPICKVAL({!Get_Membership_Opportunity_Product.Product2.Term_Unit__c}, &quot;Year&quot;), 
+        ADDMONTHS({!Get_Membership_Opportunity_Product.Opportunity.CloseDate}, ({!Get_Membership_Opportunity_Product.Product2.Term__c} * 12)),
+        
+        IF(
+            ISPICKVAL({!Get_Membership_Opportunity_Product.Product2.Term_Unit__c}, &quot;Week&quot;), 
+            ({!Get_Membership_Opportunity_Product.Opportunity.CloseDate} + ({!Get_Membership_Opportunity_Product.Product2.Term__c} * 7)),
+            
+            {!Get_Membership_Opportunity_Product.Opportunity.CloseDate} + {!Get_Membership_Opportunity_Product.Product2.Term__c}
+        )
+    )
+)</expression>
     </formulas>
     <interviewLabel>DPEV Listener - Membership Upgrade {!$Flow.CurrentDateTime}</interviewLabel>
     <label>DPEV Listener - Membership Upgrade</label>
@@ -137,12 +153,4 @@
         <triggerType>PlatformEvent</triggerType>
     </start>
     <status>Active</status>
-    <variables>
-        <description>the record id that triggered the flow</description>
-        <name>recordid</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-    </variables>
 </Flow>
