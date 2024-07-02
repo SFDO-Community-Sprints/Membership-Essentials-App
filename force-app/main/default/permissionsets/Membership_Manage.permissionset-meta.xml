@@ -412,6 +412,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Product2.Membership_Tier__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Product2.Renewal_Option__c</field>
         <readable>true</readable>
     </fieldPermissions>
