@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
     <decisions>
         <name>Is_Account_Lookup_Set</name>
         <label>Is Account Lookup Set?</label>
-        <locationX>1374</locationX>
+        <locationX>1636</locationX>
         <locationY>278</locationY>
         <defaultConnector>
             <targetReference>Call_Account_Platform_Event</targetReference>
@@ -35,7 +36,7 @@
     <decisions>
         <name>Is_Contact_Lookup_Set</name>
         <label>Is Contact Lookup Set?</label>
-        <locationX>1114</locationX>
+        <locationX>1375</locationX>
         <locationY>386</locationY>
         <defaultConnector>
             <targetReference>Call_Contact_Platform_Event</targetReference>
@@ -45,7 +46,7 @@
             <name>Contact_Exists</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>GET_Membership_Form_Submission_Record.Contact__r.Id</leftValueReference>
+                <leftValueReference>GET_Membership_Form_Submission_Record.Contact__c</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -60,7 +61,7 @@
     <decisions>
         <name>Is_Pricebook_Entry_Lookup_Set</name>
         <label>Is The Pricebook Entry Lookup Set?</label>
-        <locationX>380</locationX>
+        <locationX>622</locationX>
         <locationY>710</locationY>
         <defaultConnector>
             <targetReference>Call_the_Pricebook_Entry_Finder</targetReference>
@@ -85,7 +86,7 @@
     <decisions>
         <name>Is_Product_Lookup_Set</name>
         <label>Is Product Lookup Set?</label>
-        <locationX>858</locationX>
+        <locationX>1117</locationX>
         <locationY>494</locationY>
         <defaultConnector>
             <targetReference>Call_Product_Platform_Event</targetReference>
@@ -117,7 +118,7 @@
     <decisions>
         <name>Is_the_Campaign_Lookup_Set</name>
         <label>Is the Campaign Lookup Set?</label>
-        <locationX>611</locationX>
+        <locationX>864</locationX>
         <locationY>602</locationY>
         <defaultConnector>
             <targetReference>Call_Find_Campaign_Platform_Event</targetReference>
@@ -149,7 +150,7 @@
     <decisions>
         <name>Is_The_Opportunity_Lookup_Set</name>
         <label>Is The Opportunity Lookup Set?</label>
-        <locationX>182</locationX>
+        <locationX>402</locationX>
         <locationY>818</locationY>
         <defaultConnector>
             <targetReference>Call_The_Opportunity_Platform_Event</targetReference>
@@ -166,12 +167,63 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Update_MFS_status_Imported</targetReference>
+                <targetReference>Is_there_a_Gift_Recipient</targetReference>
             </connector>
             <label>Opportunity Exists</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>Is_the_Recipient_Lookup_Set</name>
+        <label>Is the Recipient Lookup Set?</label>
+        <locationX>50</locationX>
+        <locationY>1034</locationY>
+        <defaultConnector>
+            <targetReference>Call_the_Recipient_Platform_Event</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No Recipient</defaultConnectorLabel>
+        <rules>
+            <name>Recipient_Exists</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GET_Membership_Form_Submission_Record.Recipient__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_MFS_status_Imported</targetReference>
+            </connector>
+            <label>Recipient Exists</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Is_there_a_Gift_Recipient</name>
+        <label>Is there a Gift Recipient?</label>
+        <locationX>226</locationX>
+        <locationY>926</locationY>
+        <defaultConnector>
+            <targetReference>Update_MFS_status_Imported</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Not a Gift Membership</defaultConnectorLabel>
+        <rules>
+            <name>Is_Gift_Membership</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GET_Membership_Form_Submission_Record.RecipientLastName__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Is_the_Recipient_Lookup_Set</targetReference>
+            </connector>
+            <label>Is Gift Membership</label>
+        </rules>
+    </decisions>
     <description>Checks for existing population of lookup fields on the Membership Form record and triggers platform events for creation if necessary.</description>
+    <environments>Default</environments>
     <interviewLabel>BPEV Listener  - Membership Form Business Process {!$Flow.CurrentDateTime}</interviewLabel>
     <label>BPEV Listener  - Membership Form Business Process</label>
     <processMetadataValues>
@@ -197,7 +249,7 @@
         <description>Calls the DPEV Account Find/Create Platform Event</description>
         <name>Call_Account_Platform_Event</name>
         <label>Call Account Platform Event</label>
-        <locationX>1634</locationX>
+        <locationX>1898</locationX>
         <locationY>386</locationY>
         <inputAssignments>
             <field>Record_Id__c</field>
@@ -212,7 +264,7 @@
         <description>Calls the DPEV Contact Finder Platform event</description>
         <name>Call_Contact_Platform_Event</name>
         <label>Call Contact Platform Event</label>
-        <locationX>1370</locationX>
+        <locationX>1634</locationX>
         <locationY>494</locationY>
         <inputAssignments>
             <field>Membership_Form_Submission_Id__c</field>
@@ -226,7 +278,7 @@
     <recordCreates>
         <name>Call_Find_Campaign_Platform_Event</name>
         <label>Call Find Campaign Platform Event</label>
-        <locationX>842</locationX>
+        <locationX>1106</locationX>
         <locationY>710</locationY>
         <inputAssignments>
             <field>Record_Id__c</field>
@@ -241,7 +293,7 @@
         <description>Call Find Product Platform Event</description>
         <name>Call_Product_Platform_Event</name>
         <label>Call Product Platform Event</label>
-        <locationX>1106</locationX>
+        <locationX>1370</locationX>
         <locationY>602</locationY>
         <inputAssignments>
             <field>Record_Id__c</field>
@@ -255,7 +307,7 @@
     <recordCreates>
         <name>Call_The_Opportunity_Platform_Event</name>
         <label>Call The Opportunity Platform Event</label>
-        <locationX>314</locationX>
+        <locationX>578</locationX>
         <locationY>926</locationY>
         <inputAssignments>
             <field>Record_Id__c</field>
@@ -269,7 +321,7 @@
     <recordCreates>
         <name>Call_the_Pricebook_Entry_Finder</name>
         <label>Call the Pricebook Entry Finder</label>
-        <locationX>578</locationX>
+        <locationX>842</locationX>
         <locationY>818</locationY>
         <inputAssignments>
             <field>Record_Id__c</field>
@@ -280,15 +332,30 @@
         <object>DPEV_Pricebook_Finder__e</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
+    <recordCreates>
+        <name>Call_the_Recipient_Platform_Event</name>
+        <label>Call the Recipient Platform Event</label>
+        <locationX>138</locationX>
+        <locationY>1142</locationY>
+        <inputAssignments>
+            <field>Record_Id__c</field>
+            <value>
+                <elementReference>GET_Membership_Form_Submission_Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>DPEV_Gift_Recipient_Finder__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
     <recordLookups>
         <name>GET_Membership_Form_Submission_Record</name>
         <label>GET Membership Form Submission Record</label>
-        <locationX>1374</locationX>
+        <locationX>1636</locationX>
         <locationY>170</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Is_Account_Lookup_Set</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -303,8 +370,9 @@
     <recordUpdates>
         <name>Update_MFS_status_Imported</name>
         <label>Update MFS status - Imported</label>
-        <locationX>50</locationX>
-        <locationY>926</locationY>
+        <locationX>226</locationX>
+        <locationY>1526</locationY>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -324,7 +392,7 @@
         <object>Membership_Form_Submission__c</object>
     </recordUpdates>
     <start>
-        <locationX>1248</locationX>
+        <locationX>1510</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>GET_Membership_Form_Submission_Record</targetReference>
@@ -332,5 +400,5 @@
         <object>BPEV_Membership_Form_Submission__e</object>
         <triggerType>PlatformEvent</triggerType>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
 </Flow>

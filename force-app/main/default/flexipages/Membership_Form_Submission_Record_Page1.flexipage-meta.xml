@@ -32,6 +32,12 @@
         <type>Region</type>
     </flexiPageRegions>
     <flexiPageRegions>
+        <itemInstances>
+            <fieldInstance>
+                <fieldItem>Record.Recipient__c</fieldItem>
+                <identifier>RecordRecipient__cField</identifier>
+            </fieldInstance>
+        </itemInstances>
         <name>Facet-b79cc4cf-4e40-45ad-a1af-4b84b0736f05</name>
         <type>Facet</type>
     </flexiPageRegions>
