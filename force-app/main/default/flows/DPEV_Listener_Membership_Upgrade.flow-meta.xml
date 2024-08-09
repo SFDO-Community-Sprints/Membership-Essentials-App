@@ -11,7 +11,7 @@
             <assignToReference>Get_the_related_Membership.Product__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>$Record.Record_Id__c</elementReference>
+                <elementReference>Get_Membership_Opportunity_Product.Product2Id</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -39,7 +39,7 @@
                 <leftValueReference>Get_the_related_Membership.Product__c</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
-                    <elementReference>Get_Membership_Opportunity_Product.Id</elementReference>
+                    <elementReference>Get_Membership_Opportunity_Product.Product2Id</elementReference>
                 </rightValue>
             </conditions>
             <connector>
