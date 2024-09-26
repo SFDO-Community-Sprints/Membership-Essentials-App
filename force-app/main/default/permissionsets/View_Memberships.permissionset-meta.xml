@@ -4,6 +4,7 @@
         <application>Membership</application>
         <visible>true</visible>
     </applicationVisibilities>
+    <description>Please use new permission set &quot;Membership: View&quot;. This permission set will be deleted</description>
     <fieldPermissions>
         <editable>true</editable>
         <field>Membership_Contact_Role__c.End_Date__c</field>
@@ -240,7 +241,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
-    <label>View Memberships</label>
+    <label>View Memberships (outdated)</label>
     <objectPermissions>
         <allowCreate>false</allowCreate>
         <allowDelete>false</allowDelete>

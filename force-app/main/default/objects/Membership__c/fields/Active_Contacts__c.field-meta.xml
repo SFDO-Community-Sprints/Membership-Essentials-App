@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Active_Contacts__c</fullName>
-    <description>GitHub #27</description>
+    <description>GitHub #27: Counts the number of active Contact Roles on related records where the Status is Renewal or Current</description>
     <externalId>false</externalId>
     <label>Active Contacts</label>
     <summaryFilterItems>
