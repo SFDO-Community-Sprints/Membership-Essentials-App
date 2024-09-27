@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
     <assignments>
         <name>Update_MFS_Error</name>
         <label>Update MFS - Error</label>
@@ -126,6 +127,7 @@
             <label>Yes</label>
         </rules>
     </decisions>
+    <environments>Default</environments>
     <interviewLabel>DPEV {!$Flow.CurrentDateTime}</interviewLabel>
     <label>DPEV Listener - Campaign Finder</label>
     <processMetadataValues>
@@ -156,6 +158,7 @@
         <connector>
             <targetReference>Was_a_Campaign_Found</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Name</field>
             <operator>EqualTo</operator>
@@ -190,11 +193,12 @@
         <connector>
             <targetReference>Was_campaign_source_code_or_name_indicated</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>$Record.Membership_Form_Submission_Id__c</elementReference>
+                <elementReference>$Record.Record_Id__c</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
@@ -214,7 +218,7 @@
         <connector>
             <targetReference>Get_the_Membership_Form_Submission_Record</targetReference>
         </connector>
-        <object>BPEV_Membership_Form_Submission__e</object>
+        <object>DPEV_Find_Campaign__e</object>
         <triggerType>PlatformEvent</triggerType>
     </start>
     <status>Active</status>
