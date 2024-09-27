@@ -209,7 +209,7 @@
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>Get_MFS_record.Id</elementReference>
+                <elementReference>$Record.Record_Id__c</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
