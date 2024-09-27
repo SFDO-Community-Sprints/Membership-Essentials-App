@@ -53,7 +53,7 @@
             <assignToReference>newMembership.Primary_Contact__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Query_Membership_Form_Submission.Contact__c</elementReference>
+                <elementReference>Query_Membership_Form_Submission.Recipient__c</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
