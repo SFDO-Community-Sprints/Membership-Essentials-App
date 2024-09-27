@@ -5,7 +5,7 @@
         <description>When products are different, check level and type.</description>
         <name>Check_Level_and_Type</name>
         <label>Check Level and Type</label>
-        <locationX>1106</locationX>
+        <locationX>1634</locationX>
         <locationY>926</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -27,8 +27,8 @@
     <decisions>
         <name>Compare_Opportunity_and_Membership_Products</name>
         <label>Compare Opportunity and Membership Products</label>
-        <locationX>886</locationX>
-        <locationY>710</locationY>
+        <locationX>1414</locationX>
+        <locationY>602</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Opportunity_Product_Membership_Product_are_the_same</name>
@@ -56,7 +56,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Determine_if_Membership_Renewal_is_an_Upgrade_or_a_Downgrade</targetReference>
+                <targetReference>Get_Old_Product_ID</targetReference>
             </connector>
             <label>Products Don&apos;t Match: Opportunity &amp; Membership</label>
         </rules>
@@ -65,7 +65,7 @@
         <description>Based on the Membership Tier value, determine if the renewal membership is an Upgrade or a Downgrade</description>
         <name>Determine_if_Membership_Renewal_is_an_Upgrade_or_a_Downgrade</name>
         <label>Determine if Membership Renewal is an Upgrade or a Downgrade</label>
-        <locationX>798</locationX>
+        <locationX>1326</locationX>
         <locationY>818</locationY>
         <defaultConnector>
             <targetReference>Check_Level_and_Type</targetReference>
@@ -103,10 +103,48 @@
         </rules>
     </decisions>
     <decisions>
+        <description>Checks whether the Membership Finder has not already run.</description>
+        <name>Membership_Finder_Run_Check</name>
+        <label>Membership Finder Run Check</label>
+        <locationX>314</locationX>
+        <locationY>494</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Membership_Finder_Has_Not_Run</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Query_for_Opportunity_Line_Item.Membership_Finder_Ran__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Fire_Membership_Finder_Platform_Event</targetReference>
+            </connector>
+            <label>Membership Finder Has Not Run</label>
+        </rules>
+        <rules>
+            <name>Membership_Finder_Has_Run</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Query_for_Opportunity_Line_Item.Membership_Finder_Ran__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Fire_Create_Membership_Platform_Event</targetReference>
+            </connector>
+            <label>Membership Finder Has Run</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Membership_Next_Steps</name>
         <label>Membership Next Steps</label>
-        <locationX>886</locationX>
-        <locationY>494</locationY>
+        <locationX>1282</locationX>
+        <locationY>386</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Membership_not_populated</name>
@@ -119,7 +157,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Fire_Membership_Finder_Platform_Event</targetReference>
+                <targetReference>Membership_Finder_Run_Check</targetReference>
             </connector>
             <label>Membership not populated</label>
         </rules>
@@ -129,6 +167,13 @@
             <conditions>
                 <leftValueReference>Query_for_Opportunity_Line_Item.Membership__c</leftValueReference>
                 <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Query_for_Opportunity_Line_Item.Membership_Finder_Ran__c</leftValueReference>
+                <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
                 </rightValue>
@@ -163,9 +208,23 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordCreates>
+        <name>Fire_Create_Membership_Platform_Event</name>
+        <label>Fire Create Membership Platform Event</label>
+        <locationX>314</locationX>
+        <locationY>602</locationY>
+        <inputAssignments>
+            <field>Record_Id__c</field>
+            <value>
+                <elementReference>Query_for_Opportunity_Line_Item.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>DPEV_Create_Membership__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
         <name>Fire_Membership_Downgrade_Platform_Event1</name>
         <label>Fire Membership Downgrade Platform Event</label>
-        <locationX>754</locationX>
+        <locationX>1282</locationX>
         <locationY>926</locationY>
         <inputAssignments>
             <field>Record_Id__c</field>
@@ -193,7 +252,7 @@
     <recordCreates>
         <name>Fire_Membership_Renewal_Platform_Event</name>
         <label>Fire Membership Renewal Platform Event</label>
-        <locationX>886</locationX>
+        <locationX>1414</locationX>
         <locationY>1394</locationY>
         <inputAssignments>
             <field>Record_Id__c</field>
@@ -207,7 +266,7 @@
     <recordCreates>
         <name>Fire_Membership_Upgrade_Platform_Event</name>
         <label>Fire Membership Upgrade Platform Event</label>
-        <locationX>490</locationX>
+        <locationX>1018</locationX>
         <locationY>926</locationY>
         <inputAssignments>
             <field>Record_Id__c</field>
@@ -222,8 +281,8 @@
         <description>Get the Membership record that is referenced by the Opportunity Line Item</description>
         <name>Get_Membership_Record</name>
         <label>Get Membership Record</label>
-        <locationX>886</locationX>
-        <locationY>602</locationY>
+        <locationX>1414</locationX>
+        <locationY>494</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Compare_Opportunity_and_Membership_Products</targetReference>
@@ -243,8 +302,8 @@
     <recordLookups>
         <name>Get_New_Product_ID</name>
         <label>Get New Product ID</label>
-        <locationX>886</locationX>
-        <locationY>386</locationY>
+        <locationX>1282</locationX>
+        <locationY>278</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Membership_Next_Steps</targetReference>
@@ -264,18 +323,18 @@
     <recordLookups>
         <name>Get_Old_Product_ID</name>
         <label>Get Old Product ID</label>
-        <locationX>886</locationX>
-        <locationY>278</locationY>
+        <locationX>1326</locationX>
+        <locationY>710</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_New_Product_ID</targetReference>
+            <targetReference>Determine_if_Membership_Renewal_is_an_Upgrade_or_a_Downgrade</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>$Record.New_Product_ID__c</elementReference>
+                <elementReference>Get_Membership_Record.Product__r.Id</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
@@ -286,11 +345,11 @@
         <description>Get the line item provided in the Record Id Field of the BPEV - Membership Transaction</description>
         <name>Query_for_Opportunity_Line_Item</name>
         <label>Query for Opportunity Line Item</label>
-        <locationX>886</locationX>
+        <locationX>1282</locationX>
         <locationY>170</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_Old_Product_ID</targetReference>
+            <targetReference>Get_New_Product_ID</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -305,7 +364,7 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>760</locationX>
+        <locationX>1156</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Query_for_Opportunity_Line_Item</targetReference>
