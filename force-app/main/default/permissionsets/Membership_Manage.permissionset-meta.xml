@@ -407,6 +407,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Product2.Family</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Product2.Grace_Period__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -418,6 +423,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Product2.Renewal_Option__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Product2.StockKeepingUnit</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
