@@ -277,6 +277,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Membership_Form_Submission__c.Recipient__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Membership_Form_Submission__c.SalePrice__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -402,6 +407,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Product2.Family</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Product2.Grace_Period__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -413,6 +423,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Product2.Renewal_Option__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Product2.StockKeepingUnit</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
