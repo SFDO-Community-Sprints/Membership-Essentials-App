@@ -4,8 +4,8 @@
     <assignments>
         <name>Update_MFS_Error</name>
         <label>Update MFS - Error</label>
-        <locationX>440</locationX>
-        <locationY>494</locationY>
+        <locationX>704</locationX>
+        <locationY>818</locationY>
         <assignmentItems>
             <assignToReference>Membership_Form_Submission_Record.Status__c</assignToReference>
             <operator>Assign</operator>
@@ -28,8 +28,8 @@
     <assignments>
         <name>Update_MFS_Error_Opp</name>
         <label>Update MFS - Error</label>
-        <locationX>704</locationX>
-        <locationY>386</locationY>
+        <locationX>968</locationX>
+        <locationY>602</locationY>
         <assignmentItems>
             <assignToReference>Membership_Form_Submission_Record.Status__c</assignToReference>
             <operator>Assign</operator>
@@ -53,7 +53,7 @@
         <name>Update_MFS_Success2</name>
         <label>Update MFS - Success</label>
         <locationX>176</locationX>
-        <locationY>494</locationY>
+        <locationY>818</locationY>
         <assignmentItems>
             <assignToReference>Membership_Form_Submission_Record.Opportunity__c</assignToReference>
             <operator>Assign</operator>
@@ -65,6 +65,27 @@
             <targetReference>Update_MFS</targetReference>
         </connector>
     </assignments>
+    <constants>
+        <name>staticError</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Error</stringValue>
+        </value>
+    </constants>
+    <constants>
+        <name>staticFlowName</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>DPEV Listener - Create Opportunity</stringValue>
+        </value>
+    </constants>
+    <constants>
+        <name>staticPass</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Pass</stringValue>
+        </value>
+    </constants>
     <description>Create Listener flow off creation of: DPEV Create Opportunity Platform Event</description>
     <environments>Default</environments>
     <formulas>
@@ -95,16 +116,213 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordCreates>
+        <name>Create_Membership_Essentials_Log</name>
+        <label>Create Membership Essentials Log</label>
+        <locationX>176</locationX>
+        <locationY>278</locationY>
+        <connector>
+            <targetReference>Create_Opportunity_Record</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Error_Text__c</field>
+            <value>
+                <stringValue>{!staticFlowName} - {!Membership_Form_Submission_Record.Id} - Has Started</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>staticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <elementReference>staticPass</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_Membership_Essentials_Log_0</name>
+        <label>Create Membership Essentials Log</label>
+        <locationX>968</locationX>
+        <locationY>494</locationY>
+        <connector>
+            <targetReference>Update_MFS_Error_Opp</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Error_Text__c</field>
+            <value>
+                <stringValue>{!staticFlowName} - {!Membership_Form_Submission_Record.Id} - Create Opportunity has failed</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>staticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <elementReference>staticError</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_Membership_Essentials_Log_0_0</name>
+        <label>Create Membership Essentials Log</label>
+        <locationX>176</locationX>
+        <locationY>494</locationY>
+        <connector>
+            <targetReference>Create_Opportunity_Line_Item</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Error_Text__c</field>
+            <value>
+                <stringValue>{!staticFlowName} - {!Membership_Form_Submission_Record.Id} - Create Opportunity has been completed</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>staticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <elementReference>staticPass</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_Membership_Essentials_Log_0_0_0</name>
+        <label>Create Membership Essentials Log</label>
+        <locationX>704</locationX>
+        <locationY>710</locationY>
+        <connector>
+            <targetReference>Update_MFS_Error</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Error_Text__c</field>
+            <value>
+                <stringValue>{!staticFlowName} - {!Membership_Form_Submission_Record.Id} - Create Opportunity Line Item has failed</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>staticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <elementReference>staticError</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_Membership_Essentials_Log_0_0_0_0</name>
+        <label>Create Membership Essentials Log</label>
+        <locationX>176</locationX>
+        <locationY>710</locationY>
+        <connector>
+            <targetReference>Update_MFS_Success2</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Error_Text__c</field>
+            <value>
+                <stringValue>{!staticFlowName} - {!Membership_Form_Submission_Record.Id} - Create Opportunity Line Item has been completed</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>staticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <elementReference>staticPass</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_Membership_Essentials_Log_0_0_0_0_0</name>
+        <label>Create Membership Essentials Log</label>
+        <locationX>176</locationX>
+        <locationY>1034</locationY>
+        <inputAssignments>
+            <field>Error_Text__c</field>
+            <value>
+                <stringValue>{!staticFlowName} - {!Membership_Form_Submission_Record.Id} - Update Membership Form Submission has been completed</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>staticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <elementReference>staticPass</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_Membership_Essentials_Log_0_0_0_0_0_0</name>
+        <label>Create Membership Essentials Log</label>
+        <locationX>440</locationX>
+        <locationY>1034</locationY>
+        <inputAssignments>
+            <field>Error_Text__c</field>
+            <value>
+                <stringValue>{!staticFlowName} - {!Membership_Form_Submission_Record.Id} - Update Membership Form Summission has failed</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>staticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <elementReference>staticError</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
         <description>Create the opportunity line item</description>
         <name>Create_Opportunity_Line_Item</name>
         <label>Create Opportunity Line Item</label>
         <locationX>176</locationX>
-        <locationY>386</locationY>
+        <locationY>602</locationY>
         <connector>
-            <targetReference>Update_MFS_Success2</targetReference>
+            <targetReference>Create_Membership_Essentials_Log_0_0_0_0</targetReference>
         </connector>
         <faultConnector>
-            <targetReference>Update_MFS_Error</targetReference>
+            <targetReference>Create_Membership_Essentials_Log_0_0_0</targetReference>
         </faultConnector>
         <inputAssignments>
             <field>OpportunityId</field>
@@ -144,12 +362,12 @@
         <name>Create_Opportunity_Record</name>
         <label>Create Opportunity Record</label>
         <locationX>176</locationX>
-        <locationY>278</locationY>
+        <locationY>386</locationY>
         <connector>
-            <targetReference>Create_Opportunity_Line_Item</targetReference>
+            <targetReference>Create_Membership_Essentials_Log_0_0</targetReference>
         </connector>
         <faultConnector>
-            <targetReference>Update_MFS_Error_Opp</targetReference>
+            <targetReference>Create_Membership_Essentials_Log_0</targetReference>
         </faultConnector>
         <inputAssignments>
             <field>AccountId</field>
@@ -197,7 +415,7 @@
         <locationY>170</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Create_Opportunity_Record</targetReference>
+            <targetReference>Create_Membership_Essentials_Log</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -215,7 +433,13 @@
         <name>Update_MFS</name>
         <label>Update - MFS</label>
         <locationX>176</locationX>
-        <locationY>602</locationY>
+        <locationY>926</locationY>
+        <connector>
+            <targetReference>Create_Membership_Essentials_Log_0_0_0_0_0</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Create_Membership_Essentials_Log_0_0_0_0_0_0</targetReference>
+        </faultConnector>
         <inputReference>Membership_Form_Submission_Record</inputReference>
     </recordUpdates>
     <start>
