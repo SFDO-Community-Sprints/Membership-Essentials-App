@@ -122,7 +122,7 @@
             <connector>
                 <targetReference>Fire_Membership_Finder_Platform_Event</targetReference>
             </connector>
-            <label>Membership Finder Has Not Run</label>
+            <label>NOT RUN Membership Finder Has Not Run</label>
         </rules>
         <rules>
             <name>Membership_Finder_Has_Run</name>
@@ -145,10 +145,17 @@
         <label>Membership Next Steps</label>
         <locationX>1282</locationX>
         <locationY>386</locationY>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <defaultConnectorLabel>Not Membership</defaultConnectorLabel>
         <rules>
-            <name>Membership_not_populated</name>
+            <name>Membership_not_populated_and_Opportunity_is_Membership</name>
             <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_New_Product_ID.Family</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Membership</stringValue>
+                </rightValue>
+            </conditions>
             <conditions>
                 <leftValueReference>Query_for_Opportunity_Line_Item.Membership__c</leftValueReference>
                 <operator>IsNull</operator>
@@ -159,7 +166,7 @@
             <connector>
                 <targetReference>Membership_Finder_Run_Check</targetReference>
             </connector>
-            <label>Membership not populated</label>
+            <label>Membership not populated and Opportunity is Membership</label>
         </rules>
         <rules>
             <name>Membership_is_populated</name>
