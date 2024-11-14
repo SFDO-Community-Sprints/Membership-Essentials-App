@@ -225,7 +225,7 @@
         <inputAssignments>
             <field>Error_Text__c</field>
             <value>
-                <elementReference>Query_for_Opportunity_Line_Item.Id</elementReference>
+                <stringValue>query for opp line item</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -237,7 +237,7 @@
         <inputAssignments>
             <field>Log_Type__c</field>
             <value>
-                <stringValue>log</stringValue>
+                <stringValue>Error</stringValue>
             </value>
         </inputAssignments>
         <object>Membership_Essentials_Event_Log__c</object>

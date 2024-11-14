@@ -5,7 +5,7 @@
         <name>Does_Recipient_Exist</name>
         <label>Does Recipient Exist</label>
         <locationX>182</locationX>
-        <locationY>926</locationY>
+        <locationY>818</locationY>
         <defaultConnector>
             <targetReference>Update_Membership_w_Contact</targetReference>
         </defaultConnector>
@@ -92,7 +92,7 @@ TEXT({!$Flow.CurrentDate})
         <name>Copy_1_of_Create_log_item</name>
         <label>Copy 1 of Create log item</label>
         <locationX>182</locationX>
-        <locationY>602</locationY>
+        <locationY>494</locationY>
         <connector>
             <targetReference>Get_New_Membership</targetReference>
         </connector>
@@ -118,39 +118,10 @@ TEXT({!$Flow.CurrentDate})
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
-        <name>Create_log_item</name>
-        <label>Create log item</label>
-        <locationX>182</locationX>
-        <locationY>386</locationY>
-        <connector>
-            <targetReference>Create_Membership</targetReference>
-        </connector>
-        <inputAssignments>
-            <field>Error_Text__c</field>
-            <value>
-                <elementReference>errorMessage</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Flow_Name__c</field>
-            <value>
-                <stringValue>DPEV Listener - Membership Create Flow</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Log_Type__c</field>
-            <value>
-                <stringValue>Error</stringValue>
-            </value>
-        </inputAssignments>
-        <object>Membership_Essentials_Event_Log__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
         <name>Create_Membership</name>
         <label>Create Membership</label>
         <locationX>182</locationX>
-        <locationY>494</locationY>
+        <locationY>386</locationY>
         <assignRecordIdToReference>varMembershipformSubmission</assignRecordIdToReference>
         <connector>
             <targetReference>Copy_1_of_Create_log_item</targetReference>
@@ -203,7 +174,7 @@ TEXT({!$Flow.CurrentDate})
         <name>Get_New_Membership</name>
         <label>Get New Membership</label>
         <locationX>182</locationX>
-        <locationY>710</locationY>
+        <locationY>602</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Update_Membership_on_Opportunity_Product</targetReference>
@@ -228,11 +199,11 @@ TEXT({!$Flow.CurrentDate})
         <locationY>278</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Create_log_item</targetReference>
+            <targetReference>Create_Membership</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>Id</field>
+            <field>Opportunity__c</field>
             <operator>EqualTo</operator>
             <value>
                 <elementReference>Query_Opportunity_Product.OpportunityId</elementReference>
@@ -254,10 +225,10 @@ TEXT({!$Flow.CurrentDate})
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>OpportunityId</field>
+            <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>Query_Membership_Form_Submission.Opportunity__c</elementReference>
+                <elementReference>$Record.Record_Id__c</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
@@ -270,7 +241,7 @@ TEXT({!$Flow.CurrentDate})
         <name>Update_Membership_Form_Submission_Record</name>
         <label>Update Membership Form Submission Record</label>
         <locationX>182</locationX>
-        <locationY>1226</locationY>
+        <locationY>1118</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -297,7 +268,7 @@ TEXT({!$Flow.CurrentDate})
         <name>Update_Membership_on_Opportunity_Product</name>
         <label>Update Membership on Opportunity Product</label>
         <locationX>182</locationX>
-        <locationY>818</locationY>
+        <locationY>710</locationY>
         <connector>
             <targetReference>Does_Recipient_Exist</targetReference>
         </connector>
@@ -321,7 +292,7 @@ TEXT({!$Flow.CurrentDate})
         <name>Update_Membership_w_Contact</name>
         <label>Update Membership w Contact</label>
         <locationX>314</locationX>
-        <locationY>1034</locationY>
+        <locationY>926</locationY>
         <connector>
             <targetReference>Update_Membership_Form_Submission_Record</targetReference>
         </connector>
@@ -345,7 +316,7 @@ TEXT({!$Flow.CurrentDate})
         <name>Update_Membership_w_Recipient</name>
         <label>Update Membership w Recipient</label>
         <locationX>50</locationX>
-        <locationY>1034</locationY>
+        <locationY>926</locationY>
         <connector>
             <targetReference>Update_Membership_Form_Submission_Record</targetReference>
         </connector>

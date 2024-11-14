@@ -232,5 +232,5 @@
         <object>DPEV_Gift_Recipient_Finder__e</object>
         <triggerType>PlatformEvent</triggerType>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
 </Flow>
