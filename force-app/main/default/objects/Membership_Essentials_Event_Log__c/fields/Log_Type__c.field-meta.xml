@@ -16,6 +16,11 @@
                 <default>false</default>
                 <label>Error</label>
             </value>
+            <value>
+                <fullName>Pass</fullName>
+                <default>false</default>
+                <label>Pass</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

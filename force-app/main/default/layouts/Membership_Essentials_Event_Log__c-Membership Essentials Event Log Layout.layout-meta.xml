@@ -22,7 +22,11 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Error_Text__c</field>
+                <field>Log_Message__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Membership_Form_Submission__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
