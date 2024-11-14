@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <environments>Default</environments>
+    <formulas>
+        <name>NewMembershipEndDate</name>
+        <dataType>Date</dataType>
+        <expression>IF(
+    NOT(ISBLANK(TEXT({!GetMembershipRecord.Product__r.Term_Unit__c}))),
+    CASE(
+        TEXT({!GetMembershipRecord.Product__r.Term_Unit__c}),
+        &quot;Days&quot;, 
+        IF(ISBLANK({!GetMembershipRecord.End_Date__c}), 
+            TODAY() + {!GetMembershipRecord.Product__r.Term__c}, 
+            {!GetMembershipRecord.End_Date__c} + {!GetMembershipRecord.Product__r.Term__c}),
+        &quot;Weeks&quot;, 
+        IF(ISBLANK({!GetMembershipRecord.End_Date__c}), 
+            TODAY() + ({!GetMembershipRecord.Product__r.Term__c} * 7), 
+            {!GetMembershipRecord.End_Date__c} + ({!GetMembershipRecord.Product__r.Term__c} * 7)),
+        &quot;Months&quot;, 
+        IF(ISBLANK({!GetMembershipRecord.End_Date__c}), 
+            ADDMONTHS(TODAY(), {!GetMembershipRecord.Product__r.Term__c}), 
+            ADDMONTHS({!GetMembershipRecord.End_Date__c}, {!GetMembershipRecord.Product__r.Term__c})),
+        &quot;Years&quot;, 
+        IF(ISBLANK({!GetMembershipRecord.End_Date__c}), 
+            ADDMONTHS(TODAY(), {!GetMembershipRecord.Product__r.Term__c} * 12), 
+            ADDMONTHS({!GetMembershipRecord.End_Date__c}, {!GetMembershipRecord.Product__r.Term__c} * 12)),
+        NULL
+    ),
+    NULL
+)</expression>
+    </formulas>
+    <interviewLabel>DPEV Listener - Membership Renewal {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>DPEV Listener - Membership Renewal</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>Get the records related to the membership record</description>
+        <name>GetMembershipRecord</name>
+        <label>GetMembershipRecord</label>
+        <locationX>176</locationX>
+        <locationY>278</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>UpdateMembershipEndDate</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>GetOpportunityLineItem.Membership__r.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Membership__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get the opportunity line item id and store the membership id related to the opportunity line item</description>
+        <name>GetOpportunityLineItem</name>
+        <label>GetOpportunityLineItem</label>
+        <locationX>176</locationX>
+        <locationY>170</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>GetMembershipRecord</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Record_Id__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>OpportunityLineItem</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Membership__c</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <description>Update the membership end date field on the membership record.</description>
+        <name>UpdateMembershipEndDate</name>
+        <label>UpdateMembershipEndDate</label>
+        <locationX>176</locationX>
+        <locationY>386</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>GetMembershipRecord.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>End_Date__c</field>
+            <value>
+                <elementReference>NewMembershipEndDate</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership__c</object>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>GetOpportunityLineItem</targetReference>
+        </connector>
+        <object>DPEV_Membership_Renewal__e</object>
+        <triggerType>PlatformEvent</triggerType>
+    </start>
+    <status>Draft</status>
+</Flow>
