@@ -34,7 +34,7 @@
     <assignments>
         <name>Update_MFS_Skipped</name>
         <label>Update MFS - Skipped</label>
-        <locationX>578</locationX>
+        <locationX>842</locationX>
         <locationY>386</locationY>
         <assignmentItems>
             <assignToReference>Get_the_Membership_Form_Submission_Record.Campaign_Import_Status__c</assignToReference>
@@ -70,6 +70,13 @@
             <targetReference>Update_MFS_record</targetReference>
         </connector>
     </assignments>
+    <constants>
+        <name>StaticFlowName</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>DPEV Listener - Campaign Finder </stringValue>
+        </value>
+    </constants>
     <decisions>
         <name>Was_a_Campaign_Found</name>
         <label>Was a Campaign Found?</label>
@@ -98,7 +105,7 @@
     <decisions>
         <name>Was_campaign_source_code_or_name_indicated</name>
         <label>Was campaign source code or name indicated?</label>
-        <locationX>380</locationX>
+        <locationX>512</locationX>
         <locationY>278</locationY>
         <defaultConnector>
             <targetReference>Update_MFS_Skipped</targetReference>
@@ -127,6 +134,7 @@
             <label>Yes</label>
         </rules>
     </decisions>
+    <description>Updated to include the new Membership Essentials Log object.</description>
     <environments>Default</environments>
     <interviewLabel>DPEV {!$Flow.CurrentDateTime}</interviewLabel>
     <label>DPEV Listener - Campaign Finder</label>
@@ -149,6 +157,99 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <description>Creates a log to show the update the to the MFS was not successful.</description>
+        <name>Create_Final_Update_Membership_Essentials_Log</name>
+        <label>Create Final Update Membership Essentials Log</label>
+        <locationX>1106</locationX>
+        <locationY>986</locationY>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>Get_the_Membership_Form_Submission_Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <description>Creates a log to show there was an error when trying to find the campaign.</description>
+        <name>Create_Find_Membership_Campaign_Membership_Essentials_Log</name>
+        <label>Create &quot;Find Membership Campaign&quot; Membership Essentials Log</label>
+        <locationX>578</locationX>
+        <locationY>494</locationY>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>Get_the_Membership_Form_Submission_Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <description>Creates a log to show the Platform Event was triggered</description>
+        <name>Create_Initial_Membership_Essentials_Log</name>
+        <label>Create Initial Membership Essentials Log</label>
+        <locationX>1370</locationX>
+        <locationY>278</locationY>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <stringValue>Platform event triggered. {!$Flow.FaultMessage}</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
     <recordLookups>
         <name>Find_Existing_Campaign</name>
         <label>Find Existing Campaign</label>
@@ -158,6 +259,9 @@
         <connector>
             <targetReference>Was_a_Campaign_Found</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Create_Find_Membership_Campaign_Membership_Essentials_Log</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Name</field>
@@ -187,12 +291,15 @@
     <recordLookups>
         <name>Get_the_Membership_Form_Submission_Record</name>
         <label>Get the Membership Form Submission Record</label>
-        <locationX>380</locationX>
+        <locationX>512</locationX>
         <locationY>170</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Was_campaign_source_code_or_name_indicated</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Create_Initial_Membership_Essentials_Log</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -208,12 +315,15 @@
     <recordUpdates>
         <name>Update_MFS_record</name>
         <label>Update MFS record</label>
-        <locationX>380</locationX>
+        <locationX>512</locationX>
         <locationY>878</locationY>
+        <faultConnector>
+            <targetReference>Create_Final_Update_Membership_Essentials_Log</targetReference>
+        </faultConnector>
         <inputReference>Get_the_Membership_Form_Submission_Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>254</locationX>
+        <locationX>386</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_the_Membership_Form_Submission_Record</targetReference>
@@ -221,5 +331,5 @@
         <object>DPEV_Find_Campaign__e</object>
         <triggerType>PlatformEvent</triggerType>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
 </Flow>
