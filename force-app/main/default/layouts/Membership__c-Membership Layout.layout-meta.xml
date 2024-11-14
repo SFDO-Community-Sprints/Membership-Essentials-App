@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Layout xmlns="http://soap.sforce.com/2006/04/metadata">
-    <excludeButtons>OpenSlackRecordChannel</excludeButtons>
     <layoutSections>
         <customLabel>false</customLabel>
         <detailHeading>false</detailHeading>
@@ -111,6 +110,12 @@
     </platformActionList>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>Product__c</fields>
+        <fields>Account__c</fields>
+        <fields>Contact__c</fields>
+        <fields>Status__c</fields>
+        <fields>Duration__c</fields>
+        <fields>CREATED_DATE</fields>
         <relatedList>Membership_Form_Submission__c.Membership__c</relatedList>
     </relatedLists>
     <relatedLists>
