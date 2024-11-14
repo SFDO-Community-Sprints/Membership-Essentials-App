@@ -97,17 +97,22 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Membership_Essentials_Event_Log__c.Error_Text__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Membership_Essentials_Event_Log__c.Flow_Name__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Membership_Essentials_Event_Log__c.Log_Message__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Membership_Essentials_Event_Log__c.Log_Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Membership_Essentials_Event_Log__c.Membership_Form_Submission__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

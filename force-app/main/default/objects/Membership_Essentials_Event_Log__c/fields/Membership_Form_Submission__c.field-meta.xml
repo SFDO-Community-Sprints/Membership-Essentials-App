@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Membership_Form_Submission__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>The Form Submission that started the business process that triggered the creation of the log.</description>
+    <externalId>false</externalId>
+    <label>Membership Form Submission</label>
+    <referenceTo>Membership_Form_Submission__c</referenceTo>
+    <relationshipLabel>Membership Essentials Event Logs</relationshipLabel>
+    <relationshipName>Membership_Essentials_Event_Logs</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>
