@@ -60,6 +60,9 @@
         <label>Fire BPEV - Membership Transaction</label>
         <locationX>50</locationX>
         <locationY>431</locationY>
+        <connector>
+            <targetReference>log_entry</targetReference>
+        </connector>
         <inputAssignments>
             <field>Record_Id__c</field>
             <value>
@@ -67,6 +70,32 @@
             </value>
         </inputAssignments>
         <object>BPEV_Membership_Transaction__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>log_entry</name>
+        <label>log entry</label>
+        <locationX>50</locationX>
+        <locationY>539</locationY>
+        <inputAssignments>
+            <field>Error_Text__c</field>
+            <value>
+                <stringValue>membership transaction trigger</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <stringValue>Opportunity line item-after membership</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <start>
