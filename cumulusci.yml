@@ -17,3 +17,16 @@ tasks:
         options:
             path: robot/Membership-Management/tests
             output: robot/Membership-Management/doc/Membership-Management_tests.html
+
+flows:
+    config_dev:
+        description: Customized flow used in the default dev org flow for setting up a development environment.
+        steps:
+            3:
+                task: assign_permission_sets
+                options:
+                    api_names: Membership_Manage
+            4:
+                task: deploy_post
+                options:
+                    path: unpackaged/dev
