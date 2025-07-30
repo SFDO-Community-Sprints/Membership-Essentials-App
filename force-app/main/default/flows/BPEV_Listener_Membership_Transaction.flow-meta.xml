@@ -6,7 +6,7 @@
         <name>Check_Level_and_Type</name>
         <label>Check Level and Type</label>
         <locationX>1634</locationX>
-        <locationY>1034</locationY>
+        <locationY>926</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Send_for_Renewal</name>
@@ -27,8 +27,8 @@
     <decisions>
         <name>Compare_Opportunity_and_Membership_Products</name>
         <label>Compare Opportunity and Membership Products</label>
-        <locationX>1414</locationX>
-        <locationY>710</locationY>
+        <locationX>1546</locationX>
+        <locationY>602</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Opportunity_Product_Membership_Product_are_the_same</name>
@@ -66,7 +66,7 @@
         <name>Determine_if_Membership_Renewal_is_an_Upgrade_or_a_Downgrade</name>
         <label>Determine if Membership Renewal is an Upgrade or a Downgrade</label>
         <locationX>1326</locationX>
-        <locationY>926</locationY>
+        <locationY>818</locationY>
         <defaultConnector>
             <targetReference>Check_Level_and_Type</targetReference>
         </defaultConnector>
@@ -107,7 +107,7 @@
         <name>Membership_Finder_Run_Check</name>
         <label>Membership Finder Run Check</label>
         <locationX>314</locationX>
-        <locationY>602</locationY>
+        <locationY>494</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Membership_Finder_Has_Not_Run</name>
@@ -143,8 +143,8 @@
     <decisions>
         <name>Membership_Next_Steps</name>
         <label>Membership Next Steps</label>
-        <locationX>1282</locationX>
-        <locationY>494</locationY>
+        <locationX>1546</locationX>
+        <locationY>386</locationY>
         <defaultConnectorLabel>Not Membership</defaultConnectorLabel>
         <rules>
             <name>Membership_not_populated_and_Opportunity_is_Membership</name>
@@ -215,23 +215,72 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordCreates>
-        <name>create_log</name>
-        <label>create log</label>
-        <locationX>1282</locationX>
-        <locationY>278</locationY>
-        <connector>
-            <targetReference>Get_New_Product_ID</targetReference>
-        </connector>
-        <inputAssignments>
-            <field>Error_Text__c</field>
-            <value>
-                <stringValue>query for opp line item</stringValue>
-            </value>
-        </inputAssignments>
+        <name>Create_Get_Membership_Record</name>
+        <label>Create &quot;Get Membership Record&quot;</label>
+        <locationX>2514</locationX>
+        <locationY>602</locationY>
         <inputAssignments>
             <field>Flow_Name__c</field>
             <value>
-                <stringValue>BPEV Listener - Membership Transaction   - V3</stringValue>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_Get_Old_Product_ID_Membership_Essentials_Log</name>
+        <label>Create &quot;Get Old Product ID&quot; Membership Essentials Log</label>
+        <locationX>1986</locationX>
+        <locationY>818</locationY>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_Initial_Membership_Essentials_Log</name>
+        <label>Create Initial Membership Essentials Log</label>
+        <locationX>3042</locationX>
+        <locationY>278</locationY>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <stringValue>Platform event triggered. {!$Flow.FaultMessage}</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -247,7 +296,7 @@
         <name>Fire_Create_Membership_Platform_Event</name>
         <label>Fire Create Membership Platform Event</label>
         <locationX>314</locationX>
-        <locationY>710</locationY>
+        <locationY>602</locationY>
         <inputAssignments>
             <field>Record_Id__c</field>
             <value>
@@ -261,7 +310,7 @@
         <name>Fire_Membership_Downgrade_Platform_Event1</name>
         <label>Fire Membership Downgrade Platform Event</label>
         <locationX>1282</locationX>
-        <locationY>1034</locationY>
+        <locationY>926</locationY>
         <inputAssignments>
             <field>Record_Id__c</field>
             <value>
@@ -275,7 +324,7 @@
         <name>Fire_Membership_Finder_Platform_Event</name>
         <label>Fire Membership Finder Platform Event</label>
         <locationX>50</locationX>
-        <locationY>710</locationY>
+        <locationY>602</locationY>
         <inputAssignments>
             <field>Record_Id__c</field>
             <value>
@@ -288,8 +337,8 @@
     <recordCreates>
         <name>Fire_Membership_Renewal_Platform_Event</name>
         <label>Fire Membership Renewal Platform Event</label>
-        <locationX>1414</locationX>
-        <locationY>1502</locationY>
+        <locationX>1546</locationX>
+        <locationY>1394</locationY>
         <inputAssignments>
             <field>Record_Id__c</field>
             <value>
@@ -303,7 +352,7 @@
         <name>Fire_Membership_Upgrade_Platform_Event</name>
         <label>Fire Membership Upgrade Platform Event</label>
         <locationX>1018</locationX>
-        <locationY>1034</locationY>
+        <locationY>926</locationY>
         <inputAssignments>
             <field>Record_Id__c</field>
             <value>
@@ -317,12 +366,15 @@
         <description>Get the Membership record that is referenced by the Opportunity Line Item</description>
         <name>Get_Membership_Record</name>
         <label>Get Membership Record</label>
-        <locationX>1414</locationX>
-        <locationY>602</locationY>
+        <locationX>1546</locationX>
+        <locationY>494</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Compare_Opportunity_and_Membership_Products</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Create_Get_Membership_Record</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -338,8 +390,8 @@
     <recordLookups>
         <name>Get_New_Product_ID</name>
         <label>Get New Product ID</label>
-        <locationX>1282</locationX>
-        <locationY>386</locationY>
+        <locationX>1546</locationX>
+        <locationY>278</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Membership_Next_Steps</targetReference>
@@ -360,11 +412,14 @@
         <name>Get_Old_Product_ID</name>
         <label>Get Old Product ID</label>
         <locationX>1326</locationX>
-        <locationY>818</locationY>
+        <locationY>710</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Determine_if_Membership_Renewal_is_an_Upgrade_or_a_Downgrade</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Create_Get_Old_Product_ID_Membership_Essentials_Log</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -381,12 +436,15 @@
         <description>Get the line item provided in the Record Id Field of the BPEV - Membership Transaction</description>
         <name>Query_for_Opportunity_Line_Item</name>
         <label>Query for Opportunity Line Item</label>
-        <locationX>1282</locationX>
+        <locationX>1546</locationX>
         <locationY>170</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>create_log</targetReference>
+            <targetReference>Get_New_Product_ID</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Create_Initial_Membership_Essentials_Log</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -400,7 +458,7 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>1156</locationX>
+        <locationX>1420</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Query_for_Opportunity_Line_Item</targetReference>
@@ -409,4 +467,14 @@
         <triggerType>PlatformEvent</triggerType>
     </start>
     <status>Active</status>
+    <variables>
+        <name>StaticFlowName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>BPEV Listener - Membership Transaction</stringValue>
+        </value>
+    </variables>
 </Flow>
