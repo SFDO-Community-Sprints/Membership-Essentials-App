@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
     <assignments>
         <name>Update_MFS_Error</name>
         <label>Update MFS - Error</label>
         <locationX>314</locationX>
-        <locationY>710</locationY>
+        <locationY>818</locationY>
         <assignmentItems>
             <assignToReference>Get_Membership_Form_Submission.Status__c</assignToReference>
             <operator>Assign</operator>
@@ -20,13 +21,14 @@
             </value>
         </assignmentItems>
         <connector>
+            <isGoTo>true</isGoTo>
             <targetReference>Update_Membership_Form_Submission</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>Update_MFS_Skip</name>
         <label>Update MFS - Skip</label>
-        <locationX>842</locationX>
+        <locationX>1106</locationX>
         <locationY>386</locationY>
         <assignmentItems>
             <assignToReference>Get_Membership_Form_Submission.Account_Import_Status__c</assignToReference>
@@ -43,7 +45,7 @@
         <name>Update_MFS_Success</name>
         <label>Update MFS - Success</label>
         <locationX>50</locationX>
-        <locationY>710</locationY>
+        <locationY>818</locationY>
         <assignmentItems>
             <assignToReference>Get_Membership_Form_Submission.Account_Import_Status__c</assignToReference>
             <operator>Assign</operator>
@@ -66,7 +68,7 @@
         <name>Update_MFS_Success_found</name>
         <label>Update MFS - Success</label>
         <locationX>578</locationX>
-        <locationY>602</locationY>
+        <locationY>710</locationY>
         <assignmentItems>
             <assignToReference>Get_Membership_Form_Submission.Account_Import_Status__c</assignToReference>
             <operator>Assign</operator>
@@ -88,7 +90,7 @@
     <decisions>
         <name>Is_account_name_populated</name>
         <label>Is account name populated?</label>
-        <locationX>578</locationX>
+        <locationX>710</locationX>
         <locationY>278</locationY>
         <defaultConnector>
             <targetReference>Update_MFS_Skip</targetReference>
@@ -116,7 +118,7 @@
         <locationX>314</locationX>
         <locationY>494</locationY>
         <defaultConnector>
-            <targetReference>Update_MFS_Success_found</targetReference>
+            <targetReference>Create_Membership_Essentials_Log_Pass</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No, Find</defaultConnectorLabel>
         <rules>
@@ -136,6 +138,7 @@
         </rules>
     </decisions>
     <description>Create or find account associated with Membership Form Submission</description>
+    <environments>Default</environments>
     <interviewLabel>DPEV Listener - {!$Flow.CurrentDateTime}</interviewLabel>
     <label>DPEV Listener - Create or Find Account</label>
     <processMetadataValues>
@@ -163,10 +166,10 @@
         <locationX>50</locationX>
         <locationY>602</locationY>
         <connector>
-            <targetReference>Update_MFS_Success</targetReference>
+            <targetReference>Create_Membership_Essentials_Log_Pass1</targetReference>
         </connector>
         <faultConnector>
-            <targetReference>Update_MFS_Error</targetReference>
+            <targetReference>Create_Create_Account_Membership_Essentials_Log</targetReference>
         </faultConnector>
         <inputAssignments>
             <field>Name</field>
@@ -175,6 +178,233 @@
             </value>
         </inputAssignments>
         <object>Account</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_Create_Account_Membership_Essentials_Log</name>
+        <label>Create &quot;Create Account&quot; Membership Essentials Log</label>
+        <locationX>314</locationX>
+        <locationY>710</locationY>
+        <connector>
+            <targetReference>Update_MFS_Error</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>Get_Membership_Form_Submission.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_Get_Account_Membership_Essentials_Log</name>
+        <label>Create &quot;Get Account&quot; Membership Essentials Log</label>
+        <locationX>842</locationX>
+        <locationY>494</locationY>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>Get_Membership_Form_Submission.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_Initial_Membership_Essentials_Log</name>
+        <label>Create Initial Membership Essentials Log</label>
+        <locationX>1634</locationX>
+        <locationY>278</locationY>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <stringValue>Platform event triggered. {!$Flow.FaultMessage}</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_Membership_Essentials_Log_Pass</name>
+        <label>Create Membership Essentials Log - Pass</label>
+        <locationX>578</locationX>
+        <locationY>602</locationY>
+        <connector>
+            <targetReference>Update_MFS_Success_found</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <stringValue>Account Found</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Pass</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>Get_Membership_Form_Submission.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_Membership_Essentials_Log_Pass1</name>
+        <label>Create Membership Essentials Log - Pass</label>
+        <locationX>50</locationX>
+        <locationY>710</locationY>
+        <connector>
+            <targetReference>Update_MFS_Success</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <stringValue>Account Created</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Pass</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>Get_Membership_Form_Submission.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_Membership_Essentials_Log_Pass2</name>
+        <label>Create Membership Essentials Log - Pass</label>
+        <locationX>710</locationX>
+        <locationY>1292</locationY>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <stringValue>Membership Form Submission has been updated</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Pass</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>Get_Membership_Form_Submission.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_Update_MFS_Membership_Essentials_Log</name>
+        <label>Create &quot;Update MFS&quot; Membership Essentials Log</label>
+        <locationX>1370</locationX>
+        <locationY>1292</locationY>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>Get_Membership_Form_Submission.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
@@ -186,6 +416,10 @@
         <connector>
             <targetReference>Is_Account_Null</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Create_Get_Account_Membership_Essentials_Log</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Name</field>
             <operator>EqualTo</operator>
@@ -200,12 +434,16 @@
     <recordLookups>
         <name>Get_Membership_Form_Submission</name>
         <label>Get Membership Form Submission</label>
-        <locationX>578</locationX>
+        <locationX>710</locationX>
         <locationY>170</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Is_account_name_populated</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Create_Initial_Membership_Essentials_Log</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -220,12 +458,18 @@
     <recordUpdates>
         <name>Update_Membership_Form_Submission</name>
         <label>Update Membership Form Submission</label>
-        <locationX>578</locationX>
-        <locationY>1076</locationY>
+        <locationX>710</locationX>
+        <locationY>1184</locationY>
+        <connector>
+            <targetReference>Create_Membership_Essentials_Log_Pass2</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Create_Update_MFS_Membership_Essentials_Log</targetReference>
+        </faultConnector>
         <inputReference>Get_Membership_Form_Submission</inputReference>
     </recordUpdates>
     <start>
-        <locationX>452</locationX>
+        <locationX>584</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_Membership_Form_Submission</targetReference>
@@ -234,4 +478,14 @@
         <triggerType>PlatformEvent</triggerType>
     </start>
     <status>Active</status>
+    <variables>
+        <name>StaticFlowName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>DPEV Listener - Create or Find Account</stringValue>
+        </value>
+    </variables>
 </Flow>

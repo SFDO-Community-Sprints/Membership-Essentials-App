@@ -15,7 +15,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>UpdateOpportunityLineItem</targetReference>
+            <targetReference>Copy_2_of_Create_Membership_Essentials_Log_Pass</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -49,7 +49,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>UpdateOpportunityLineItem</targetReference>
+            <targetReference>Create_Membership_Essentials_Log_Pass1</targetReference>
         </connector>
     </assignments>
     <decisions>
@@ -119,6 +119,194 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>Copy_2_of_Create_Membership_Essentials_Log_Pass</name>
+        <label>Copy 2 of Create Membership Essentials Log - Pass</label>
+        <locationX>50</locationX>
+        <locationY>818</locationY>
+        <connector>
+            <targetReference>UpdateOpportunityLineItem</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <stringValue>Membership Found</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Pass</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_GetMembership_Membership_Essentials_Log</name>
+        <label>Create &quot;GetMembership&quot; Membership Essentials Log</label>
+        <locationX>1106</locationX>
+        <locationY>602</locationY>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_GetOpportunity_Membership_Essentials_Log</name>
+        <label>Create &quot;GetOpportunity&quot; Membership Essentials Log</label>
+        <locationX>1370</locationX>
+        <locationY>494</locationY>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_Initial_Membership_Essentials_Log</name>
+        <label>Create Initial Membership Essentials Log</label>
+        <locationX>1634</locationX>
+        <locationY>278</locationY>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <stringValue>Platform event triggered. {!$Flow.FaultMessage}</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_Membership_Essentials_Log_Pass</name>
+        <label>Create Membership Essentials Log - Pass</label>
+        <locationX>314</locationX>
+        <locationY>1118</locationY>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <stringValue>Membership Form Submission has been updated</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Pass</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_Membership_Essentials_Log_Pass1</name>
+        <label>Create Membership Essentials Log - Pass</label>
+        <locationX>314</locationX>
+        <locationY>818</locationY>
+        <connector>
+            <targetReference>UpdateOpportunityLineItem</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <stringValue>NO Membership found</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Pass</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_UpdateOpportunityLineItem_Membership_Essentials_Log</name>
+        <label>Create &quot;UpdateOpportunityLineItem&quot; Membership Essentials Log</label>
+        <locationX>842</locationX>
+        <locationY>1118</locationY>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
     <recordLookups>
         <description>Query for a Membership record where Account__c = Opportunity.AccountId where End_Date__c &gt; today</description>
         <name>GetMembership</name>
@@ -129,6 +317,9 @@
         <connector>
             <targetReference>MembershipPresent</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Create_GetMembership_Membership_Essentials_Log</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Account__c</field>
@@ -160,6 +351,9 @@ Return Opportunity.AccountId</description>
         <connector>
             <targetReference>GetMembership</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Create_GetOpportunity_Membership_Essentials_Log</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -185,6 +379,9 @@ Return the Opportunity</description>
         <connector>
             <targetReference>AssignOpportunityLineItemforUpdate</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Create_Initial_Membership_Essentials_Log</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -204,7 +401,13 @@ Return the Opportunity</description>
         <name>UpdateOpportunityLineItem</name>
         <label>UpdateOpportunityLineItem</label>
         <locationX>314</locationX>
-        <locationY>902</locationY>
+        <locationY>1010</locationY>
+        <connector>
+            <targetReference>Create_Membership_Essentials_Log_Pass</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Create_UpdateOpportunityLineItem_Membership_Essentials_Log</targetReference>
+        </faultConnector>
         <inputReference>OpportunityProductforUpdate</inputReference>
     </recordUpdates>
     <start>
@@ -225,5 +428,15 @@ Return the Opportunity</description>
         <isInput>true</isInput>
         <isOutput>true</isOutput>
         <objectType>OpportunityLineItem</objectType>
+    </variables>
+    <variables>
+        <name>StaticFlowName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>DPEV Listener - Membership Finder</stringValue>
+        </value>
     </variables>
 </Flow>
