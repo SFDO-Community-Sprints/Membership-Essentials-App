@@ -216,7 +216,7 @@ Return the Opportunity</description>
         <object>DPEV_Membership_Finder__e</object>
         <triggerType>PlatformEvent</triggerType>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <description>Variable to hold Opportunity Line item to be updated</description>
         <name>OpportunityProductforUpdate</name>

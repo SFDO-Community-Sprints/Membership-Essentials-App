@@ -5,7 +5,7 @@
     <externalId>false</externalId>
     <inlineHelpText>Product SKU that uniquely identifies the product.</inlineHelpText>
     <label>Product SKU</label>
-    <length>15</length>
+    <length>255</length>
     <required>false</required>
     <trackTrending>false</trackTrending>
     <type>Text</type>

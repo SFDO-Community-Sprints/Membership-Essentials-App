@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
     <assignments>
         <name>Update_MFS_Error</name>
         <label>Update MFS - Error</label>
@@ -195,6 +196,7 @@
         <connector>
             <targetReference>Create_Opportunity_Record</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -222,5 +224,5 @@
         <object>DPEV_Create_Opportunity__e</object>
         <triggerType>PlatformEvent</triggerType>
     </start>
-    <status>Active</status>
+    <status>Obsolete</status>
 </Flow>

@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>61.0</apiVersion>
+    <assignments>
+        <description>Create a membership record with the following: Product__c = purchased product Contact__c = recipient contact on the membership form submission Account__c = recipient account on the membership form submission End Date = calculate the correct end date based upon the product purchased</description>
+        <name>Map_Membership_Variables</name>
+        <label>Map Membership Variables</label>
+        <locationX>182</locationX>
+        <locationY>350</locationY>
+        <assignmentItems>
+            <assignToReference>newMembership.Account__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Query_Membership_Form_Submission.Account__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>newMembership.Opportunity__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Query_Membership_Form_Submission.Opportunity__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>newMembership.Product__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Query_Opportunity_Product.Product2Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>newMembership.Start_Date__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>newMembership.Status__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Current</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>newMembership.Name</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>membershipName</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>newMembership.End_Date__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>calculatedEndDate</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Create_Membership</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>Does_Recipient_Exist</name>
+        <label>Does Recipient Exist</label>
+        <locationX>182</locationX>
+        <locationY>674</locationY>
+        <defaultConnector>
+            <targetReference>Update_Membership_w_Contact</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Recipient_Exists</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Query_Membership_Form_Submission.Recipient__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Membership_w_Recipient</targetReference>
+            </connector>
+            <label>Recipient Exists</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <formulas>
+        <name>calculatedEndDate</name>
+        <dataType>Date</dataType>
+        <expression>IF(
+TEXT({!Query_Opportunity_Product.Product2.Term_Unit__c}) = &apos;Day&apos;,
+{!newMembership.Start_Date__c} + {!Query_Opportunity_Product.Product2.Term__c},
+  IF(
+       TEXT( {!Query_Opportunity_Product.Product2.Term_Unit__c} )= &apos;Week&apos;,
+        {!newMembership.Start_Date__c} + ({!Query_Opportunity_Product.Product2.Term__c}*7),
+         IF(
+                    TEXT(  {!Query_Opportunity_Product.Product2.Term_Unit__c}) = &apos;Month&apos;,
+                             {!newMembership.Start_Date__c} + ({!Query_Opportunity_Product.Product2.Term__c}*30.14),
+                 IF(
+                    TEXT(  {!Query_Opportunity_Product.Product2.Term_Unit__c}) = &apos;Year&apos;,
+                                  {!newMembership.Start_Date__c} + ({!Query_Opportunity_Product.Product2.Term__c}*364),
+                                  null                                   
+                    )
+             )
+  )
+
+)</expression>
+    </formulas>
+    <formulas>
+        <name>membershipName</name>
+        <dataType>String</dataType>
+        <expression>LEFT(
+{!Query_Membership_Form_Submission.Account__r.Name}
++&quot; _ &quot;+
+{!Query_Opportunity_Product.Product2.Name}
++&quot; _ &quot;+
+TEXT({!$Flow.CurrentDate})
+
+,80)</expression>
+    </formulas>
+    <interviewLabel>Member test autolaunched {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Member test autolaunched</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>Create_Membership</name>
+        <label>Create Membership</label>
+        <locationX>182</locationX>
+        <locationY>458</locationY>
+        <connector>
+            <targetReference>Update_Membership_on_Opportunity_Product</targetReference>
+        </connector>
+        <inputReference>newMembership</inputReference>
+    </recordCreates>
+    <recordLookups>
+        <description>retrieve the Membership Form Submission that created the Platform Event.</description>
+        <name>Query_Membership_Form_Submission</name>
+        <label>Query Membership Form Submission</label>
+        <locationX>182</locationX>
+        <locationY>134</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Query_Opportunity_Product</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Membership_Form_Submission__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Link the most recently created product on the opportunity line item for the opportunity linked to the membership form submission</description>
+        <name>Query_Opportunity_Product</name>
+        <label>Query Opportunity Product</label>
+        <locationX>182</locationX>
+        <locationY>242</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Map_Membership_Variables</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>OpportunityId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Query_Membership_Form_Submission.Opportunity__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>OpportunityLineItem</object>
+        <sortField>CreatedDate</sortField>
+        <sortOrder>Desc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>Update_Membership_Form_Submission_Record</name>
+        <label>Update Membership Form Submission Record</label>
+        <locationX>182</locationX>
+        <locationY>974</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Query_Membership_Form_Submission.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Membership__c</field>
+            <value>
+                <elementReference>newMembership.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Recipient__c</field>
+            <value>
+                <elementReference>Query_Membership_Form_Submission.Recipient__c</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Form_Submission__c</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Membership_on_Opportunity_Product</name>
+        <label>Update Membership on Opportunity Product</label>
+        <locationX>182</locationX>
+        <locationY>566</locationY>
+        <connector>
+            <targetReference>Does_Recipient_Exist</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Query_Opportunity_Product.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Membership__c</field>
+            <value>
+                <elementReference>newMembership.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>OpportunityLineItem</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Membership_w_Contact</name>
+        <label>Update Membership w Contact</label>
+        <locationX>314</locationX>
+        <locationY>782</locationY>
+        <connector>
+            <targetReference>Update_Membership_Form_Submission_Record</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>newMembership.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Primary_Contact__c</field>
+            <value>
+                <elementReference>Query_Membership_Form_Submission.Contact__c</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership__c</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Membership_w_Recipient</name>
+        <label>Update Membership w Recipient</label>
+        <locationX>50</locationX>
+        <locationY>782</locationY>
+        <connector>
+            <targetReference>Update_Membership_Form_Submission_Record</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>newMembership.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Primary_Contact__c</field>
+            <value>
+                <elementReference>Query_Membership_Form_Submission.Recipient__c</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership__c</object>
+    </recordUpdates>
+    <start>
+        <locationX>56</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Query_Membership_Form_Submission</targetReference>
+        </connector>
+    </start>
+    <status>Obsolete</status>
+    <variables>
+        <name>newMembership</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Membership__c</objectType>
+    </variables>
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>
