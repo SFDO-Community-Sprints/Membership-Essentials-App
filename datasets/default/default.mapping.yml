@@ -1,0 +1,153 @@
+# Editing this file is usually not recommended because it will
+# be overwritten the next time you re-capture this data.
+#
+# You can change this file's contents permanently by creating a
+# .load.yml file and re-capturing:
+#
+#  https://cumulusci.readthedocs.io/en/stable/data.html#extracting-and-loading-sample-datasets
+Insert Product2:
+  sf_object: Product2
+  table: Product2
+  fields:
+  - Description
+  - DisplayUrl
+  - ExternalId
+  - Family
+  - Grace_Period__c
+  - IsActive
+  - IsSerialized
+  - Membership_Tier__c
+  - Name
+  - ProductCode
+  - QuantityUnitOfMeasure
+  - Renewal_Option__c
+  - StockKeepingUnit
+  - Term_Unit__c
+  - Term__c
+  lookups:
+    Downgrade_Path__c:
+      table: Product2
+      key_field: Downgrade_Path__c
+      after: Insert Product2
+    Upgrade_Path__c:
+      table: Product2
+      key_field: Upgrade_Path__c
+      after: Insert Product2
+Insert Membership__c:
+  sf_object: Membership__c
+  table: Membership__c
+Insert Account:
+  sf_object: Account
+  table: Account
+  fields:
+  - AccountNumber
+  - AccountSource
+  - AnnualRevenue
+  - BillingCity
+  - BillingCountry
+  - BillingGeocodeAccuracy
+  - BillingLatitude
+  - BillingLongitude
+  - BillingPostalCode
+  - BillingState
+  - BillingStreet
+  - CleanStatus
+  - Description
+  - DunsNumber
+  - Fax
+  - First_Membership_Start_Date__c
+  - Industry
+  - Jigsaw
+  - Last_Membership_Start_Date__c
+  - Membership_End_Date__c
+  - Membership_Status__c
+  - Membership_Type__c
+  - NaicsCode
+  - NaicsDesc
+  - Name
+  - NumberOfEmployees
+  - Ownership
+  - Phone
+  - Rating
+  - ShippingCity
+  - ShippingCountry
+  - ShippingGeocodeAccuracy
+  - ShippingLatitude
+  - ShippingLongitude
+  - ShippingPostalCode
+  - ShippingState
+  - ShippingStreet
+  - Sic
+  - SicDesc
+  - Site
+  - TickerSymbol
+  - Tradestyle
+  - Type
+  - Website
+  - YearStarted
+  lookups:
+    ParentId:
+      table: Account
+      key_field: ParentId
+      after: Insert Account
+    Primary_Membership__c:
+      table: Membership__c
+      key_field: Primary_Membership__c
+Insert Contact:
+  sf_object: Contact
+  table: Contact
+  fields:
+  - AssistantName
+  - AssistantPhone
+  - Birthdate
+  - CleanStatus
+  - Department
+  - Description
+  - DoNotCall
+  - Email
+  - EmailBouncedDate
+  - EmailBouncedReason
+  - Fax
+  - FirstName
+  - First_Membership_Start_Date__c
+  - GenderIdentity
+  - HasOptedOutOfEmail
+  - HasOptedOutOfFax
+  - HomePhone
+  - Jigsaw
+  - LastName
+  - Last_Membership_Start_Date__c
+  - LeadSource
+  - MailingCity
+  - MailingCountry
+  - MailingGeocodeAccuracy
+  - MailingLatitude
+  - MailingLongitude
+  - MailingPostalCode
+  - MailingState
+  - MailingStreet
+  - Membership_End_Date__c
+  - Membership_Status__c
+  - Membership_Type__c
+  - MobilePhone
+  - OtherCity
+  - OtherCountry
+  - OtherGeocodeAccuracy
+  - OtherLatitude
+  - OtherLongitude
+  - OtherPhone
+  - OtherPostalCode
+  - OtherState
+  - OtherStreet
+  - Phone
+  - Pronouns
+  - Salutation
+  - Title
+  lookups:
+    AccountId:
+      table: Account
+      key_field: AccountId
+    ReportsToId:
+      table: Contact
+      key_field: ReportsToId
+      after: Insert Contact
