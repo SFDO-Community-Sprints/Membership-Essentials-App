@@ -5,7 +5,7 @@
         <name>Does_Recipient_Exist</name>
         <label>Does Recipient Exist</label>
         <locationX>314</locationX>
-        <locationY>1142</locationY>
+        <locationY>1034</locationY>
         <defaultConnector>
             <targetReference>Update_Membership_w_Contact</targetReference>
         </defaultConnector>
@@ -33,21 +33,20 @@
         <dataType>Date</dataType>
         <expression>IF(
 TEXT({!Query_Opportunity_Product.Product2.Term_Unit__c}) = &apos;Day&apos;,
-{!newMembership.Start_Date__c} + {!Query_Opportunity_Product.Product2.Term__c},
+{!$Flow.CurrentDate} + {!Query_Opportunity_Product.Product2.Term__c},
   IF(
        TEXT( {!Query_Opportunity_Product.Product2.Term_Unit__c} )= &apos;Week&apos;,
-        {!newMembership.Start_Date__c} + ({!Query_Opportunity_Product.Product2.Term__c}*7),
+        {!$Flow.CurrentDate} + ({!Query_Opportunity_Product.Product2.Term__c}*7),
          IF(
                     TEXT(  {!Query_Opportunity_Product.Product2.Term_Unit__c}) = &apos;Month&apos;,
-                             {!newMembership.Start_Date__c} + ({!Query_Opportunity_Product.Product2.Term__c}*30.14),
+                             {!$Flow.CurrentDate} + ({!Query_Opportunity_Product.Product2.Term__c}*30.14),
                  IF(
                     TEXT(  {!Query_Opportunity_Product.Product2.Term_Unit__c}) = &apos;Year&apos;,
-                                  {!newMembership.Start_Date__c} + ({!Query_Opportunity_Product.Product2.Term__c}*364),
+                                  {!$Flow.CurrentDate} + ({!Query_Opportunity_Product.Product2.Term__c}*364),
                                   null                                   
                     )
              )
   )
-
 )</expression>
     </formulas>
     <formulas>
@@ -91,34 +90,8 @@ TEXT({!$Flow.CurrentDate})
     <recordCreates>
         <name>Create_Create_Membership_Membership_Essentials_Log</name>
         <label>Create &quot;Create Membership&quot; Membership Essentials Log</label>
-        <locationX>1898</locationX>
-        <locationY>710</locationY>
-        <inputAssignments>
-            <field>Flow_Name__c</field>
-            <value>
-                <elementReference>StaticFlowName</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Log_Message__c</field>
-            <value>
-                <elementReference>$Flow.FaultMessage</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Log_Type__c</field>
-            <value>
-                <stringValue>Error</stringValue>
-            </value>
-        </inputAssignments>
-        <object>Membership_Essentials_Event_Log__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
-        <name>Create_Get_New_Membership_Membership_Essentials_Log</name>
-        <label>Create &quot;Get New Membership&quot; Membership Essentials Log</label>
         <locationX>1634</locationX>
-        <locationY>926</locationY>
+        <locationY>710</locationY>
         <inputAssignments>
             <field>Flow_Name__c</field>
             <value>
@@ -143,7 +116,7 @@ TEXT({!$Flow.CurrentDate})
     <recordCreates>
         <name>Create_Initial_Membership_Essentials_Log</name>
         <label>Create Initial Membership Essentials Log</label>
-        <locationX>2426</locationX>
+        <locationX>2162</locationX>
         <locationY>278</locationY>
         <inputAssignments>
             <field>Flow_Name__c</field>
@@ -171,7 +144,7 @@ TEXT({!$Flow.CurrentDate})
         <label>Create Membership</label>
         <locationX>314</locationX>
         <locationY>602</locationY>
-        <assignRecordIdToReference>varMembershipformSubmission</assignRecordIdToReference>
+        <assignRecordIdToReference>varMembershipId</assignRecordIdToReference>
         <connector>
             <targetReference>Create_Membership_Essentials_Log_Pass2</targetReference>
         </connector>
@@ -277,12 +250,6 @@ TEXT({!$Flow.CurrentDate})
                 <stringValue>Pass</stringValue>
             </value>
         </inputAssignments>
-        <inputAssignments>
-            <field>Membership_Form_Submission__c</field>
-            <value>
-                <elementReference>Get_New_Membership.Id</elementReference>
-            </value>
-        </inputAssignments>
         <object>Membership_Essentials_Event_Log__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
@@ -292,7 +259,7 @@ TEXT({!$Flow.CurrentDate})
         <locationX>314</locationX>
         <locationY>710</locationY>
         <connector>
-            <targetReference>Get_New_Membership</targetReference>
+            <targetReference>Update_Membership_on_Opportunity_Product</targetReference>
         </connector>
         <inputAssignments>
             <field>Flow_Name__c</field>
@@ -312,12 +279,6 @@ TEXT({!$Flow.CurrentDate})
                 <stringValue>Pass</stringValue>
             </value>
         </inputAssignments>
-        <inputAssignments>
-            <field>Membership_Form_Submission__c</field>
-            <value>
-                <elementReference>Get_New_Membership.Id</elementReference>
-            </value>
-        </inputAssignments>
         <object>Membership_Essentials_Event_Log__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
@@ -325,7 +286,7 @@ TEXT({!$Flow.CurrentDate})
         <name>Create_Membership_Essentials_Log_Pass3</name>
         <label>Create Membership Essentials Log - Pass</label>
         <locationX>314</locationX>
-        <locationY>1034</locationY>
+        <locationY>926</locationY>
         <connector>
             <targetReference>Does_Recipient_Exist</targetReference>
         </connector>
@@ -347,12 +308,6 @@ TEXT({!$Flow.CurrentDate})
                 <stringValue>Pass</stringValue>
             </value>
         </inputAssignments>
-        <inputAssignments>
-            <field>Membership_Form_Submission__c</field>
-            <value>
-                <elementReference>Get_New_Membership.Id</elementReference>
-            </value>
-        </inputAssignments>
         <object>Membership_Essentials_Event_Log__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
@@ -360,7 +315,7 @@ TEXT({!$Flow.CurrentDate})
         <name>Create_Membership_Essentials_Log_Pass4</name>
         <label>Create Membership Essentials Log - Pass</label>
         <locationX>50</locationX>
-        <locationY>1358</locationY>
+        <locationY>1250</locationY>
         <connector>
             <targetReference>Update_Membership_Form_Submission_Record</targetReference>
         </connector>
@@ -382,12 +337,6 @@ TEXT({!$Flow.CurrentDate})
                 <stringValue>Pass</stringValue>
             </value>
         </inputAssignments>
-        <inputAssignments>
-            <field>Membership_Form_Submission__c</field>
-            <value>
-                <elementReference>Get_New_Membership.Id</elementReference>
-            </value>
-        </inputAssignments>
         <object>Membership_Essentials_Event_Log__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
@@ -395,7 +344,7 @@ TEXT({!$Flow.CurrentDate})
         <name>Create_Membership_Essentials_Log_Pass5</name>
         <label>Create Membership Essentials Log - Pass</label>
         <locationX>578</locationX>
-        <locationY>1358</locationY>
+        <locationY>1250</locationY>
         <connector>
             <targetReference>Update_Membership_Form_Submission_Record</targetReference>
         </connector>
@@ -417,12 +366,6 @@ TEXT({!$Flow.CurrentDate})
                 <stringValue>Pass</stringValue>
             </value>
         </inputAssignments>
-        <inputAssignments>
-            <field>Membership_Form_Submission__c</field>
-            <value>
-                <elementReference>Get_New_Membership.Id</elementReference>
-            </value>
-        </inputAssignments>
         <object>Membership_Essentials_Event_Log__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
@@ -430,7 +373,7 @@ TEXT({!$Flow.CurrentDate})
         <name>Create_Membership_Essentials_Log_Pass6</name>
         <label>Create Membership Essentials Log - Pass</label>
         <locationX>314</locationX>
-        <locationY>1790</locationY>
+        <locationY>1682</locationY>
         <inputAssignments>
             <field>Flow_Name__c</field>
             <value>
@@ -449,19 +392,13 @@ TEXT({!$Flow.CurrentDate})
                 <stringValue>Pass</stringValue>
             </value>
         </inputAssignments>
-        <inputAssignments>
-            <field>Membership_Form_Submission__c</field>
-            <value>
-                <elementReference>Get_New_Membership.Id</elementReference>
-            </value>
-        </inputAssignments>
         <object>Membership_Essentials_Event_Log__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
         <name>Create_Query_Membership_Form_Submission_Membership_Essentials_Log</name>
         <label>Create &quot;Query Membership Form Submission&quot; Membership Essentials Log</label>
-        <locationX>2162</locationX>
+        <locationX>1898</locationX>
         <locationY>494</locationY>
         <inputAssignments>
             <field>Flow_Name__c</field>
@@ -488,7 +425,7 @@ TEXT({!$Flow.CurrentDate})
         <name>Create_Update_Membership_Form_Submission_Record_Membership_Essentials_Log</name>
         <label>Create &quot;Update Membership Form Submission Record&quot; Membership Essentials Log</label>
         <locationX>1106</locationX>
-        <locationY>1790</locationY>
+        <locationY>1682</locationY>
         <inputAssignments>
             <field>Flow_Name__c</field>
             <value>
@@ -514,7 +451,7 @@ TEXT({!$Flow.CurrentDate})
         <name>Create_Update_Membership_on_Opportunity_Product_Membership_Essentials_Log</name>
         <label>Create &quot;Update Membership on Opportunity Product&quot; Membership Essentials Log</label>
         <locationX>1370</locationX>
-        <locationY>1034</locationY>
+        <locationY>926</locationY>
         <inputAssignments>
             <field>Flow_Name__c</field>
             <value>
@@ -540,7 +477,7 @@ TEXT({!$Flow.CurrentDate})
         <name>Create_Update_Membership_w_Contact</name>
         <label>Create &quot;Update Membership w Contact&quot;</label>
         <locationX>842</locationX>
-        <locationY>1358</locationY>
+        <locationY>1250</locationY>
         <inputAssignments>
             <field>Flow_Name__c</field>
             <value>
@@ -566,7 +503,7 @@ TEXT({!$Flow.CurrentDate})
         <name>Create_Update_Membership_w_Recipient_Membership_Essentials_Log</name>
         <label>Create &quot;Update Membership w Recipient&quot; Membership Essentials Log</label>
         <locationX>314</locationX>
-        <locationY>1358</locationY>
+        <locationY>1250</locationY>
         <inputAssignments>
             <field>Flow_Name__c</field>
             <value>
@@ -588,30 +525,6 @@ TEXT({!$Flow.CurrentDate})
         <object>Membership_Essentials_Event_Log__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
-    <recordLookups>
-        <name>Get_New_Membership</name>
-        <label>Get New Membership</label>
-        <locationX>314</locationX>
-        <locationY>818</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Update_Membership_on_Opportunity_Product</targetReference>
-        </connector>
-        <faultConnector>
-            <targetReference>Create_Get_New_Membership_Membership_Essentials_Log</targetReference>
-        </faultConnector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>varMembershipformSubmission</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>Membership__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
     <recordLookups>
         <description>retrieve the Membership Form Submission that created the Platform Event.</description>
         <name>Query_Membership_Form_Submission</name>
@@ -668,7 +581,7 @@ TEXT({!$Flow.CurrentDate})
         <name>Update_Membership_Form_Submission_Record</name>
         <label>Update Membership Form Submission Record</label>
         <locationX>314</locationX>
-        <locationY>1682</locationY>
+        <locationY>1574</locationY>
         <connector>
             <targetReference>Create_Membership_Essentials_Log_Pass6</targetReference>
         </connector>
@@ -686,7 +599,7 @@ TEXT({!$Flow.CurrentDate})
         <inputAssignments>
             <field>Membership__c</field>
             <value>
-                <elementReference>newMembership.Id</elementReference>
+                <elementReference>varMembershipId</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -701,7 +614,7 @@ TEXT({!$Flow.CurrentDate})
         <name>Update_Membership_on_Opportunity_Product</name>
         <label>Update Membership on Opportunity Product</label>
         <locationX>314</locationX>
-        <locationY>926</locationY>
+        <locationY>818</locationY>
         <connector>
             <targetReference>Create_Membership_Essentials_Log_Pass3</targetReference>
         </connector>
@@ -719,7 +632,7 @@ TEXT({!$Flow.CurrentDate})
         <inputAssignments>
             <field>Membership__c</field>
             <value>
-                <elementReference>Get_New_Membership.Id</elementReference>
+                <elementReference>varMembershipId</elementReference>
             </value>
         </inputAssignments>
         <object>OpportunityLineItem</object>
@@ -728,7 +641,7 @@ TEXT({!$Flow.CurrentDate})
         <name>Update_Membership_w_Contact</name>
         <label>Update Membership w Contact</label>
         <locationX>578</locationX>
-        <locationY>1250</locationY>
+        <locationY>1142</locationY>
         <connector>
             <targetReference>Create_Membership_Essentials_Log_Pass5</targetReference>
         </connector>
@@ -740,7 +653,7 @@ TEXT({!$Flow.CurrentDate})
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>Get_New_Membership.Id</elementReference>
+                <elementReference>varMembershipId</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -755,7 +668,7 @@ TEXT({!$Flow.CurrentDate})
         <name>Update_Membership_w_Recipient</name>
         <label>Update Membership w Recipient</label>
         <locationX>50</locationX>
-        <locationY>1250</locationY>
+        <locationY>1142</locationY>
         <connector>
             <targetReference>Create_Membership_Essentials_Log_Pass4</targetReference>
         </connector>
@@ -767,7 +680,7 @@ TEXT({!$Flow.CurrentDate})
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>Get_New_Membership.Id</elementReference>
+                <elementReference>varMembershipId</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -789,14 +702,6 @@ TEXT({!$Flow.CurrentDate})
     </start>
     <status>Active</status>
     <variables>
-        <name>newMembership</name>
-        <dataType>SObject</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <objectType>Membership__c</objectType>
-    </variables>
-    <variables>
         <name>StaticFlowName</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
@@ -807,7 +712,7 @@ TEXT({!$Flow.CurrentDate})
         </value>
     </variables>
     <variables>
-        <name>varMembershipformSubmission</name>
+        <name>varMembershipId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
