@@ -5,7 +5,7 @@
         <name>Set_the_Pricebook_Entry_ID</name>
         <label>Set the Pricebook Entry ID</label>
         <locationX>50</locationX>
-        <locationY>710</locationY>
+        <locationY>818</locationY>
         <assignmentItems>
             <assignToReference>Get_MFS_record.Price_Book_Entry__c</assignToReference>
             <operator>Assign</operator>
@@ -44,7 +44,7 @@
         <name>Update_MFS_Status_Error_PBE</name>
         <label>Update MFS Status - Error (PBE)</label>
         <locationX>314</locationX>
-        <locationY>710</locationY>
+        <locationY>818</locationY>
         <assignmentItems>
             <assignToReference>Get_MFS_record.Status__c</assignToReference>
             <operator>Assign</operator>
@@ -92,7 +92,7 @@
         <name>Was_A_Pricebook_Entry_Found</name>
         <label>Was A Pricebook Entry Found</label>
         <locationX>182</locationX>
-        <locationY>602</locationY>
+        <locationY>710</locationY>
         <defaultConnector>
             <targetReference>Update_MFS_Status_Error_PBE</targetReference>
         </defaultConnector>
@@ -226,10 +226,77 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
+        <name>Create_Membership_Essentials_Log_Pass</name>
+        <label>Create Membership Essentials Log - Pass</label>
+        <locationX>512</locationX>
+        <locationY>1202</locationY>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <stringValue>Membership Form Submission has been updated</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Pass</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>Get_MFS_record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_Membership_Essentials_Log_Pass1</name>
+        <label>Create Membership Essentials Log - Pass</label>
+        <locationX>182</locationX>
+        <locationY>602</locationY>
+        <connector>
+            <targetReference>Was_A_Pricebook_Entry_Found</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <stringValue>Pricebook Entry Found </stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Pass</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>Get_MFS_record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
         <name>Create_Update_MFS_Membership_Essentials_Log</name>
         <label>Create &quot;Update MFS&quot; Membership Essentials Log</label>
         <locationX>1106</locationX>
-        <locationY>1094</locationY>
+        <locationY>1202</locationY>
         <inputAssignments>
             <field>Flow_Name__c</field>
             <value>
@@ -288,7 +355,7 @@
         <locationY>494</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Was_A_Pricebook_Entry_Found</targetReference>
+            <targetReference>Create_Membership_Essentials_Log_Pass1</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Create_Get_PBE_Membership_Essentials_Log</targetReference>
@@ -349,7 +416,10 @@
         <name>Update_MFS</name>
         <label>Update MFS</label>
         <locationX>512</locationX>
-        <locationY>986</locationY>
+        <locationY>1094</locationY>
+        <connector>
+            <targetReference>Create_Membership_Essentials_Log_Pass</targetReference>
+        </connector>
         <faultConnector>
             <targetReference>Create_Update_MFS_Membership_Essentials_Log</targetReference>
         </faultConnector>

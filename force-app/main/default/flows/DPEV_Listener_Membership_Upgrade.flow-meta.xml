@@ -146,6 +146,32 @@ Doesn&apos;t calculated for leap years</description>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
+        <name>Create_Membership_Essentials_Log_Pass</name>
+        <label>Create Membership Essentials Log - Pass</label>
+        <locationX>50</locationX>
+        <locationY>710</locationY>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <stringValue>Membership Form Submission has been updated</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Pass</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
         <name>Create_Update_Membership_with_new_product_Membership_Essentials_Log</name>
         <label>Create &quot;Update Membership with new product&quot; Membership Essentials Log</label>
         <locationX>314</locationX>
@@ -225,6 +251,9 @@ Doesn&apos;t calculated for leap years</description>
         <label>Update Membership with new product</label>
         <locationX>50</locationX>
         <locationY>602</locationY>
+        <connector>
+            <targetReference>Create_Membership_Essentials_Log_Pass</targetReference>
+        </connector>
         <faultConnector>
             <targetReference>Create_Update_Membership_with_new_product_Membership_Essentials_Log</targetReference>
         </faultConnector>

@@ -29,7 +29,7 @@
         <name>Update_MFS_Success</name>
         <label>Update MFS - Success</label>
         <locationX>50</locationX>
-        <locationY>602</locationY>
+        <locationY>710</locationY>
         <assignmentItems>
             <assignToReference>Get_MFS_record.Contact__c</assignToReference>
             <operator>Assign</operator>
@@ -45,7 +45,7 @@
         <name>Update_MFS_Sucess</name>
         <label>Update MFS - Sucess</label>
         <locationX>578</locationX>
-        <locationY>494</locationY>
+        <locationY>602</locationY>
         <assignmentItems>
             <assignToReference>Get_MFS_record.Contact__c</assignToReference>
             <operator>Assign</operator>
@@ -63,7 +63,7 @@
         <locationX>314</locationX>
         <locationY>386</locationY>
         <defaultConnector>
-            <targetReference>Update_MFS_Sucess</targetReference>
+            <targetReference>Create_Membership_Essentials_Log_Pass</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Yes, Find</defaultConnectorLabel>
         <rules>
@@ -117,7 +117,7 @@
         <locationX>50</locationX>
         <locationY>494</locationY>
         <connector>
-            <targetReference>Update_MFS_Success</targetReference>
+            <targetReference>Create_Membership_Essentials_Log_Pass1</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Create_Create_Contact_Membership_Essentials_Log</targetReference>
@@ -267,6 +267,108 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
+        <name>Create_Membership_Essentials_Log_Pass</name>
+        <label>Create Membership Essentials Log - Pass</label>
+        <locationX>578</locationX>
+        <locationY>494</locationY>
+        <connector>
+            <targetReference>Update_MFS_Sucess</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <stringValue>MFS Contact Found</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Pass</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>Get_MFS_record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_Membership_Essentials_Log_Pass1</name>
+        <label>Create Membership Essentials Log - Pass</label>
+        <locationX>50</locationX>
+        <locationY>602</locationY>
+        <connector>
+            <targetReference>Update_MFS_Success</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <stringValue>MFS Contact Created</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Pass</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>Get_MFS_record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_Membership_Essentials_Log_Pass2</name>
+        <label>Create Membership Essentials Log - Pass</label>
+        <locationX>314</locationX>
+        <locationY>1100</locationY>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <stringValue>Membership Form Submission has been updated</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Pass</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>Get_MFS_record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
         <name>Create_Update_MFS_Membership_Essentials_Log</name>
         <label>Create &quot;Update MFS&quot; Membership Essentials Log</label>
         <locationX>842</locationX>
@@ -352,6 +454,9 @@
         <label>Update MFS</label>
         <locationX>314</locationX>
         <locationY>992</locationY>
+        <connector>
+            <targetReference>Create_Membership_Essentials_Log_Pass2</targetReference>
+        </connector>
         <faultConnector>
             <targetReference>Create_Update_MFS_Membership_Essentials_Log</targetReference>
         </faultConnector>
