@@ -26,40 +26,16 @@ Insert Product2:
   - Term__c
   lookups:
     Downgrade_Path__c:
-      table:
-      - Product2
+      table: Product2
       key_field: Downgrade_Path__c
       after: Insert Product2
     Upgrade_Path__c:
-      table:
-      - Product2
+      table: Product2
       key_field: Upgrade_Path__c
       after: Insert Product2
-  select_options: {}
-Insert Individual:
-  sf_object: Individual
-  table: Individual
-  fields:
-  - LastName
-  select_options: {}
-Insert DandBCompany:
-  sf_object: DandBCompany
-  table: DandBCompany
-  fields:
-  - DunsNumber
-  - Name
-  select_options: {}
-Insert OperatingHours:
-  sf_object: OperatingHours
-  table: OperatingHours
-  fields:
-  - Name
-  - TimeZone
-  select_options: {}
 Insert Membership__c:
   sf_object: Membership__c
   table: Membership__c
-  select_options: {}
 Insert Account:
   sf_object: Account
   table: Account
@@ -110,24 +86,13 @@ Insert Account:
   - Website
   - YearStarted
   lookups:
-    DandbCompanyId:
-      table:
-      - DandBCompany
-      key_field: DandbCompanyId
-    OperatingHoursId:
-      table:
-      - OperatingHours
-      key_field: OperatingHoursId
     ParentId:
-      table:
-      - Account
+      table: Account
       key_field: ParentId
       after: Insert Account
     Primary_Membership__c:
-      table:
-      - Membership__c
+      table: Membership__c
       key_field: Primary_Membership__c
-  select_options: {}
 Insert Contact:
   sf_object: Contact
   table: Contact
@@ -180,16 +145,9 @@ Insert Contact:
   - Title
   lookups:
     AccountId:
-      table:
-      - Account
+      table: Account
       key_field: AccountId
-    IndividualId:
-      table:
-      - Individual
-      key_field: IndividualId
     ReportsToId:
-      table:
-      - Contact
+      table: Contact
       key_field: ReportsToId
       after: Insert Contact
-  select_options: {}
