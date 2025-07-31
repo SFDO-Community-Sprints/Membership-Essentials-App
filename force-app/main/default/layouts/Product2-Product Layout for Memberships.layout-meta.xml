@@ -32,6 +32,10 @@
                 <behavior>Edit</behavior>
                 <field>Downgrade_Path__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Category__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
