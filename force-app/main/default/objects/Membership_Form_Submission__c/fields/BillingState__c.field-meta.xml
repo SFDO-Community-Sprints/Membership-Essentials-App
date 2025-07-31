@@ -3,7 +3,7 @@
     <fullName>BillingState__c</fullName>
     <externalId>false</externalId>
     <label>Billing State/Province</label>
-    <length>255</length>
+    <length>80</length>
     <required>false</required>
     <trackTrending>false</trackTrending>
     <type>Text</type>
