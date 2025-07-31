@@ -492,5 +492,5 @@
         <object>DPEV_Create_Opportunity__e</object>
         <triggerType>PlatformEvent</triggerType>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
 </Flow>
