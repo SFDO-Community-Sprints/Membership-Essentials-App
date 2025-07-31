@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ListView xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>All</fullName>
+    <fullName>Recently_Created_Logs</fullName>
     <columns>NAME</columns>
     <columns>Flow_Name__c</columns>
     <columns>Log_Type__c</columns>
@@ -8,5 +8,10 @@
     <columns>Log_Message__c</columns>
     <columns>Error_Text__c</columns>
     <filterScope>Everything</filterScope>
-    <label>All</label>
+    <filters>
+        <field>CREATED_DATE</field>
+        <operation>equals</operation>
+        <value>LAST_N_DAYS:3</value>
+    </filters>
+    <label>Recently Created Logs</label>
 </ListView>
