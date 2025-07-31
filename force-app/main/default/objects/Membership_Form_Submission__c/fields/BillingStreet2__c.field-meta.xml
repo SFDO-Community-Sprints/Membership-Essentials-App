@@ -3,7 +3,7 @@
     <fullName>BillingStreet2__c</fullName>
     <externalId>false</externalId>
     <label>Billing Street 2</label>
-    <length>254</length>
+    <length>255</length>
     <required>false</required>
     <trackTrending>false</trackTrending>
     <type>Text</type>
