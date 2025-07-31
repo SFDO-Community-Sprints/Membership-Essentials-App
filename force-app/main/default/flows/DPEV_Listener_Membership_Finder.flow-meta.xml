@@ -90,7 +90,7 @@
             <label>Membership not found</label>
         </rules>
     </decisions>
-    <description>Find membership associated with Opportunity Line Item and Account or mark Membership Form Submission Record to indicate that the finder ran.</description>
+    <description>Find existing membership associated with Opportunity Line Item and Account or mark Membership Form Submission Record to indicate that the finder ran.</description>
     <environments>Default</environments>
     <formulas>
         <description>Returns today&apos;s date</description>
