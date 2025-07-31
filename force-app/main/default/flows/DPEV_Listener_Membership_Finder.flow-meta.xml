@@ -40,7 +40,7 @@
         <name>SetMembershipFinderRanFlag</name>
         <label>SetMembershipFinderRanFlag</label>
         <locationX>314</locationX>
-        <locationY>1226</locationY>
+        <locationY>926</locationY>
         <assignmentItems>
             <assignToReference>OpportunityProductforUpdate.Membership_Finder_Ran__c</assignToReference>
             <operator>Assign</operator>
@@ -49,7 +49,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>UpdateOpportunityLineItem</targetReference>
+            <targetReference>Create_Membership_Essentials_Log_Pass1</targetReference>
         </connector>
     </assignments>
     <decisions>
@@ -85,7 +85,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Create_Membership_Essentials_Log_Pass1</targetReference>
+                <targetReference>SetMembershipFinderRanFlag</targetReference>
             </connector>
             <label>Membership not found</label>
         </rules>
@@ -125,7 +125,7 @@
         <locationX>50</locationX>
         <locationY>1034</locationY>
         <connector>
-            <targetReference>SetMembershipFinderRanFlag</targetReference>
+            <targetReference>UpdateOpportunityLineItem</targetReference>
         </connector>
         <inputAssignments>
             <field>Flow_Name__c</field>
@@ -230,7 +230,7 @@
         <name>Create_Membership_Essentials_Log_Pass</name>
         <label>Create Membership Essentials Log - Pass</label>
         <locationX>314</locationX>
-        <locationY>1442</locationY>
+        <locationY>1334</locationY>
         <inputAssignments>
             <field>Flow_Name__c</field>
             <value>
@@ -256,9 +256,9 @@
         <name>Create_Membership_Essentials_Log_Pass1</name>
         <label>Create Membership Essentials Log - Pass</label>
         <locationX>314</locationX>
-        <locationY>926</locationY>
+        <locationY>1034</locationY>
         <connector>
-            <targetReference>SetMembershipFinderRanFlag</targetReference>
+            <targetReference>UpdateOpportunityLineItem</targetReference>
         </connector>
         <inputAssignments>
             <field>Flow_Name__c</field>
@@ -285,7 +285,7 @@
         <name>Create_UpdateOpportunityLineItem_Membership_Essentials_Log</name>
         <label>Create &quot;UpdateOpportunityLineItem&quot; Membership Essentials Log</label>
         <locationX>842</locationX>
-        <locationY>1442</locationY>
+        <locationY>1334</locationY>
         <inputAssignments>
             <field>Flow_Name__c</field>
             <value>
@@ -308,13 +308,14 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
+        <description>Get Active Renewable membership products that are a match for category. Tier will be compared later.</description>
         <name>Get_Matching_Products</name>
         <label>Get Matching Products</label>
         <locationX>314</locationX>
         <locationY>494</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Matching_Product_ID_List</targetReference>
+            <targetReference>Matching_Product_Id_List</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -350,7 +351,7 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <description>Query for a Membership record where Account__c = Opportunity.AccountId where End_Date__c &gt; today and the Product is a match; If more than one is found, uses the oldest record.</description>
+        <description>Query for a Membership record where Account__c = Opportunity.AccountId where End_Date__c &gt; today</description>
         <name>GetMembership</name>
         <label>GetMembership</label>
         <locationX>314</locationX>
@@ -381,14 +382,12 @@
             <field>Product__c</field>
             <operator>In</operator>
             <value>
-                <elementReference>Matching_Product_ID_List</elementReference>
+                <elementReference>Matching_Product_Id_List</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Membership__c</object>
         <queriedFields>Id</queriedFields>
-        <sortField>CreatedDate</sortField>
-        <sortOrder>Asc</sortOrder>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
@@ -452,7 +451,7 @@ Return the Opportunity</description>
         <name>UpdateOpportunityLineItem</name>
         <label>UpdateOpportunityLineItem</label>
         <locationX>314</locationX>
-        <locationY>1334</locationY>
+        <locationY>1226</locationY>
         <connector>
             <targetReference>Create_Membership_Essentials_Log_Pass</targetReference>
         </connector>
@@ -472,8 +471,8 @@ Return the Opportunity</description>
     </start>
     <status>Active</status>
     <transforms>
-        <name>Matching_Product_ID_List</name>
-        <label>Matching Product ID List</label>
+        <name>Matching_Product_Id_List</name>
+        <label>Matching Product Id List</label>
         <locationX>314</locationX>
         <locationY>602</locationY>
         <connector>

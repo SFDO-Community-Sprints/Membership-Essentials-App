@@ -179,10 +179,10 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>Get_New_Product_ID.Family</leftValueReference>
+                <leftValueReference>Query_for_Opportunity_Line_Item.Membership_Finder_Ran__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Membership</stringValue>
+                    <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -449,6 +449,9 @@
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Record_Id__c</elementReference>
+            </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>OpportunityLineItem</object>
