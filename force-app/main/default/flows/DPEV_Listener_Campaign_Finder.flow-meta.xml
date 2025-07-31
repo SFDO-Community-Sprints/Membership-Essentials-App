@@ -294,7 +294,7 @@
         <faultConnector>
             <targetReference>Create_Find_Membership_Campaign_Membership_Essentials_Log</targetReference>
         </faultConnector>
-        <filterLogic>and</filterLogic>
+        <filterLogic>(1 OR 2) and 3</filterLogic>
         <filters>
             <field>Name</field>
             <operator>EqualTo</operator>
