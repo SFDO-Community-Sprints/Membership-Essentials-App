@@ -3,7 +3,7 @@
     <fullName>BillingCountry__c</fullName>
     <externalId>false</externalId>
     <label>Billing Country</label>
-    <length>255</length>
+    <length>80</length>
     <required>false</required>
     <trackTrending>false</trackTrending>
     <type>Text</type>

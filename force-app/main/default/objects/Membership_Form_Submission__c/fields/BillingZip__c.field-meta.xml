@@ -3,7 +3,7 @@
     <fullName>BillingZip__c</fullName>
     <externalId>false</externalId>
     <label>Billing Zip/Postal Code</label>
-    <length>255</length>
+    <length>20</length>
     <required>false</required>
     <trackTrending>false</trackTrending>
     <type>Text</type>
