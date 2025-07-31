@@ -1,0 +1,131 @@
+- plugin: snowfakery.standard_plugins.Salesforce.SalesforceQuery
+
+- var: std_pricebook
+  value:
+    SalesforceQuery.find_record:
+      from: Pricebook2
+      where: IsStandard = true
+
+- object: Account
+  fields:
+    Name: Existing Account
+    ParentId:
+      - object: Account
+        fields:
+          Name: Existing Parent Account
+
+- object: Contact
+  fields:
+    FirstName: Member
+    LastName: Testerson
+    Email: email@email.com
+
+- object: Product2
+  nickname: bsc-memb
+  fields:
+    isActive: true
+    Name: Basic Membership
+    StockKeepingUnit: BSC
+    Term__c: 1
+    Term_Unit__c: Year
+    Upgrade_Path__c:
+      reference: std-memb
+    Downgrade_Path__c:
+      reference: 
+    Family: Membership
+  friends:
+    - object: PricebookEntry
+      fields:
+        Pricebook2Id: ${{std_pricebook}}
+        Product2Id:
+          reference: bsc-memb
+        UnitPrice: 50
+        IsActive: true
+
+- object: Product2
+  nickname: std-memb
+  fields:
+    isActive: true
+    Name: Standard Membership
+    StockKeepingUnit: STD
+    Term__c: 1
+    Term_Unit__c: Year
+    Upgrade_Path__c:
+      reference: pmr-memb
+    Downgrade_Path__c:
+      reference: bsc-memb
+    Family: Membership
+  friends:
+    - object: PricebookEntry
+      fields:
+        Pricebook2Id: ${{std_pricebook}}
+        Product2Id:
+          reference: std-memb
+        UnitPrice: 100
+        IsActive: true
+
+- object: Product2
+  nickname: pmr-memb
+  fields:
+    isActive: true
+    Name: Premium Membership
+    StockKeepingUnit: PMR
+    Term__c: 1
+    Term_Unit__c: Year
+    Upgrade_Path__c:
+      reference: 
+    Downgrade_Path__c:
+      reference: std-memb
+    Family: Membership
+  friends:
+    - object: PricebookEntry
+      fields:
+        Pricebook2Id: ${{std_pricebook}}
+        Product2Id:
+          reference: pmr-memb
+        UnitPrice: 250
+        IsActive: true
+
+- object: Product2
+  nickname: yth-memb
+  fields:
+    isActive: true
+    Name: Youth Membership
+    StockKeepingUnit: YTH
+    Term__c: 1
+    Term_Unit__c: Year
+    Upgrade_Path__c:
+      reference: std-memb
+    Downgrade_Path__c:
+      reference: 
+    Family: Membership
+  friends:
+    - object: PricebookEntry
+      fields:
+        Pricebook2Id: ${{std_pricebook}}
+        Product2Id:
+          reference: yth-memb
+        UnitPrice: 45
+        IsActive: true
+
+- object: Product2
+  nickname: fam-memb
+  fields:
+    isActive: true
+    Name: Family Membership
+    StockKeepingUnit: FAM
+    Term__c: 1
+    Term_Unit__c: Year
+    Upgrade_Path__c:
+      reference:
+    Downgrade_Path__c:
+      reference: 
+    Family: Membership
+  friends:
+    - object: PricebookEntry
+      fields:
+        Pricebook2Id: ${{std_pricebook}}
+        Product2Id:
+          reference: fam-memb
+        UnitPrice: 150
+        IsActive: true
