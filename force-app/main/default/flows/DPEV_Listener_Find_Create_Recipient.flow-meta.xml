@@ -47,7 +47,7 @@
         <locationX>578</locationX>
         <locationY>602</locationY>
         <assignmentItems>
-            <assignToReference>Get_MFS_record.Contact__c</assignToReference>
+            <assignToReference>Get_MFS_record.Recipient__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>Get_MFS_Recipient.Id</elementReference>
@@ -401,7 +401,7 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
-        <description>Get the Gift Recipient from the MFS record</description>
+        <description>Get the Gift Recipient from the MFS record using Email Address</description>
         <name>Get_MFS_Recipient</name>
         <label>Get MFS Recipient</label>
         <locationX>314</locationX>
@@ -419,6 +419,13 @@
             <operator>EqualTo</operator>
             <value>
                 <elementReference>Get_MFS_record.RecipientEmail__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Email</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>

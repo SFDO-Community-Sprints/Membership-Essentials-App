@@ -2,9 +2,113 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>49.0</apiVersion>
     <decisions>
+        <description>Checks if a Recipient is listed on the MFS AND has either an Email Address OR a Mailing Address to run &quot;DPEV Listener - Find/Create Recipient&quot;, if not, create appropriate Logs.</description>
+        <name>Are_Recipient_fields_populated</name>
+        <label>Are Recipient fields populated?</label>
+        <locationX>446</locationX>
+        <locationY>1034</locationY>
+        <defaultConnector>
+            <targetReference>Create_Membership_Essentials_Log_No_Recipient</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No Recipient</defaultConnectorLabel>
+        <rules>
+            <name>Recipient_Contact_Info</name>
+            <conditionLogic>1 AND 2 AND (3 OR (4 AND 5 AND 6 AND 7))</conditionLogic>
+            <conditions>
+                <leftValueReference>GET_Membership_Form_Submission_Record.RecipientFirstName__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GET_Membership_Form_Submission_Record.LastName__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GET_Membership_Form_Submission_Record.RecipientEmail__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GET_Membership_Form_Submission_Record.RecipientStreet__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GET_Membership_Form_Submission_Record.RecipientCity__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GET_Membership_Form_Submission_Record.RecipientState__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GET_Membership_Form_Submission_Record.RecipientZip__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Call_the_Recipient_Platform_Event</targetReference>
+            </connector>
+            <label>Recipient + Contact Info</label>
+        </rules>
+        <rules>
+            <name>Recipient_Name_Only</name>
+            <conditionLogic>(1 OR 2) AND (3 AND 4)</conditionLogic>
+            <conditions>
+                <leftValueReference>GET_Membership_Form_Submission_Record.RecipientFirstName__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GET_Membership_Form_Submission_Record.RecipientLastName__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GET_Membership_Form_Submission_Record.RecipientEmail__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GET_Membership_Form_Submission_Record.RecipientStreet__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Create_Membership_Essentials_Log_Incomplete_Recipient_Info</targetReference>
+            </connector>
+            <label>Recipient - Name Only</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Is_Account_Lookup_Set</name>
         <label>Is Account Lookup Set?</label>
-        <locationX>1634</locationX>
+        <locationX>2419</locationX>
         <locationY>278</locationY>
         <defaultConnector>
             <targetReference>Call_Account_Platform_Event</targetReference>
@@ -36,7 +140,7 @@
     <decisions>
         <name>Is_Contact_Lookup_Set</name>
         <label>Is Contact Lookup Set?</label>
-        <locationX>1370</locationX>
+        <locationX>2149</locationX>
         <locationY>386</locationY>
         <defaultConnector>
             <targetReference>Call_Contact_Platform_Event</targetReference>
@@ -61,7 +165,7 @@
     <decisions>
         <name>Is_Pricebook_Entry_Lookup_Set</name>
         <label>Is The Pricebook Entry Lookup Set?</label>
-        <locationX>578</locationX>
+        <locationX>1271</locationX>
         <locationY>710</locationY>
         <defaultConnector>
             <targetReference>Call_the_Pricebook_Entry_Finder</targetReference>
@@ -86,7 +190,7 @@
     <decisions>
         <name>Is_Product_Lookup_Set</name>
         <label>Is Product Lookup Set?</label>
-        <locationX>1106</locationX>
+        <locationX>1873</locationX>
         <locationY>494</locationY>
         <defaultConnector>
             <targetReference>Call_Product_Platform_Event</targetReference>
@@ -118,7 +222,7 @@
     <decisions>
         <name>Is_the_Campaign_Lookup_Set</name>
         <label>Is the Campaign Lookup Set?</label>
-        <locationX>842</locationX>
+        <locationX>1584</locationX>
         <locationY>602</locationY>
         <defaultConnector>
             <targetReference>Call_Find_Campaign_Platform_Event</targetReference>
@@ -150,7 +254,7 @@
     <decisions>
         <name>Is_The_Opportunity_Lookup_Set</name>
         <label>Is The Opportunity Lookup Set?</label>
-        <locationX>314</locationX>
+        <locationX>908</locationX>
         <locationY>818</locationY>
         <defaultConnector>
             <targetReference>Call_The_Opportunity_Platform_Event</targetReference>
@@ -199,7 +303,7 @@
         <description>Calls the DPEV Account Find/Create Platform Event</description>
         <name>Call_Account_Platform_Event</name>
         <label>Call Account Platform Event</label>
-        <locationX>1898</locationX>
+        <locationX>2690</locationX>
         <locationY>386</locationY>
         <inputAssignments>
             <field>Record_Id__c</field>
@@ -214,7 +318,7 @@
         <description>Calls the DPEV Contact Finder Platform event</description>
         <name>Call_Contact_Platform_Event</name>
         <label>Call Contact Platform Event</label>
-        <locationX>1634</locationX>
+        <locationX>2426</locationX>
         <locationY>494</locationY>
         <inputAssignments>
             <field>Membership_Form_Submission_Id__c</field>
@@ -228,7 +332,7 @@
     <recordCreates>
         <name>Call_Find_Campaign_Platform_Event</name>
         <label>Call Find Campaign Platform Event</label>
-        <locationX>1106</locationX>
+        <locationX>1898</locationX>
         <locationY>710</locationY>
         <inputAssignments>
             <field>Record_Id__c</field>
@@ -243,7 +347,7 @@
         <description>Call Find Product Platform Event</description>
         <name>Call_Product_Platform_Event</name>
         <label>Call Product Platform Event</label>
-        <locationX>1370</locationX>
+        <locationX>2162</locationX>
         <locationY>602</locationY>
         <inputAssignments>
             <field>Record_Id__c</field>
@@ -257,7 +361,7 @@
     <recordCreates>
         <name>Call_The_Opportunity_Platform_Event</name>
         <label>Call The Opportunity Platform Event</label>
-        <locationX>578</locationX>
+        <locationX>1370</locationX>
         <locationY>926</locationY>
         <inputAssignments>
             <field>Record_Id__c</field>
@@ -271,7 +375,7 @@
     <recordCreates>
         <name>Call_the_Pricebook_Entry_Finder</name>
         <label>Call the Pricebook Entry Finder</label>
-        <locationX>842</locationX>
+        <locationX>1634</locationX>
         <locationY>818</locationY>
         <inputAssignments>
             <field>Record_Id__c</field>
@@ -283,9 +387,27 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
+        <description>Call &quot;DPEV Listener - Find/Create Recipient&quot; when there is a Recipient with appropriate contact information on the MFS.</description>
+        <name>Call_the_Recipient_Platform_Event</name>
+        <label>Call the Recipient Platform Event</label>
+        <locationX>50</locationX>
+        <locationY>1142</locationY>
+        <faultConnector>
+            <targetReference>Create_Membership_Essentials_Log_Fail</targetReference>
+        </faultConnector>
+        <inputAssignments>
+            <field>Record_Id__c</field>
+            <value>
+                <elementReference>GET_Membership_Form_Submission_Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>DPEV_Gift_Recipient_Finder__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
         <name>Create_Initial_Membership_Essentials_Log</name>
         <label>Create Initial Membership Essentials Log</label>
-        <locationX>2162</locationX>
+        <locationX>2954</locationX>
         <locationY>278</locationY>
         <inputAssignments>
             <field>Flow_Name__c</field>
@@ -309,9 +431,108 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
+        <description>create Log when &quot;DPEV Listener - Find/Create Recipient&quot; Platform Event record fails to be created.</description>
+        <name>Create_Membership_Essentials_Log_Fail</name>
+        <label>Create Membership Essentials Log Fail</label>
+        <locationX>314</locationX>
+        <locationY>1250</locationY>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>GET_Membership_Form_Submission_Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <description>Create Log when a Recipient First and/or Last Name is listed on MFS without appropriate contact information (Email or Mailing Address)</description>
+        <name>Create_Membership_Essentials_Log_Incomplete_Recipient_Info</name>
+        <label>Create Membership Essentials Log - Incomplete Recipient Info</label>
+        <locationX>578</locationX>
+        <locationY>1142</locationY>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <stringValue>&quot;DPEV Listener - Find/Create Recipient&quot; did not run because there is insufficient Recipient contact information (no Email Address or Mailing Address)</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>GET_Membership_Form_Submission_Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <description>Create Log when a Recipient is not listed on MFS.</description>
+        <name>Create_Membership_Essentials_Log_No_Recipient</name>
+        <label>Create Membership Essentials Log - No Recipient</label>
+        <locationX>842</locationX>
+        <locationY>1142</locationY>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <stringValue>&quot;DPEV Listener - Find/Create Recipient&quot; did not run because no Recipient was listed.</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Pass</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>GET_Membership_Form_Submission_Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
         <name>Create_Update_MFS_status_Imported_Membership_Essentials_Log</name>
         <label>Create &quot;Update MFS status - Imported&quot; Membership Essentials Log</label>
-        <locationX>314</locationX>
+        <locationX>1106</locationX>
         <locationY>1034</locationY>
         <inputAssignments>
             <field>Flow_Name__c</field>
@@ -343,7 +564,7 @@
     <recordLookups>
         <name>GET_Membership_Form_Submission_Record</name>
         <label>GET Membership Form Submission Record</label>
-        <locationX>1634</locationX>
+        <locationX>2419</locationX>
         <locationY>170</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -367,8 +588,11 @@
     <recordUpdates>
         <name>Update_MFS_status_Imported</name>
         <label>Update MFS status - Imported</label>
-        <locationX>50</locationX>
+        <locationX>446</locationX>
         <locationY>926</locationY>
+        <connector>
+            <targetReference>Are_Recipient_fields_populated</targetReference>
+        </connector>
         <faultConnector>
             <targetReference>Create_Update_MFS_status_Imported_Membership_Essentials_Log</targetReference>
         </faultConnector>
@@ -392,7 +616,7 @@
         <object>Membership_Form_Submission__c</object>
     </recordUpdates>
     <start>
-        <locationX>1508</locationX>
+        <locationX>2293</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>GET_Membership_Form_Submission_Record</targetReference>
