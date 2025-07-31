@@ -84,7 +84,7 @@
         <description>Creates a default opportunity name using the values from the membership</description>
         <name>formulaOpportunityName</name>
         <dataType>String</dataType>
-        <expression>{!Membership_Form_Submission_Record.Contact__r.FirstName} + &quot;-&quot; + &quot;Membership_Form_Submission_Record.SalePrice__c&quot;+ &quot;-Membership&quot;</expression>
+        <expression>{!Membership_Form_Submission_Record.Contact__r.FirstName} + &quot;-&quot; + TEXT({!Membership_Form_Submission_Record.SalePrice__c})+ &quot;-&quot; + {!Membership_Form_Submission_Record.Product__c}</expression>
     </formulas>
     <interviewLabel>DPEV Listener - Create Opportunity {!$Flow.CurrentDateTime}</interviewLabel>
     <label>DPEV Listener - Create Opportunity</label>
@@ -492,5 +492,5 @@
         <object>DPEV_Create_Opportunity__e</object>
         <triggerType>PlatformEvent</triggerType>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
 </Flow>
