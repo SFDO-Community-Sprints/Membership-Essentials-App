@@ -24,6 +24,7 @@
     <tabs>standard-Campaign</tabs>
     <tabs>standard-report</tabs>
     <tabs>standard-Dashboard</tabs>
+    <tabs>Membership_Essentials_Event_Log__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>Membership_UtilityBar</utilityBar>
 </CustomApplication>

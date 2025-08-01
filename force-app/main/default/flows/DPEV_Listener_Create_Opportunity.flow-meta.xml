@@ -80,6 +80,12 @@
         <dataType>Date</dataType>
         <expression>TODAY()</expression>
     </formulas>
+    <formulas>
+        <description>Creates a default opportunity name using the values from the membership</description>
+        <name>formulaOpportunityName</name>
+        <dataType>String</dataType>
+        <expression>{!Membership_Form_Submission_Record.Contact__r.FirstName} + &quot; - $&quot; + TEXT({!Membership_Form_Submission_Record.SalePrice__c})+ &quot; - &quot; + {!Membership_Form_Submission_Record.Product__r.Name}</expression>
+    </formulas>
     <interviewLabel>DPEV Listener - Create Opportunity {!$Flow.CurrentDateTime}</interviewLabel>
     <label>DPEV Listener - Create Opportunity</label>
     <processMetadataValues>
@@ -431,7 +437,7 @@
         <inputAssignments>
             <field>Name</field>
             <value>
-                <stringValue>Membership</stringValue>
+                <elementReference>formulaOpportunityName</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>

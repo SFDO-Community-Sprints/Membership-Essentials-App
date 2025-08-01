@@ -5,7 +5,7 @@
         <name>Update_MFS_Error_Create</name>
         <label>Update MFS - Error</label>
         <locationX>314</locationX>
-        <locationY>602</locationY>
+        <locationY>710</locationY>
         <assignmentItems>
             <assignToReference>Get_MFS_record.Status__c</assignToReference>
             <operator>Assign</operator>
@@ -29,7 +29,7 @@
         <name>Update_MFS_Success</name>
         <label>Update MFS - Success</label>
         <locationX>50</locationX>
-        <locationY>602</locationY>
+        <locationY>710</locationY>
         <assignmentItems>
             <assignToReference>Get_MFS_record.Recipient__c</assignToReference>
             <operator>Assign</operator>
@@ -45,9 +45,9 @@
         <name>Update_MFS_Sucess</name>
         <label>Update MFS - Sucess</label>
         <locationX>578</locationX>
-        <locationY>494</locationY>
+        <locationY>602</locationY>
         <assignmentItems>
-            <assignToReference>Get_MFS_record.Contact__c</assignToReference>
+            <assignToReference>Get_MFS_record.Recipient__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>Get_MFS_Recipient.Id</elementReference>
@@ -63,7 +63,7 @@
         <locationX>314</locationX>
         <locationY>386</locationY>
         <defaultConnector>
-            <targetReference>Update_MFS_Sucess</targetReference>
+            <targetReference>Create_Membership_Essentials_Log_Pass</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Yes, Find</defaultConnectorLabel>
         <rules>
@@ -112,15 +112,210 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordCreates>
+        <name>Create_Create_Recipient_Membership_Essentials_Log</name>
+        <label>Create &quot;Create Recipient&quot; Membership Essentials Log</label>
+        <locationX>314</locationX>
+        <locationY>602</locationY>
+        <connector>
+            <targetReference>Update_MFS_Error_Create</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>Get_MFS_record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_Get_MFS_Recipient_Membership_Essentials_Log</name>
+        <label>Create &quot;Get MFS Recipient&quot; Membership Essentials Log</label>
+        <locationX>1106</locationX>
+        <locationY>386</locationY>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>Get_MFS_record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_Initial_Membership_Essentials_Log</name>
+        <label>Create Initial Membership Essentials Log</label>
+        <locationX>1370</locationX>
+        <locationY>278</locationY>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_Membership_Essentials_Log_Pass</name>
+        <label>Create Membership Essentials Log - Pass</label>
+        <locationX>578</locationX>
+        <locationY>494</locationY>
+        <connector>
+            <targetReference>Update_MFS_Sucess</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <stringValue>MFS Recipient Found</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Pass</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>Get_MFS_record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_Membership_Essentials_Log_Pass1</name>
+        <label>Create Membership Essentials Log - Pass</label>
+        <locationX>50</locationX>
+        <locationY>602</locationY>
+        <connector>
+            <targetReference>Update_MFS_Success</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <stringValue>MFS Recipient Created</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Pass</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>Get_MFS_record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_Membership_Essentials_Log_Pass2</name>
+        <label>Create Membership Essentials Log - Pass</label>
+        <locationX>314</locationX>
+        <locationY>1100</locationY>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <stringValue>Membership Form Submission has been updated</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Pass</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>Get_MFS_record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
         <name>Create_Recipient</name>
         <label>Create Recipient</label>
         <locationX>50</locationX>
         <locationY>494</locationY>
         <connector>
-            <targetReference>Update_MFS_Success</targetReference>
+            <targetReference>Create_Membership_Essentials_Log_Pass1</targetReference>
         </connector>
         <faultConnector>
-            <targetReference>Update_MFS_Error_Create</targetReference>
+            <targetReference>Create_Create_Recipient_Membership_Essentials_Log</targetReference>
         </faultConnector>
         <inputAssignments>
             <field>Email</field>
@@ -173,8 +368,40 @@
         <object>Contact</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
+    <recordCreates>
+        <name>Create_Update_MFS_Membership_Essentials_Log</name>
+        <label>Create &quot;Update MFS&quot; Membership Essentials Log</label>
+        <locationX>842</locationX>
+        <locationY>1100</locationY>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>Get_MFS_record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
     <recordLookups>
-        <description>Get the Gift Recipient from the MFS record</description>
+        <description>Get the Gift Recipient from the MFS record using Email Address</description>
         <name>Get_MFS_Recipient</name>
         <label>Get MFS Recipient</label>
         <locationX>314</locationX>
@@ -183,12 +410,22 @@
         <connector>
             <targetReference>Recipient_Exists</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Create_Get_MFS_Recipient_Membership_Essentials_Log</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Email</field>
             <operator>EqualTo</operator>
             <value>
                 <elementReference>Get_MFS_record.RecipientEmail__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Email</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
@@ -204,6 +441,9 @@
         <connector>
             <targetReference>Get_MFS_Recipient</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Create_Initial_Membership_Essentials_Log</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -220,7 +460,13 @@
         <name>Update_MFS</name>
         <label>Update MFS</label>
         <locationX>314</locationX>
-        <locationY>884</locationY>
+        <locationY>992</locationY>
+        <connector>
+            <targetReference>Create_Membership_Essentials_Log_Pass2</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Create_Update_MFS_Membership_Essentials_Log</targetReference>
+        </faultConnector>
         <inputReference>Get_MFS_record</inputReference>
     </recordUpdates>
     <start>
@@ -233,4 +479,14 @@
         <triggerType>PlatformEvent</triggerType>
     </start>
     <status>Active</status>
+    <variables>
+        <name>StaticFlowName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>DPEV Listener - Find/Create Recipient</stringValue>
+        </value>
+    </variables>
 </Flow>

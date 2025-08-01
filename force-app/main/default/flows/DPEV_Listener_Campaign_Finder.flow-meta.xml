@@ -250,6 +250,38 @@
         <object>Membership_Essentials_Event_Log__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
+    <recordCreates>
+        <name>Create_Membership_Essentials_Log_Pass</name>
+        <label>Create Membership Essentials Log - Pass</label>
+        <locationX>512</locationX>
+        <locationY>986</locationY>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <stringValue>Membership Form Submission has been updated</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Pass</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>Get_the_Membership_Form_Submission_Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
     <recordLookups>
         <name>Find_Existing_Campaign</name>
         <label>Find Existing Campaign</label>
@@ -262,7 +294,7 @@
         <faultConnector>
             <targetReference>Create_Find_Membership_Campaign_Membership_Essentials_Log</targetReference>
         </faultConnector>
-        <filterLogic>and</filterLogic>
+        <filterLogic>(1 OR 2) and 3</filterLogic>
         <filters>
             <field>Name</field>
             <operator>EqualTo</operator>
@@ -317,6 +349,9 @@
         <label>Update MFS record</label>
         <locationX>512</locationX>
         <locationY>878</locationY>
+        <connector>
+            <targetReference>Create_Membership_Essentials_Log_Pass</targetReference>
+        </connector>
         <faultConnector>
             <targetReference>Create_Final_Update_Membership_Essentials_Log</targetReference>
         </faultConnector>
@@ -331,5 +366,5 @@
         <object>DPEV_Find_Campaign__e</object>
         <triggerType>PlatformEvent</triggerType>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
 </Flow>
