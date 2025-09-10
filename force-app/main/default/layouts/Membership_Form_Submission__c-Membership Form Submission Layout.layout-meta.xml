@@ -23,6 +23,10 @@
                 <behavior>Edit</behavior>
                 <field>SalePrice__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Do_not_create_Opportunity__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
