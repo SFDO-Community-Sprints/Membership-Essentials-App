@@ -108,7 +108,7 @@
     <decisions>
         <name>Is_Account_Lookup_Set</name>
         <label>Is Account Lookup Set?</label>
-        <locationX>2419</locationX>
+        <locationX>3112</locationX>
         <locationY>278</locationY>
         <defaultConnector>
             <targetReference>Call_Account_Platform_Event</targetReference>
@@ -140,7 +140,7 @@
     <decisions>
         <name>Is_Contact_Lookup_Set</name>
         <label>Is Contact Lookup Set?</label>
-        <locationX>2149</locationX>
+        <locationX>2831</locationX>
         <locationY>386</locationY>
         <defaultConnector>
             <targetReference>Call_Contact_Platform_Event</targetReference>
@@ -165,7 +165,7 @@
     <decisions>
         <name>Is_Pricebook_Entry_Lookup_Set</name>
         <label>Is The Pricebook Entry Lookup Set?</label>
-        <locationX>1271</locationX>
+        <locationX>1799</locationX>
         <locationY>710</locationY>
         <defaultConnector>
             <targetReference>Call_the_Pricebook_Entry_Finder</targetReference>
@@ -190,7 +190,7 @@
     <decisions>
         <name>Is_Product_Lookup_Set</name>
         <label>Is Product Lookup Set?</label>
-        <locationX>1873</locationX>
+        <locationX>2533</locationX>
         <locationY>494</locationY>
         <defaultConnector>
             <targetReference>Call_Product_Platform_Event</targetReference>
@@ -222,7 +222,7 @@
     <decisions>
         <name>Is_the_Campaign_Lookup_Set</name>
         <label>Is the Campaign Lookup Set?</label>
-        <locationX>1584</locationX>
+        <locationX>2200</locationX>
         <locationY>602</locationY>
         <defaultConnector>
             <targetReference>Call_Find_Campaign_Platform_Event</targetReference>
@@ -254,7 +254,7 @@
     <decisions>
         <name>Is_The_Opportunity_Lookup_Set</name>
         <label>Is The Opportunity Lookup Set?</label>
-        <locationX>908</locationX>
+        <locationX>1260</locationX>
         <locationY>818</locationY>
         <defaultConnector>
             <targetReference>Call_The_Opportunity_Platform_Event</targetReference>
@@ -270,6 +270,14 @@
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
+            <connector>
+                <targetReference>Update_MFS_status_Imported</targetReference>
+            </connector>
+            <label>Opportunity Exists</label>
+        </rules>
+        <rules>
+            <name>Ignore_Opportunity</name>
+            <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>GET_Membership_Form_Submission_Record.Do_not_create_Opportunity__c</leftValueReference>
                 <operator>EqualTo</operator>
@@ -278,9 +286,39 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Update_MFS_status_Imported</targetReference>
+                <targetReference>Is_this_for_a_new_membership</targetReference>
             </connector>
-            <label>Opportunity Exists</label>
+            <label>Ignore Opportunity</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>if product family = Membership and Membership__c Lookup is null</description>
+        <name>Is_this_for_a_new_membership</name>
+        <label>Is this for a new membership?</label>
+        <locationX>1634</locationX>
+        <locationY>926</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Create_new_Membership</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GET_Membership_Form_Submission_Record.Product__r.Family</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Membership</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GET_Membership_Form_Submission_Record.Membership__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Create_Membership_Transaction_Event</targetReference>
+            </connector>
+            <label>Create new Membership</label>
         </rules>
     </decisions>
     <description>Checks for existing population of lookup fields on the Membership Form record and triggers platform events for creation if necessary.</description>
@@ -310,7 +348,7 @@
         <description>Calls the DPEV Account Find/Create Platform Event</description>
         <name>Call_Account_Platform_Event</name>
         <label>Call Account Platform Event</label>
-        <locationX>2690</locationX>
+        <locationX>3394</locationX>
         <locationY>386</locationY>
         <inputAssignments>
             <field>Record_Id__c</field>
@@ -325,7 +363,7 @@
         <description>Calls the DPEV Contact Finder Platform event</description>
         <name>Call_Contact_Platform_Event</name>
         <label>Call Contact Platform Event</label>
-        <locationX>2426</locationX>
+        <locationX>3130</locationX>
         <locationY>494</locationY>
         <inputAssignments>
             <field>Membership_Form_Submission_Id__c</field>
@@ -339,7 +377,7 @@
     <recordCreates>
         <name>Call_Find_Campaign_Platform_Event</name>
         <label>Call Find Campaign Platform Event</label>
-        <locationX>1898</locationX>
+        <locationX>2602</locationX>
         <locationY>710</locationY>
         <inputAssignments>
             <field>Record_Id__c</field>
@@ -354,7 +392,7 @@
         <description>Call Find Product Platform Event</description>
         <name>Call_Product_Platform_Event</name>
         <label>Call Product Platform Event</label>
-        <locationX>2162</locationX>
+        <locationX>2866</locationX>
         <locationY>602</locationY>
         <inputAssignments>
             <field>Record_Id__c</field>
@@ -368,7 +406,7 @@
     <recordCreates>
         <name>Call_The_Opportunity_Platform_Event</name>
         <label>Call The Opportunity Platform Event</label>
-        <locationX>1370</locationX>
+        <locationX>2074</locationX>
         <locationY>926</locationY>
         <inputAssignments>
             <field>Record_Id__c</field>
@@ -382,7 +420,7 @@
     <recordCreates>
         <name>Call_the_Pricebook_Entry_Finder</name>
         <label>Call the Pricebook Entry Finder</label>
-        <locationX>1634</locationX>
+        <locationX>2338</locationX>
         <locationY>818</locationY>
         <inputAssignments>
             <field>Record_Id__c</field>
@@ -414,7 +452,7 @@
     <recordCreates>
         <name>Create_Initial_Membership_Essentials_Log</name>
         <label>Create Initial Membership Essentials Log</label>
-        <locationX>2954</locationX>
+        <locationX>3658</locationX>
         <locationY>278</locationY>
         <inputAssignments>
             <field>Flow_Name__c</field>
@@ -537,6 +575,96 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
+        <name>Create_Membership_Transaction_Error_Log</name>
+        <label>Create Membership Transaction Error Log</label>
+        <locationX>1634</locationX>
+        <locationY>1142</locationY>
+        <inputAssignments>
+            <field>Error_Text__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <stringValue>Error creating Membership Transaction Platform Event</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>GET_Membership_Form_Submission_Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_Membership_Transaction_Event</name>
+        <label>Create Membership Transaction Event</label>
+        <locationX>1370</locationX>
+        <locationY>1034</locationY>
+        <connector>
+            <targetReference>Create_Membership_Transaction_Log</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Create_Membership_Transaction_Error_Log</targetReference>
+        </faultConnector>
+        <inputAssignments>
+            <field>Record_Id__c</field>
+            <value>
+                <elementReference>GET_Membership_Form_Submission_Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>BPEV_Membership_Transaction__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_Membership_Transaction_Log</name>
+        <label>Create Membership Transaction Log</label>
+        <locationX>1370</locationX>
+        <locationY>1142</locationY>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <stringValue>BPEV - Membership Transaction fired successfully</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Pass</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>GET_Membership_Form_Submission_Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
         <name>Create_Update_MFS_status_Imported_Membership_Essentials_Log</name>
         <label>Create &quot;Update MFS status - Imported&quot; Membership Essentials Log</label>
         <locationX>1106</locationX>
@@ -571,7 +699,7 @@
     <recordLookups>
         <name>GET_Membership_Form_Submission_Record</name>
         <label>GET Membership Form Submission Record</label>
-        <locationX>2419</locationX>
+        <locationX>3112</locationX>
         <locationY>170</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -623,7 +751,7 @@
         <object>Membership_Form_Submission__c</object>
     </recordUpdates>
     <start>
-        <locationX>2293</locationX>
+        <locationX>2986</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>GET_Membership_Form_Submission_Record</targetReference>
