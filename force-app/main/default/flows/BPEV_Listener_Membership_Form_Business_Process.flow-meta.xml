@@ -262,12 +262,19 @@
         <defaultConnectorLabel>No Opportunity</defaultConnectorLabel>
         <rules>
             <name>Opportunity_Exists</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>or</conditionLogic>
             <conditions>
                 <leftValueReference>GET_Membership_Form_Submission_Record.Opportunity__r.Id</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GET_Membership_Form_Submission_Record.Do_not_create_Opportunity__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
