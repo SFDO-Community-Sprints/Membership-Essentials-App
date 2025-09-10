@@ -78,6 +78,12 @@
                 <identifier>RecordSalePrice_cField</identifier>
             </fieldInstance>
         </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldItem>Record.Do_not_create_Opportunity__c</fieldItem>
+                <identifier>RecordDo_not_create_Opportunity__cField</identifier>
+            </fieldInstance>
+        </itemInstances>
         <name>Facet-c2ba2f3a-c534-4fb5-b971-b786be649a27</name>
         <type>Facet</type>
     </flexiPageRegions>
