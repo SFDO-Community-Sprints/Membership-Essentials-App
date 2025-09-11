@@ -1,11 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>Just in case, double check that there are no duplicates before creation</description>
+        <name>Search_for_Duplicates_Before_Create</name>
+        <label>Search for Duplicates Before Create</label>
+        <locationX>182</locationX>
+        <locationY>602</locationY>
+        <actionName>DuplicateRecordCheck_Invocable</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Duplicate_Found</targetReference>
+        </connector>
+        <dataTypeMappings>
+            <typeName>T__record</typeName>
+            <typeValue>Contact</typeValue>
+        </dataTypeMappings>
+        <dataTypeMappings>
+            <typeName>T__records</typeName>
+            <typeValue>Contact</typeValue>
+        </dataTypeMappings>
+        <faultConnector>
+            <targetReference>Search_for_Duplicates_Membership_Essentials_Log</targetReference>
+        </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>record</name>
+            <value>
+                <elementReference>varTempContact</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>records</name>
+        </inputParameters>
+        <nameSegment>DuplicateRecordCheck_Invocable</nameSegment>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
     <apiVersion>49.0</apiVersion>
+    <assignments>
+        <name>Fill_Temp_Contact_Variable</name>
+        <label>Fill Temp Contact Variable</label>
+        <locationX>182</locationX>
+        <locationY>494</locationY>
+        <assignmentItems>
+            <assignToReference>varTempContact.Email</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_MFS_record.Email__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varTempContact.FirstName</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_MFS_record.FirstName__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varTempContact.LastName</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_MFS_record.LastName__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Search_for_Duplicates_Before_Create</targetReference>
+        </connector>
+    </assignments>
     <assignments>
         <name>Update_MFS_Error_Create</name>
         <label>Update MFS - Error</label>
-        <locationX>314</locationX>
-        <locationY>710</locationY>
+        <locationX>578</locationX>
+        <locationY>1034</locationY>
         <assignmentItems>
             <assignToReference>Get_MFS_record.Status__c</assignToReference>
             <operator>Assign</operator>
@@ -28,8 +93,8 @@
     <assignments>
         <name>Update_MFS_Success</name>
         <label>Update MFS - Success</label>
-        <locationX>50</locationX>
-        <locationY>710</locationY>
+        <locationX>314</locationX>
+        <locationY>1034</locationY>
         <assignmentItems>
             <assignToReference>Get_MFS_record.Contact__c</assignToReference>
             <operator>Assign</operator>
@@ -44,7 +109,7 @@
     <assignments>
         <name>Update_MFS_Sucess</name>
         <label>Update MFS - Sucess</label>
-        <locationX>578</locationX>
+        <locationX>1106</locationX>
         <locationY>602</locationY>
         <assignmentItems>
             <assignToReference>Get_MFS_record.Contact__c</assignToReference>
@@ -57,10 +122,26 @@
             <targetReference>Update_MFS</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <name>Update_MFS_Sucess3</name>
+        <label>Update MFS - Sucess</label>
+        <locationX>50</locationX>
+        <locationY>926</locationY>
+        <assignmentItems>
+            <assignToReference>Get_MFS_record.Contact__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Search_for_Duplicates_Before_Create.duplicate.duplicateRecordId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_MFS</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <name>Contact_Exists</name>
         <label>Contact Exists?</label>
-        <locationX>314</locationX>
+        <locationX>644</locationX>
         <locationY>386</locationY>
         <defaultConnector>
             <targetReference>Create_Membership_Essentials_Log_Pass</targetReference>
@@ -70,16 +151,41 @@
             <name>No_Create</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Get_MFS_Contact</leftValueReference>
-                <operator>IsNull</operator>
+                <leftValueReference>Search_for_Duplicates_Before_Create.duplicate.isDuplicate</leftValueReference>
+                <operator>EqualTo</operator>
                 <rightValue>
-                    <booleanValue>true</booleanValue>
+                    <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Create_Contact</targetReference>
+                <targetReference>Fill_Temp_Contact_Variable</targetReference>
             </connector>
             <label>No, Create</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Duplicate_Found</name>
+        <label>Duplicate Found?</label>
+        <locationX>182</locationX>
+        <locationY>710</locationY>
+        <defaultConnector>
+            <targetReference>Create_Contact</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No, proceed to create</defaultConnectorLabel>
+        <rules>
+            <name>Yes_update</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Search_for_Duplicates_Before_Create.duplicate.isDuplicate</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Create_Membership_Essentials_Log_Pass3</targetReference>
+            </connector>
+            <label>Yes, update</label>
         </rules>
     </decisions>
     <description>PE triggered flow, finds or creates a contact from Membership Submission Form record.</description>
@@ -114,8 +220,8 @@
     <recordCreates>
         <name>Create_Contact</name>
         <label>Create Contact</label>
-        <locationX>50</locationX>
-        <locationY>494</locationY>
+        <locationX>314</locationX>
+        <locationY>818</locationY>
         <connector>
             <targetReference>Create_Membership_Essentials_Log_Pass1</targetReference>
         </connector>
@@ -176,8 +282,8 @@
     <recordCreates>
         <name>Create_Create_Contact_Membership_Essentials_Log</name>
         <label>Create &quot;Create Contact&quot; Membership Essentials Log</label>
-        <locationX>314</locationX>
-        <locationY>602</locationY>
+        <locationX>578</locationX>
+        <locationY>926</locationY>
         <connector>
             <targetReference>Update_MFS_Error_Create</targetReference>
         </connector>
@@ -211,7 +317,7 @@
     <recordCreates>
         <name>Create_Get_MFS_Contact_Membership_Essentials_Log</name>
         <label>Create &quot;Get MFS Contact&quot; Membership Essentials Log</label>
-        <locationX>1106</locationX>
+        <locationX>1634</locationX>
         <locationY>386</locationY>
         <inputAssignments>
             <field>Flow_Name__c</field>
@@ -243,7 +349,7 @@
     <recordCreates>
         <name>Create_Initial_Membership_Essentials_Log</name>
         <label>Create Initial Membership Essentials Log</label>
-        <locationX>1370</locationX>
+        <locationX>1898</locationX>
         <locationY>278</locationY>
         <inputAssignments>
             <field>Flow_Name__c</field>
@@ -269,7 +375,7 @@
     <recordCreates>
         <name>Create_Membership_Essentials_Log_Pass</name>
         <label>Create Membership Essentials Log - Pass</label>
-        <locationX>578</locationX>
+        <locationX>1106</locationX>
         <locationY>494</locationY>
         <connector>
             <targetReference>Update_MFS_Sucess</targetReference>
@@ -304,8 +410,8 @@
     <recordCreates>
         <name>Create_Membership_Essentials_Log_Pass1</name>
         <label>Create Membership Essentials Log - Pass</label>
-        <locationX>50</locationX>
-        <locationY>602</locationY>
+        <locationX>314</locationX>
+        <locationY>926</locationY>
         <connector>
             <targetReference>Update_MFS_Success</targetReference>
         </connector>
@@ -339,8 +445,8 @@
     <recordCreates>
         <name>Create_Membership_Essentials_Log_Pass2</name>
         <label>Create Membership Essentials Log - Pass</label>
-        <locationX>314</locationX>
-        <locationY>1100</locationY>
+        <locationX>644</locationX>
+        <locationY>1508</locationY>
         <inputAssignments>
             <field>Flow_Name__c</field>
             <value>
@@ -369,10 +475,45 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
+        <name>Create_Membership_Essentials_Log_Pass3</name>
+        <label>Create Membership Essentials Log - Pass</label>
+        <locationX>50</locationX>
+        <locationY>818</locationY>
+        <connector>
+            <targetReference>Update_MFS_Sucess3</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <stringValue>MFS Contact Found</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Pass</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>Get_MFS_record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
         <name>Create_Update_MFS_Membership_Essentials_Log</name>
         <label>Create &quot;Update MFS&quot; Membership Essentials Log</label>
-        <locationX>842</locationX>
-        <locationY>1100</locationY>
+        <locationX>1370</locationX>
+        <locationY>1508</locationY>
         <inputAssignments>
             <field>Flow_Name__c</field>
             <value>
@@ -400,11 +541,43 @@
         <object>Membership_Essentials_Event_Log__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
+    <recordCreates>
+        <name>Search_for_Duplicates_Membership_Essentials_Log</name>
+        <label>&quot;Search for Duplicates&quot; Membership Essentials Log</label>
+        <locationX>842</locationX>
+        <locationY>710</locationY>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <elementReference>Get_MFS_record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>Get_MFS_record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
     <recordLookups>
         <description>Get the Contact from the MFS record</description>
         <name>Get_MFS_Contact</name>
         <label>Get MFS Contact</label>
-        <locationX>314</locationX>
+        <locationX>644</locationX>
         <locationY>278</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -428,7 +601,7 @@
     <recordLookups>
         <name>Get_MFS_record</name>
         <label>Get MFS record</label>
-        <locationX>314</locationX>
+        <locationX>644</locationX>
         <locationY>170</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -452,8 +625,8 @@
     <recordUpdates>
         <name>Update_MFS</name>
         <label>Update MFS</label>
-        <locationX>314</locationX>
-        <locationY>992</locationY>
+        <locationX>644</locationX>
+        <locationY>1400</locationY>
         <connector>
             <targetReference>Create_Membership_Essentials_Log_Pass2</targetReference>
         </connector>
@@ -463,7 +636,7 @@
         <inputReference>Get_MFS_record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>188</locationX>
+        <locationX>518</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_MFS_record</targetReference>
@@ -481,5 +654,13 @@
         <value>
             <stringValue>DPEV Listener - Find/Create Contact</stringValue>
         </value>
+    </variables>
+    <variables>
+        <name>varTempContact</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Contact</objectType>
     </variables>
 </Flow>
