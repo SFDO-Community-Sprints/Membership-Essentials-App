@@ -212,6 +212,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Membership_Form_Submission__c.Membership_Finder_Ran__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Membership_Form_Submission__c.Membership__c</field>
         <readable>true</readable>
     </fieldPermissions>

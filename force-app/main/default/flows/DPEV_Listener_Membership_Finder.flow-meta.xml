@@ -2,13 +2,30 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>49.0</apiVersion>
     <assignments>
-        <description>Assign the Membership Found to the Opportunity Line Item</description>
-        <name>AssignMembershiptoOpportunityProduct</name>
-        <label>AssignMembershiptoOpportunityProduct</label>
-        <locationX>50</locationX>
-        <locationY>926</locationY>
+        <description>Assign the Membership Form Submission to a record variable to updated</description>
+        <name>AssignMembershipFormSubmissionforUpdate</name>
+        <label>AssignMembershipFormSubmissionforUpdate</label>
+        <locationX>314</locationX>
+        <locationY>278</locationY>
         <assignmentItems>
-            <assignToReference>OpportunityProductforUpdate.Membership__c</assignToReference>
+            <assignToReference>MembershipFormSubmissionforUpdate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>GetMembershipFormSubmission</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Matching_Products</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign the Membership Found to the Opportunity Line Item</description>
+        <name>AssignMembershiptoMembershipFormSubmission</name>
+        <label>AssignMembershiptoMembershipFormSubmission</label>
+        <locationX>50</locationX>
+        <locationY>818</locationY>
+        <assignmentItems>
+            <assignToReference>GetMembershipFormSubmission.Membership__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>GetMembership.Id</elementReference>
@@ -19,30 +36,13 @@
         </connector>
     </assignments>
     <assignments>
-        <description>Assign the Opportunity Line Item to a record variable to updated</description>
-        <name>AssignOpportunityLineItemforUpdate</name>
-        <label>AssignOpportunityLineItemforUpdate</label>
-        <locationX>314</locationX>
-        <locationY>278</locationY>
-        <assignmentItems>
-            <assignToReference>OpportunityProductforUpdate</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>GetOpportunityProduct</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>GetOpportunity</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
         <description>Set Membership Finder Ran flag to true</description>
         <name>SetMembershipFinderRanFlag</name>
         <label>SetMembershipFinderRanFlag</label>
         <locationX>314</locationX>
-        <locationY>926</locationY>
+        <locationY>818</locationY>
         <assignmentItems>
-            <assignToReference>OpportunityProductforUpdate.Membership_Finder_Ran__c</assignToReference>
+            <assignToReference>MembershipFormSubmissionforUpdate.Membership_Finder_Ran__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <booleanValue>true</booleanValue>
@@ -57,7 +57,7 @@
         <name>MembershipPresent</name>
         <label>MembershipPresent</label>
         <locationX>314</locationX>
-        <locationY>818</locationY>
+        <locationY>710</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Membership_Found</name>
@@ -70,7 +70,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>AssignMembershiptoOpportunityProduct</targetReference>
+                <targetReference>AssignMembershiptoMembershipFormSubmission</targetReference>
             </connector>
             <label>Membership Found</label>
         </rules>
@@ -90,7 +90,7 @@
             <label>Membership not found</label>
         </rules>
     </decisions>
-    <description>Find membership associated with Opportunity Line Item and Account or mark Membership Form Submission Record to indicate that the finder ran.</description>
+    <description>Find membership associated with Membership Form Submission and Account or mark Membership Form Submission Record to indicate that the finder ran.</description>
     <environments>Default</environments>
     <formulas>
         <description>Returns today&apos;s date</description>
@@ -123,9 +123,9 @@
         <name>Copy_2_of_Create_Membership_Essentials_Log_Pass</name>
         <label>Copy 2 of Create Membership Essentials Log - Pass</label>
         <locationX>50</locationX>
-        <locationY>1034</locationY>
+        <locationY>926</locationY>
         <connector>
-            <targetReference>UpdateOpportunityLineItem</targetReference>
+            <targetReference>UpdateMembershipFormSubmission</targetReference>
         </connector>
         <inputAssignments>
             <field>Flow_Name__c</field>
@@ -152,7 +152,7 @@
         <name>Create_GetMembership_Membership_Essentials_Log</name>
         <label>Create &quot;GetMembership&quot; Membership Essentials Log</label>
         <locationX>1106</locationX>
-        <locationY>818</locationY>
+        <locationY>710</locationY>
         <inputAssignments>
             <field>Flow_Name__c</field>
             <value>
@@ -163,58 +163,6 @@
             <field>Log_Message__c</field>
             <value>
                 <elementReference>$Flow.FaultMessage</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Log_Type__c</field>
-            <value>
-                <stringValue>Error</stringValue>
-            </value>
-        </inputAssignments>
-        <object>Membership_Essentials_Event_Log__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
-        <name>Create_GetOpportunity_Membership_Essentials_Log</name>
-        <label>Create &quot;GetOpportunity&quot; Membership Essentials Log</label>
-        <locationX>1370</locationX>
-        <locationY>494</locationY>
-        <inputAssignments>
-            <field>Flow_Name__c</field>
-            <value>
-                <elementReference>StaticFlowName</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Log_Message__c</field>
-            <value>
-                <elementReference>$Flow.FaultMessage</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Log_Type__c</field>
-            <value>
-                <stringValue>Error</stringValue>
-            </value>
-        </inputAssignments>
-        <object>Membership_Essentials_Event_Log__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
-        <name>Create_Initial_Membership_Essentials_Log</name>
-        <label>Create Initial Membership Essentials Log</label>
-        <locationX>1634</locationX>
-        <locationY>278</locationY>
-        <inputAssignments>
-            <field>Flow_Name__c</field>
-            <value>
-                <elementReference>StaticFlowName</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Log_Message__c</field>
-            <value>
-                <stringValue>Platform event triggered. {!$Flow.FaultMessage}</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -230,7 +178,7 @@
         <name>Create_Membership_Essentials_Log_Pass</name>
         <label>Create Membership Essentials Log - Pass</label>
         <locationX>314</locationX>
-        <locationY>1334</locationY>
+        <locationY>1226</locationY>
         <inputAssignments>
             <field>Flow_Name__c</field>
             <value>
@@ -256,9 +204,9 @@
         <name>Create_Membership_Essentials_Log_Pass1</name>
         <label>Create Membership Essentials Log - Pass</label>
         <locationX>314</locationX>
-        <locationY>1034</locationY>
+        <locationY>926</locationY>
         <connector>
-            <targetReference>UpdateOpportunityLineItem</targetReference>
+            <targetReference>UpdateMembershipFormSubmission</targetReference>
         </connector>
         <inputAssignments>
             <field>Flow_Name__c</field>
@@ -282,10 +230,10 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
-        <name>Create_UpdateOpportunityLineItem_Membership_Essentials_Log</name>
-        <label>Create &quot;UpdateOpportunityLineItem&quot; Membership Essentials Log</label>
+        <name>Create_UpdateMembershipFormSubmission_Membership_Essentials_Log</name>
+        <label>Create &quot;UpdateMembershipFormSubmission&quot; Membership Essentials Log</label>
         <locationX>842</locationX>
-        <locationY>1334</locationY>
+        <locationY>1226</locationY>
         <inputAssignments>
             <field>Flow_Name__c</field>
             <value>
@@ -311,7 +259,7 @@
         <name>Get_Matching_Products</name>
         <label>Get Matching Products</label>
         <locationX>314</locationX>
-        <locationY>494</locationY>
+        <locationY>386</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Matching_Product_ID_List</targetReference>
@@ -328,14 +276,7 @@
             <field>Renewal_Option__c</field>
             <operator>EqualTo</operator>
             <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </filters>
-        <filters>
-            <field>Category__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>GetOpportunityProduct.Product2.Category__c</elementReference>
+                <stringValue>Renewable</stringValue>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
@@ -347,7 +288,7 @@
         <name>GetMembership</name>
         <label>GetMembership</label>
         <locationX>314</locationX>
-        <locationY>710</locationY>
+        <locationY>602</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>MembershipPresent</targetReference>
@@ -360,7 +301,7 @@
             <field>Account__c</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>GetOpportunity.AccountId</elementReference>
+                <elementReference>GetMembershipFormSubmission.Account__r.Id</elementReference>
             </value>
         </filters>
         <filters>
@@ -385,47 +326,16 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <description>Query the related Opportunity
-Return Opportunity.AccountId</description>
-        <name>GetOpportunity</name>
-        <label>GetOpportunity</label>
-        <locationX>314</locationX>
-        <locationY>386</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Get_Matching_Products</targetReference>
-        </connector>
-        <faultConnector>
-            <targetReference>Create_GetOpportunity_Membership_Essentials_Log</targetReference>
-        </faultConnector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>GetOpportunityProduct.OpportunityId</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>Opportunity</object>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>AccountId</queriedFields>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
-        <description>Query the OpportunityProduct provided in the RecordId Field of the DPEV. 
-Return the Opportunity</description>
-        <name>GetOpportunityProduct</name>
-        <label>GetOpportunityProduct</label>
+        <description>Query the MembershipFormSubmission provided in the RecordId Field of the DPEV. 
+Return the Membership Form Submission</description>
+        <name>GetMembershipFormSubmission</name>
+        <label>GetMembershipFormSubmission</label>
         <locationX>314</locationX>
         <locationY>170</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>AssignOpportunityLineItemforUpdate</targetReference>
+            <targetReference>AssignMembershipFormSubmissionforUpdate</targetReference>
         </connector>
-        <faultConnector>
-            <targetReference>Create_Initial_Membership_Essentials_Log</targetReference>
-        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -435,30 +345,28 @@ Return the Opportunity</description>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>OpportunityLineItem</object>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>OpportunityId</queriedFields>
+        <object>Membership_Form_Submission__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
-        <description>Update the Opportunity Line Item</description>
-        <name>UpdateOpportunityLineItem</name>
-        <label>UpdateOpportunityLineItem</label>
+        <description>Update the Membership Form Submission</description>
+        <name>UpdateMembershipFormSubmission</name>
+        <label>UpdateMembershipFormSubmission</label>
         <locationX>314</locationX>
-        <locationY>1226</locationY>
+        <locationY>1118</locationY>
         <connector>
             <targetReference>Create_Membership_Essentials_Log_Pass</targetReference>
         </connector>
         <faultConnector>
-            <targetReference>Create_UpdateOpportunityLineItem_Membership_Essentials_Log</targetReference>
+            <targetReference>Create_UpdateMembershipFormSubmission_Membership_Essentials_Log</targetReference>
         </faultConnector>
-        <inputReference>OpportunityProductforUpdate</inputReference>
+        <inputReference>MembershipFormSubmissionforUpdate</inputReference>
     </recordUpdates>
     <start>
         <locationX>188</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>GetOpportunityProduct</targetReference>
+            <targetReference>GetMembershipFormSubmission</targetReference>
         </connector>
         <object>DPEV_Membership_Finder__e</object>
         <triggerType>PlatformEvent</triggerType>
@@ -468,7 +376,7 @@ Return the Opportunity</description>
         <name>Matching_Product_ID_List</name>
         <label>Matching Product ID List</label>
         <locationX>314</locationX>
-        <locationY>602</locationY>
+        <locationY>494</locationY>
         <connector>
             <targetReference>GetMembership</targetReference>
         </connector>
@@ -484,6 +392,15 @@ Return the Opportunity</description>
             </transformValueActions>
         </transformValues>
     </transforms>
+    <variables>
+        <description>Variable to hold Membership Form Submission item to be updated</description>
+        <name>MembershipFormSubmissionforUpdate</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Membership_Form_Submission__c</objectType>
+    </variables>
     <variables>
         <description>Variable to hold Opportunity Line item to be updated</description>
         <name>OpportunityProductforUpdate</name>
