@@ -11,7 +11,7 @@
             <assignToReference>Get_the_related_Membership.Product__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Get_Membership_Opportunity_Product.Product2Id</elementReference>
+                <elementReference>Get_Membership_Form_Submission.Product__r.Id</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -39,7 +39,7 @@
                 <leftValueReference>Get_the_related_Membership.Product__c</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
-                    <elementReference>Get_Membership_Opportunity_Product.Product2Id</elementReference>
+                    <elementReference>Get_Membership_Form_Submission.Product__r.Id</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -55,19 +55,22 @@
 Doesn&apos;t calculated for leap years</description>
         <name>CalculateNewEndDate</name>
         <dataType>Date</dataType>
-        <expression>IF(
-    ISPICKVAL({!Get_Membership_Opportunity_Product.Product2.Term_Unit__c}, &quot;Month&quot;), 
-    ADDMONTHS({!Get_Membership_Opportunity_Product.Opportunity.CloseDate}, {!Get_Membership_Opportunity_Product.Product2.Term__c}),
+        <expression>
+IF(
+    ISPICKVAL({!Get_Membership_Form_Submission.Product__r.Term_Unit__c}, &quot;Month&quot;), 
+    ADDMONTHS(TODAY(), 
+{!Get_Membership_Form_Submission.Product__r.Term__c}),
     
     IF(
-        ISPICKVAL({!Get_Membership_Opportunity_Product.Product2.Term_Unit__c}, &quot;Year&quot;), 
-        ADDMONTHS({!Get_Membership_Opportunity_Product.Opportunity.CloseDate}, ({!Get_Membership_Opportunity_Product.Product2.Term__c} * 12)),
+        ISPICKVAL({!Get_Membership_Form_Submission.Product__r.Term_Unit__c}, &quot;Year&quot;), 
+        ADDMONTHS(TODAY(), 
+({!Get_Membership_Form_Submission.Product__r.Term__c} * 12)),
         
         IF(
-            ISPICKVAL({!Get_Membership_Opportunity_Product.Product2.Term_Unit__c}, &quot;Week&quot;), 
-            ({!Get_Membership_Opportunity_Product.Opportunity.CloseDate} + ({!Get_Membership_Opportunity_Product.Product2.Term__c} * 7)),
+            ISPICKVAL({!Get_Membership_Form_Submission.Product__r.Term_Unit__c}, &quot;Week&quot;), 
+            (TODAY() + ({!Get_Membership_Form_Submission.Product__r.Term__c} * 7)),
             
-            {!Get_Membership_Opportunity_Product.Opportunity.CloseDate} + {!Get_Membership_Opportunity_Product.Product2.Term__c}
+            TODAY() + {!Get_Membership_Form_Submission.Product__r.Term__c}
         )
     )
 )</expression>
@@ -120,7 +123,7 @@ Doesn&apos;t calculated for leap years</description>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
-        <name>Create_Initial_Membership_Essentials_Log</name>
+        <name>Create_Initial_Membership_Essentials_Log_1</name>
         <label>Create Initial Membership Essentials Log</label>
         <locationX>1106</locationX>
         <locationY>278</locationY>
@@ -198,9 +201,8 @@ Doesn&apos;t calculated for leap years</description>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
-        <description>Fetch the details of the opportunity product that triggered the flow</description>
-        <name>Get_Membership_Opportunity_Product</name>
-        <label>Get Membership Opportunity Product</label>
+        <name>Get_Membership_Form_Submission</name>
+        <label>Get Membership Form Submission</label>
         <locationX>314</locationX>
         <locationY>170</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
@@ -208,7 +210,7 @@ Doesn&apos;t calculated for leap years</description>
             <targetReference>Get_the_related_Membership</targetReference>
         </connector>
         <faultConnector>
-            <targetReference>Create_Initial_Membership_Essentials_Log</targetReference>
+            <targetReference>Create_Initial_Membership_Essentials_Log_1</targetReference>
         </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -219,7 +221,7 @@ Doesn&apos;t calculated for leap years</description>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>OpportunityLineItem</object>
+        <object>Membership_Form_Submission__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
@@ -239,7 +241,7 @@ Doesn&apos;t calculated for leap years</description>
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>Get_Membership_Opportunity_Product.Membership__c</elementReference>
+                <elementReference>Get_Membership_Form_Submission.Membership__c</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
@@ -263,7 +265,7 @@ Doesn&apos;t calculated for leap years</description>
         <locationX>188</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Get_Membership_Opportunity_Product</targetReference>
+            <targetReference>Get_Membership_Form_Submission</targetReference>
         </connector>
         <object>DPEV_Membership_Upgrade__e</object>
         <triggerType>PlatformEvent</triggerType>
