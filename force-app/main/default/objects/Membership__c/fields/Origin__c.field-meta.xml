@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Origin__c</fullName>
-    <description>Membership origin options: New, Renewed, and Reacquired.</description>
+    <description>Membership origin options: New, Renewed, Reacquired, Upgraded, and Downgraded</description>
     <externalId>false</externalId>
     <inlineHelpText>Select the membership origin</inlineHelpText>
     <label>Origin</label>
@@ -27,6 +27,16 @@
                 <fullName>Reacquired</fullName>
                 <default>false</default>
                 <label>Reacquired</label>
+            </value>
+            <value>
+                <fullName>Upgraded</fullName>
+                <default>false</default>
+                <label>Upgraded</label>
+            </value>
+            <value>
+                <fullName>Downgraded</fullName>
+                <default>false</default>
+                <label>Downgraded</label>
             </value>
         </valueSetDefinition>
     </valueSet>
