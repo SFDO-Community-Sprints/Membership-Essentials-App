@@ -1,4 +1,4 @@
-# Membership Schema And Benefits
+# Membership Essentials
 For accomplishments by sprint, please refer to the Wiki.
 
 ### Project Vision 
