@@ -1,6 +1,6 @@
 /**
  * Copied from unOfficial Salesforce: https://github.com/UnofficialSF/LightningFlowComponents
- * license information below
+ * license information below, modified to better handle situations where duplicate rules are inactive
 
 Copyright (c) 2018, Salesforce.com, Inc.
 All rights reserved.
@@ -22,7 +22,7 @@ This license applies to all code in this LightningFlowComponents repository.
 
 public with sharing class DuplicateRecordCheck_Invocable{
     /**
-    * @description Contains the Invocable Method that runs the duplicate rules on a particular record(s) to see if a duplicate record(s) exists.
+    * @description Contains the Invocable Method that runs the duplicate rules on a particular record(s) to see if a duplicate record(s) exists. If there are no active duplicate rules, returns the inputted records.
     * @param List<Input> inputs 
     * @return List<Duplicate> 
     **/
@@ -32,32 +32,41 @@ public with sharing class DuplicateRecordCheck_Invocable{
         category='Duplicate Record Check'
     )
     public static List<Output> findDuplicates(List<Input> inputs){
-
-        List<sObject> listsObjectsToCheck = new List<sObject>();
-        for(Input input : inputs){
-            if(input.record != null) listsObjectsToCheck.add(input.record);
-            if(input.records != null) listsObjectsToCheck.addAll(input.records);
-        }
-
-        List<Duplicate> duplicates = DuplicateRecordCheck_Util.findDuplicates(listsObjectsToCheck);
-
         List<Output> outputs = new List<Output>();
-        for(Input input : inputs){
+        
+        //process each input/request separately
+        for (Input input : inputs) {
             Output output = new Output();
-            if(input.record != null){
-                output.duplicate = duplicates.remove(0);
+            
+            List<sObject> listsObjectsToCheck = new List<sObject>();
+            if(input.record != null) {
+                listsObjectsToCheck.add(input.record);
             }
-
-            if(input.records != null){
-                output.duplicates = new List<Duplicate>();
-                for(sObject record : input.records){
-                    output.duplicates.add(duplicates.remove(0));
+            if(input.records != null) {
+                listsObjectsToCheck.addAll(input.records);
+            }
+            
+            try {
+                List<Duplicate> duplicates = DuplicateRecordCheck_Util.findDuplicates(listsObjectsToCheck);
+                
+                if(input.record != null){
+                    output.duplicate = duplicates.remove(0);
                 }
+                if(input.records != null){
+                    output.duplicates = new List<Duplicate>();
+                    for(sObject record : input.records){
+                        output.duplicates.add(duplicates.remove(0));
+                    }
+                }
+                
+                output.isSuccess = true;
+            } catch (Exception e) {
+                output.isSuccess = false;
             }
-
+            
             outputs.add(output);
         }
-
+        
         return outputs;
     }
 
@@ -81,5 +90,8 @@ public with sharing class DuplicateRecordCheck_Invocable{
 
         @InvocableVariable(label='Duplicate Results from Collection of Records')
         public List<Duplicate> duplicates;
+        
+        @InvocableVariable(label='Did duplicate search complete successfully?')
+        public Boolean isSuccess;
     }
 }

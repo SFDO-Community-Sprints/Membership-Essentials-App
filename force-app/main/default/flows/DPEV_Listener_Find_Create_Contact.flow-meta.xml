@@ -2,14 +2,14 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
         <description>Utilizes an Unofficial Salesforce component to identify duplicate records based on Salesforce&apos;s Duplicate Matching Rules. Input is firstName, lastName, email</description>
-        <name>Search_for_Duplicates</name>
-        <label>Search for Duplicates</label>
+        <name>Check_for_Contact_Matches</name>
+        <label>Check for Contact Matches</label>
         <locationX>314</locationX>
-        <locationY>494</locationY>
+        <locationY>602</locationY>
         <actionName>DuplicateRecordCheck_Invocable</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Contact_Exists</targetReference>
+            <targetReference>Found_Matching_Contact</targetReference>
         </connector>
         <dataTypeMappings>
             <typeName>T__record</typeName>
@@ -19,9 +19,6 @@
             <typeName>T__records</typeName>
             <typeValue>Contact</typeValue>
         </dataTypeMappings>
-        <faultConnector>
-            <targetReference>Search_for_Duplicates_Membership_Essentials_Log</targetReference>
-        </faultConnector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>record</name>
@@ -34,10 +31,81 @@
     </actionCalls>
     <apiVersion>49.0</apiVersion>
     <assignments>
+        <name>Add_Log_Message_Created_Contact</name>
+        <label>Add Log Message - Created Contact</label>
+        <locationX>50</locationX>
+        <locationY>1034</locationY>
+        <assignmentItems>
+            <assignToReference>soLogRecord.Log_Message__c</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>New contact created; </stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>set_MFS_Success_Info_Created_Contact</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Add_Log_Message_Found_Contact</name>
+        <label>Add Log Message - Found Contact</label>
+        <locationX>578</locationX>
+        <locationY>818</locationY>
+        <assignmentItems>
+            <assignToReference>soLogRecord.Log_Message__c</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Found existing contact; </stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_MFS_Sucess</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Add_Log_Message_No_Contact</name>
+        <label>Add Log Message - No Contact</label>
+        <locationX>50</locationX>
+        <locationY>818</locationY>
+        <assignmentItems>
+            <assignToReference>soLogRecord.Log_Message__c</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>No matching contact record found; </stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Create_Contact</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Add_Log_Message_Updated_MFS</name>
+        <label>Add Log Message - Updated MFS</label>
+        <locationX>314</locationX>
+        <locationY>1442</locationY>
+        <assignmentItems>
+            <assignToReference>soLogRecord.Log_Message__c</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Membership Form Submission Updated</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>soLogRecord.Log_Type__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Pass</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Insert_Success_Log</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Fill_Temp_Contact_Variable</name>
         <label>Fill Temp Contact Variable</label>
         <locationX>314</locationX>
-        <locationY>386</locationY>
+        <locationY>494</locationY>
         <assignmentItems>
             <assignToReference>varTempContact.Email</assignToReference>
             <operator>Assign</operator>
@@ -60,14 +128,60 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Search_for_Duplicates</targetReference>
+            <targetReference>Check_for_Contact_Matches</targetReference>
         </connector>
     </assignments>
     <assignments>
-        <name>Update_MFS_Error_Create</name>
-        <label>Update MFS - Error</label>
+        <name>set_Error_Log_Values</name>
+        <label>set Error Log Values</label>
+        <locationX>1106</locationX>
+        <locationY>386</locationY>
+        <assignmentItems>
+            <assignToReference>soLogRecord.Log_Type__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>soLogRecord.Log_Message__c</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Error: {!$Flow.FaultMessage}</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>insert_Error_Log</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>set_Initial_Log_Values</name>
+        <label>set Initial Log Values</label>
         <locationX>314</locationX>
-        <locationY>926</locationY>
+        <locationY>170</locationY>
+        <assignmentItems>
+            <assignToReference>soLogRecord.Flow_Name__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>soLogRecord.Log_Message__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_MFS_record</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>set_MFS_Error_Values</name>
+        <label>set MFS Error Values</label>
+        <locationX>1106</locationX>
+        <locationY>602</locationY>
         <assignmentItems>
             <assignToReference>Get_MFS_record.Status__c</assignToReference>
             <operator>Assign</operator>
@@ -79,19 +193,51 @@
             <assignToReference>Get_MFS_record.Failure_Information__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>Unable to create contact record</stringValue>
+                <elementReference>varMFSFailureMessage</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>update_MFS</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>set_MFS_Failure_Message</name>
+        <label>set MFS Failure Message</label>
+        <locationX>314</locationX>
+        <locationY>1034</locationY>
+        <assignmentItems>
+            <assignToReference>Get_MFS_record.Failure_Information__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Unable to create new contact record</stringValue>
             </value>
         </assignmentItems>
         <connector>
             <isGoTo>true</isGoTo>
-            <targetReference>Update_MFS</targetReference>
+            <targetReference>Update_Membership_Form_Submission</targetReference>
         </connector>
     </assignments>
     <assignments>
-        <name>Update_MFS_Success</name>
-        <label>Update MFS - Success</label>
+        <name>set_MFS_Id_in_Log</name>
+        <label>set MFS Id in Log</label>
+        <locationX>314</locationX>
+        <locationY>386</locationY>
+        <assignmentItems>
+            <assignToReference>soLogRecord.Membership_Form_Submission__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_MFS_record.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Fill_Temp_Contact_Variable</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>set_MFS_Success_Info_Created_Contact</name>
+        <label>set MFS Success Info - Created Contact</label>
         <locationX>50</locationX>
-        <locationY>926</locationY>
+        <locationY>1142</locationY>
         <assignmentItems>
             <assignToReference>Get_MFS_record.Contact__c</assignToReference>
             <operator>Assign</operator>
@@ -100,51 +246,58 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Update_MFS</targetReference>
+            <targetReference>Update_Membership_Form_Submission</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>Update_MFS_Sucess</name>
         <label>Update MFS - Sucess</label>
         <locationX>578</locationX>
-        <locationY>818</locationY>
+        <locationY>926</locationY>
         <assignmentItems>
             <assignToReference>Get_MFS_record.Contact__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Search_for_Duplicates.duplicate.duplicateRecordId</elementReference>
+                <elementReference>Check_for_Contact_Matches.duplicate.duplicateRecordId</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Update_MFS</targetReference>
+            <targetReference>Update_Membership_Form_Submission</targetReference>
         </connector>
     </assignments>
     <decisions>
-        <name>Contact_Exists</name>
-        <label>Contact Exists?</label>
+        <name>Found_Matching_Contact</name>
+        <label>Found Matching Contact?</label>
         <locationX>314</locationX>
-        <locationY>602</locationY>
+        <locationY>710</locationY>
         <defaultConnector>
-            <targetReference>Create_Membership_Essentials_Log_Pass</targetReference>
+            <targetReference>Add_Log_Message_Found_Contact</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>Yes, Find</defaultConnectorLabel>
+        <defaultConnectorLabel>Match Found</defaultConnectorLabel>
         <rules>
-            <name>No_Create</name>
-            <conditionLogic>and</conditionLogic>
+            <name>No_Match_Found</name>
+            <conditionLogic>or</conditionLogic>
             <conditions>
-                <leftValueReference>Search_for_Duplicates.duplicate.isDuplicate</leftValueReference>
+                <leftValueReference>Check_for_Contact_Matches.isSuccess</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Check_for_Contact_Matches.duplicate.isDuplicate</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Create_Contact</targetReference>
+                <targetReference>Add_Log_Message_No_Contact</targetReference>
             </connector>
-            <label>No, Create</label>
+            <label>No Match Found</label>
         </rules>
     </decisions>
-    <description>PE triggered flow, finds or creates a contact from Membership Submission Form record.</description>
+    <description>Attempts to find a matching Contact using active duplicate rules. If duplicate rules are inactive or no match is found, creates a new Contact.</description>
     <environments>Default</environments>
     <formulas>
         <description>Combines the two street address lines</description>
@@ -177,12 +330,12 @@
         <name>Create_Contact</name>
         <label>Create Contact</label>
         <locationX>50</locationX>
-        <locationY>710</locationY>
+        <locationY>926</locationY>
         <connector>
-            <targetReference>Create_Membership_Essentials_Log_Pass1</targetReference>
+            <targetReference>Add_Log_Message_Created_Contact</targetReference>
         </connector>
         <faultConnector>
-            <targetReference>Create_Create_Contact_Membership_Essentials_Log</targetReference>
+            <targetReference>set_MFS_Failure_Message</targetReference>
         </faultConnector>
         <inputAssignments>
             <field>Email</field>
@@ -236,205 +389,10 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
-        <name>Create_Create_Contact_Membership_Essentials_Log</name>
-        <label>Create &quot;Create Contact&quot; Membership Essentials Log</label>
-        <locationX>314</locationX>
-        <locationY>818</locationY>
-        <connector>
-            <targetReference>Update_MFS_Error_Create</targetReference>
-        </connector>
-        <inputAssignments>
-            <field>Flow_Name__c</field>
-            <value>
-                <elementReference>StaticFlowName</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Log_Message__c</field>
-            <value>
-                <elementReference>$Flow.FaultMessage</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Log_Type__c</field>
-            <value>
-                <stringValue>Error</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Membership_Form_Submission__c</field>
-            <value>
-                <elementReference>Get_MFS_record.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Membership_Essentials_Event_Log__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
-        <name>Create_Get_MFS_Contact_Membership_Essentials_Log</name>
-        <label>Create &quot;Get MFS Contact&quot; Membership Essentials Log</label>
-        <locationX>1370</locationX>
-        <locationY>386</locationY>
-        <inputAssignments>
-            <field>Flow_Name__c</field>
-            <value>
-                <elementReference>StaticFlowName</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Log_Message__c</field>
-            <value>
-                <elementReference>Get_MFS_record.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Log_Type__c</field>
-            <value>
-                <stringValue>Error</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Membership_Form_Submission__c</field>
-            <value>
-                <elementReference>Get_MFS_record.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Membership_Essentials_Event_Log__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
-        <name>Create_Initial_Membership_Essentials_Log</name>
-        <label>Create Initial Membership Essentials Log</label>
-        <locationX>1634</locationX>
-        <locationY>278</locationY>
-        <inputAssignments>
-            <field>Flow_Name__c</field>
-            <value>
-                <elementReference>StaticFlowName</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Log_Message__c</field>
-            <value>
-                <stringValue>Platform event triggered. {!$Flow.FaultMessage}</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Log_Type__c</field>
-            <value>
-                <stringValue>Error</stringValue>
-            </value>
-        </inputAssignments>
-        <object>Membership_Essentials_Event_Log__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
-        <name>Create_Membership_Essentials_Log_Pass</name>
-        <label>Create Membership Essentials Log - Pass</label>
-        <locationX>578</locationX>
-        <locationY>710</locationY>
-        <connector>
-            <targetReference>Update_MFS_Sucess</targetReference>
-        </connector>
-        <inputAssignments>
-            <field>Flow_Name__c</field>
-            <value>
-                <elementReference>StaticFlowName</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Log_Message__c</field>
-            <value>
-                <stringValue>MFS Contact Found</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Log_Type__c</field>
-            <value>
-                <stringValue>Pass</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Membership_Form_Submission__c</field>
-            <value>
-                <elementReference>Get_MFS_record.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Membership_Essentials_Event_Log__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
-        <name>Create_Membership_Essentials_Log_Pass1</name>
-        <label>Create Membership Essentials Log - Pass</label>
-        <locationX>50</locationX>
-        <locationY>818</locationY>
-        <connector>
-            <targetReference>Update_MFS_Success</targetReference>
-        </connector>
-        <inputAssignments>
-            <field>Flow_Name__c</field>
-            <value>
-                <elementReference>StaticFlowName</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Log_Message__c</field>
-            <value>
-                <stringValue>MFS Contact Created</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Log_Type__c</field>
-            <value>
-                <stringValue>Pass</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Membership_Form_Submission__c</field>
-            <value>
-                <elementReference>Get_MFS_record.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Membership_Essentials_Event_Log__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
-        <name>Create_Membership_Essentials_Log_Pass2</name>
-        <label>Create Membership Essentials Log - Pass</label>
-        <locationX>314</locationX>
-        <locationY>1316</locationY>
-        <inputAssignments>
-            <field>Flow_Name__c</field>
-            <value>
-                <elementReference>StaticFlowName</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Log_Message__c</field>
-            <value>
-                <stringValue>Membership Form Submission has been updated</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Log_Type__c</field>
-            <value>
-                <stringValue>Pass</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Membership_Form_Submission__c</field>
-            <value>
-                <elementReference>Get_MFS_record.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Membership_Essentials_Event_Log__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
-        <name>Create_Update_MFS_Membership_Essentials_Log</name>
-        <label>Create &quot;Update MFS&quot; Membership Essentials Log</label>
+        <name>Create_MFS_Update_Error_Log</name>
+        <label>Create MFS Update Error Log</label>
         <locationX>842</locationX>
-        <locationY>1316</locationY>
+        <locationY>1442</locationY>
         <inputAssignments>
             <field>Flow_Name__c</field>
             <value>
@@ -463,73 +421,33 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
-        <name>Search_for_Duplicates_Membership_Essentials_Log</name>
-        <label>&quot;Search for Duplicates&quot; Membership Essentials Log</label>
+        <name>insert_Error_Log</name>
+        <label>insert Error Log</label>
         <locationX>1106</locationX>
-        <locationY>602</locationY>
-        <inputAssignments>
-            <field>Flow_Name__c</field>
-            <value>
-                <elementReference>StaticFlowName</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Log_Message__c</field>
-            <value>
-                <elementReference>Get_MFS_record.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Log_Type__c</field>
-            <value>
-                <stringValue>Error</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Membership_Form_Submission__c</field>
-            <value>
-                <elementReference>Get_MFS_record.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Membership_Essentials_Event_Log__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordLookups>
-        <description>Get the Contact from the MFS record</description>
-        <name>Get_MFS_Contact</name>
-        <label>Get MFS Contact</label>
-        <locationX>314</locationX>
-        <locationY>278</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <locationY>494</locationY>
         <connector>
-            <targetReference>Fill_Temp_Contact_Variable</targetReference>
+            <targetReference>set_MFS_Error_Values</targetReference>
         </connector>
-        <faultConnector>
-            <targetReference>Create_Get_MFS_Contact_Membership_Essentials_Log</targetReference>
-        </faultConnector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Email</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>Get_MFS_record.Email__c</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>Contact</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
+        <inputReference>soLogRecord</inputReference>
+    </recordCreates>
+    <recordCreates>
+        <name>Insert_Success_Log</name>
+        <label>Insert Success Log</label>
+        <locationX>314</locationX>
+        <locationY>1550</locationY>
+        <inputReference>soLogRecord</inputReference>
+    </recordCreates>
     <recordLookups>
         <name>Get_MFS_record</name>
         <label>Get MFS record</label>
         <locationX>314</locationX>
-        <locationY>170</locationY>
+        <locationY>278</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_MFS_Contact</targetReference>
+            <targetReference>set_MFS_Id_in_Log</targetReference>
         </connector>
         <faultConnector>
-            <targetReference>Create_Initial_Membership_Essentials_Log</targetReference>
+            <targetReference>set_Error_Log_Values</targetReference>
         </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -544,15 +462,27 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
-        <name>Update_MFS</name>
-        <label>Update MFS</label>
+        <name>Update_Membership_Form_Submission</name>
+        <label>Update Membership Form Submission</label>
         <locationX>314</locationX>
-        <locationY>1208</locationY>
+        <locationY>1334</locationY>
         <connector>
-            <targetReference>Create_Membership_Essentials_Log_Pass2</targetReference>
+            <targetReference>Add_Log_Message_Updated_MFS</targetReference>
         </connector>
         <faultConnector>
-            <targetReference>Create_Update_MFS_Membership_Essentials_Log</targetReference>
+            <targetReference>Create_MFS_Update_Error_Log</targetReference>
+        </faultConnector>
+        <inputReference>Get_MFS_record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Update MFS with the error values</description>
+        <name>update_MFS</name>
+        <label>update MFS</label>
+        <locationX>1106</locationX>
+        <locationY>710</locationY>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Create_MFS_Update_Error_Log</targetReference>
         </faultConnector>
         <inputReference>Get_MFS_record</inputReference>
     </recordUpdates>
@@ -560,12 +490,20 @@
         <locationX>188</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Get_MFS_record</targetReference>
+            <targetReference>set_Initial_Log_Values</targetReference>
         </connector>
         <object>DPEV_Contact_Finder__e</object>
         <triggerType>PlatformEvent</triggerType>
     </start>
     <status>Active</status>
+    <variables>
+        <name>soLogRecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Membership_Essentials_Event_Log__c</objectType>
+    </variables>
     <variables>
         <name>StaticFlowName</name>
         <dataType>String</dataType>
@@ -575,6 +513,13 @@
         <value>
             <stringValue>DPEV Listener - Find/Create Contact</stringValue>
         </value>
+    </variables>
+    <variables>
+        <name>varMFSFailureMessage</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>varTempContact</name>
