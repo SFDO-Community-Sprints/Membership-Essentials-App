@@ -79,6 +79,22 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Add_Log_Message_Updated_MFS</name>
+        <label>Add Log Message - Updated MFS</label>
+        <locationX>314</locationX>
+        <locationY>1442</locationY>
+        <assignmentItems>
+            <assignToReference>soLogRecord.Log_Message__c</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Membership Form Submission Updated</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Insert_Success_Log</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Fill_Temp_Contact_Variable</name>
         <label>Fill Temp Contact Variable</label>
         <locationX>314</locationX>
@@ -411,7 +427,7 @@
         <name>Insert_Success_Log</name>
         <label>Insert Success Log</label>
         <locationX>314</locationX>
-        <locationY>1442</locationY>
+        <locationY>1550</locationY>
         <inputReference>soLogRecord</inputReference>
     </recordCreates>
     <recordLookups>
@@ -444,7 +460,7 @@
         <locationX>314</locationX>
         <locationY>1334</locationY>
         <connector>
-            <targetReference>Insert_Success_Log</targetReference>
+            <targetReference>Add_Log_Message_Updated_MFS</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Create_MFS_Update_Error_Log</targetReference>
@@ -472,7 +488,7 @@
         <object>DPEV_Contact_Finder__e</object>
         <triggerType>PlatformEvent</triggerType>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>soLogRecord</name>
         <dataType>SObject</dataType>

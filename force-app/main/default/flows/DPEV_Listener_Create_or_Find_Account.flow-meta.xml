@@ -99,6 +99,22 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Add_Log_Message_Updated_MFS</name>
+        <label>Add Log Message - Updated MFS</label>
+        <locationX>710</locationX>
+        <locationY>1634</locationY>
+        <assignmentItems>
+            <assignToReference>soLogRecord.Log_Message__c</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Membership Form Submission Updated</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Insert_Success_Log</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>set_Error_Log_Values</name>
         <label>set Error Log Values</label>
         <locationX>1634</locationX>
@@ -454,7 +470,7 @@
         <name>Insert_Success_Log</name>
         <label>Insert Success Log</label>
         <locationX>710</locationX>
-        <locationY>1634</locationY>
+        <locationY>1742</locationY>
         <inputReference>soLogRecord</inputReference>
     </recordCreates>
     <recordLookups>
@@ -487,7 +503,7 @@
         <locationX>710</locationX>
         <locationY>1526</locationY>
         <connector>
-            <targetReference>Insert_Success_Log</targetReference>
+            <targetReference>Add_Log_Message_Updated_MFS</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Create_MFS_Update_Error_Log</targetReference>
