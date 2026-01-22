@@ -508,7 +508,7 @@
         <object>DPEV_Account__e</object>
         <triggerType>PlatformEvent</triggerType>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>soAccount</name>
         <dataType>SObject</dataType>
@@ -532,7 +532,7 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <value>
-            <stringValue>DPEV Listener - Create or Find Account</stringValue>
+            <stringValue>DPEV Listener - Find/Create Account</stringValue>
         </value>
     </variables>
     <variables>
