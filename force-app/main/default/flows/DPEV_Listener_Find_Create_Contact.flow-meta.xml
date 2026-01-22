@@ -9,7 +9,7 @@
         <actionName>DuplicateRecordCheck_Invocable</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Contact_Exists</targetReference>
+            <targetReference>Found_Matching_Contact</targetReference>
         </connector>
         <dataTypeMappings>
             <typeName>T__record</typeName>
@@ -120,17 +120,24 @@
         </connector>
     </assignments>
     <decisions>
-        <name>Contact_Exists</name>
-        <label>Contact Exists?</label>
+        <name>Found_Matching_Contact</name>
+        <label>Found Matching Contact?</label>
         <locationX>314</locationX>
         <locationY>602</locationY>
         <defaultConnector>
             <targetReference>Create_Membership_Essentials_Log_Pass</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>Yes, Find</defaultConnectorLabel>
+        <defaultConnectorLabel>Match Found</defaultConnectorLabel>
         <rules>
-            <name>No_Create</name>
-            <conditionLogic>and</conditionLogic>
+            <name>No_Match_Found</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>Search_for_Duplicates.isSuccess</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
             <conditions>
                 <leftValueReference>Search_for_Duplicates.duplicate.isDuplicate</leftValueReference>
                 <operator>EqualTo</operator>
@@ -141,10 +148,10 @@
             <connector>
                 <targetReference>Create_Contact</targetReference>
             </connector>
-            <label>No, Create</label>
+            <label>No Match Found</label>
         </rules>
     </decisions>
-    <description>PE triggered flow, finds or creates a contact from Membership Submission Form record.</description>
+    <description>PE triggered flow, attempts to find a matching Contact using active duplicate rules. If duplicate rules are inactive or no match is found, creates a new contact.</description>
     <environments>Default</environments>
     <formulas>
         <description>Combines the two street address lines</description>
@@ -476,7 +483,7 @@
         <inputAssignments>
             <field>Log_Message__c</field>
             <value>
-                <elementReference>Get_MFS_record.Id</elementReference>
+                <elementReference>$Flow.FaultMessage</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
