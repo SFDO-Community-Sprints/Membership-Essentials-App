@@ -4,6 +4,7 @@
     <deleteConstraint>SetNull</deleteConstraint>
     <description>Contact record for Recipient of Gift Membership</description>
     <externalId>false</externalId>
+    <inlineHelpText>Select or create the recipient for this gift membership.</inlineHelpText>
     <label>Recipient</label>
     <referenceTo>Contact</referenceTo>
     <relationshipLabel>Membership Form Submissions (Recipient)</relationshipLabel>

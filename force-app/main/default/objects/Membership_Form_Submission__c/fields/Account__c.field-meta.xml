@@ -2,7 +2,9 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Account__c</fullName>
     <deleteConstraint>SetNull</deleteConstraint>
+    <description>The account to which this membership form submission is tied</description>
     <externalId>false</externalId>
+    <inlineHelpText>Select or create the account to which this membership form submission is tied</inlineHelpText>
     <label>Account</label>
     <referenceTo>Account</referenceTo>
     <relationshipLabel>Membership Form Submissions</relationshipLabel>
