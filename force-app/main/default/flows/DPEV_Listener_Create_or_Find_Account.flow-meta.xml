@@ -110,6 +110,13 @@
                 <stringValue>Membership Form Submission Updated</stringValue>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>soLogRecord.Log_Type__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Pass</stringValue>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Insert_Success_Log</targetReference>
         </connector>
