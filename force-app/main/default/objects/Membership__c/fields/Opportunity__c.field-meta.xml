@@ -4,7 +4,7 @@
     <deleteConstraint>SetNull</deleteConstraint>
     <description>The opportunity that this membership is tied to</description>
     <externalId>false</externalId>
-    <inlineHelpText>Select or create an opportunity to add this membership to</inlineHelpText>
+    <inlineHelpText>Select or create an opportunity to add this membership to (this is not required; see checkbox field for Do Not Create Opportunity on Membership Form Submission)</inlineHelpText>
     <label>Opportunity</label>
     <referenceTo>Opportunity</referenceTo>
     <relationshipLabel>Memberships</relationshipLabel>

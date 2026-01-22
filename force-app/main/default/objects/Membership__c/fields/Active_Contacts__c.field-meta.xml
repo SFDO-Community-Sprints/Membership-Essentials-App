@@ -3,6 +3,7 @@
     <fullName>Active_Contacts__c</fullName>
     <description>GitHub #27: Counts the number of active Contact Roles on related records where the Status is Renewal or Current</description>
     <externalId>false</externalId>
+    <inlineHelpText>This number reflects the total number of Renewal or Current records for active Contact Roles</inlineHelpText>
     <label>Active Contacts</label>
     <summaryFilterItems>
         <field>Membership_Contact_Role__c.Status__c</field>

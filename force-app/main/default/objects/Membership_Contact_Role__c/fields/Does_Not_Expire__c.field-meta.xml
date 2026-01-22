@@ -4,7 +4,7 @@
     <defaultValue>false</defaultValue>
     <description>Indicates that the contact&apos;s  role on this membership does not expire. This should match the settings on the membership.</description>
     <externalId>false</externalId>
-    <inlineHelpText>&quot;Check this box if the contact&apos;s role on this membership does not expire.&quot;</inlineHelpText>
+    <inlineHelpText>Check this box if the contact&apos;s role on this membership does not expire.</inlineHelpText>
     <label>Does Not Expire</label>
     <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>
