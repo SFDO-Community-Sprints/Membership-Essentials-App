@@ -321,6 +321,44 @@
             <label>Create new Membership</label>
         </rules>
     </decisions>
+    <decisions>
+        <description>Check whether the Membership__c field is populated and if there is a Membership record that exists that aligns with this Membership Form Submission</description>
+        <name>Membership_Exists</name>
+        <label>Membership Exists?</label>
+        <locationX>446</locationX>
+        <locationY>1574</locationY>
+        <defaultConnector>
+            <targetReference>Create_Membership_Platform_Event_Message</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No Membership Found</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Membership_found</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Membership</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>Yes, Membership found</label>
+        </rules>
+        <rules>
+            <name>Finder_Ran_Still_Blank</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GET_Membership_Form_Submission_Record.Membership_Finder_Ran__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Create_Membership_Creation_Platform_Event</targetReference>
+            </connector>
+            <label>Finder Ran, Still Blank</label>
+        </rules>
+    </decisions>
     <description>Checks for existing population of lookup fields on the Membership Form record and triggers platform events for creation if necessary.</description>
     <environments>Default</environments>
     <interviewLabel>BPEV Listener  - Membership Form Business Process {!$Flow.CurrentDateTime}</interviewLabel>
@@ -437,6 +475,9 @@
         <label>Call the Recipient Platform Event</label>
         <locationX>50</locationX>
         <locationY>1142</locationY>
+        <connector>
+            <targetReference>Get_Membership</targetReference>
+        </connector>
         <faultConnector>
             <targetReference>Create_Membership_Essentials_Log_Fail</targetReference>
         </faultConnector>
@@ -473,6 +514,57 @@
             </value>
         </inputAssignments>
         <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <description>Create a Membership Essential Events Log record that indicates the Membership Creation action was taken</description>
+        <name>Create_MEMBERSHIP_CREATION_Log_Message</name>
+        <label>Create MEMBERSHIP CREATION Log Message</label>
+        <locationX>402</locationX>
+        <locationY>1790</locationY>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <stringValue>DPEV - Create Membership was ran</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Pass</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>GET_Membership_Form_Submission_Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <description>Create a record so that a new Membership record will get created via a platform event</description>
+        <name>Create_Membership_Creation_Platform_Event</name>
+        <label>Create Membership Creation Platform Event</label>
+        <locationX>402</locationX>
+        <locationY>1682</locationY>
+        <connector>
+            <targetReference>Create_MEMBERSHIP_CREATION_Log_Message</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Record_Id__c</field>
+            <value>
+                <elementReference>$Record.Membership_Form_Submission_Id__c</elementReference>
+            </value>
+        </inputAssignments>
+        <object>DPEV_Create_Membership__e</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
@@ -514,6 +606,9 @@
         <label>Create Membership Essentials Log - Incomplete Recipient Info</label>
         <locationX>578</locationX>
         <locationY>1142</locationY>
+        <connector>
+            <targetReference>Membership_Exists</targetReference>
+        </connector>
         <inputAssignments>
             <field>Flow_Name__c</field>
             <value>
@@ -547,6 +642,9 @@
         <label>Create Membership Essentials Log - No Recipient</label>
         <locationX>842</locationX>
         <locationY>1142</locationY>
+        <connector>
+            <targetReference>Membership_Exists</targetReference>
+        </connector>
         <inputAssignments>
             <field>Flow_Name__c</field>
             <value>
@@ -572,6 +670,57 @@
             </value>
         </inputAssignments>
         <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <description>Create a Membership Essentials Event Log record that indicates the Membership Finder process was attempted</description>
+        <name>Create_MEMBERSHIP_FINDER_Log_Message</name>
+        <label>Create MEMBERSHIP FINDER Log Message</label>
+        <locationX>666</locationX>
+        <locationY>1790</locationY>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <stringValue>DPEV - Membership Finder ran</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Pass</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>GET_Membership_Form_Submission_Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <description>Create a Membership Essentials Events Log record that indicates that the Membership Finder process ran</description>
+        <name>Create_Membership_Platform_Event_Message</name>
+        <label>Create Membership Finder Platform Event Message</label>
+        <locationX>666</locationX>
+        <locationY>1682</locationY>
+        <connector>
+            <targetReference>Create_MEMBERSHIP_FINDER_Log_Message</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Record_Id__c</field>
+            <value>
+                <elementReference>$Record.Membership_Form_Submission_Id__c</elementReference>
+            </value>
+        </inputAssignments>
+        <object>DPEV_Membership_Finder__e</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
@@ -696,6 +845,28 @@
         <object>Membership_Essentials_Event_Log__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
+    <recordLookups>
+        <description>Attempt to GET an existing Membership record related to this Membership Form Submission</description>
+        <name>Get_Membership</name>
+        <label>Get Membership</label>
+        <locationX>50</locationX>
+        <locationY>1250</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Membership_Exists</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>GET_Membership_Form_Submission_Record.Membership__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Membership__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordLookups>
         <name>GET_Membership_Form_Submission_Record</name>
         <label>GET Membership Form Submission Record</label>

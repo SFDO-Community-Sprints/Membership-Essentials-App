@@ -264,6 +264,10 @@
         <connector>
             <targetReference>Matching_Product_ID_List</targetReference>
         </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Create_GetMembership_Membership_Essentials_Log</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Family</field>
@@ -284,7 +288,10 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <description>Query for a Membership record where Account__c = Opportunity.AccountId where End_Date__c &gt; today and the Product is a renewable membership of the same Category.</description>
+        <description>Query for a Membership record 
+where Account__c = Opportunity.AccountId 
+where End_Date__c &gt; today 
+and the Product is a renewable membership of the same Category.</description>
         <name>GetMembership</name>
         <label>GetMembership</label>
         <locationX>314</locationX>
