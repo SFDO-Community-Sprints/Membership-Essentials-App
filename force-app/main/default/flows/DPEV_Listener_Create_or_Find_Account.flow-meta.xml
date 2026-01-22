@@ -361,7 +361,7 @@
     <description>If the Organization Name is populated, attempts to find a matching Account using active duplicate rules. If duplicate rules are inactive or no match is found, creates a new Account.</description>
     <environments>Default</environments>
     <interviewLabel>DPEV Listener - {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>DPEV Listener - Create or Find Account</label>
+    <label>DPEV Listener - Find/Create Account</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -508,7 +508,7 @@
         <object>DPEV_Account__e</object>
         <triggerType>PlatformEvent</triggerType>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <variables>
         <name>soAccount</name>
         <dataType>SObject</dataType>

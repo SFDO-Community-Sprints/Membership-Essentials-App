@@ -267,7 +267,7 @@
             <label>No Match Found</label>
         </rules>
     </decisions>
-    <description>PE triggered flow, attempts to find a matching Contact using active duplicate rules. If duplicate rules are inactive or no match is found, creates a new contact.</description>
+    <description>Attempts to find a matching Contact using active duplicate rules. If duplicate rules are inactive or no match is found, creates a new Contact.</description>
     <environments>Default</environments>
     <formulas>
         <description>Combines the two street address lines</description>
