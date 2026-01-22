@@ -60,6 +60,29 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Add_Log_Message_Found_Account</name>
+        <label>Add Log Message - Found Account</label>
+        <locationX>578</locationX>
+        <locationY>926</locationY>
+        <assignmentItems>
+            <assignToReference>soLogRecord.Log_Message__c</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Existing Account Matched; </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>soLogRecord.Log_Type__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Pass</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>set_MFS_Success_Info_Found_Account</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Add_Log_Message_No_Account</name>
         <label>Add Log Message - No Account</label>
         <locationX>50</locationX>
@@ -110,31 +133,15 @@
                 <elementReference>StaticFlowName</elementReference>
             </value>
         </assignmentItems>
-        <connector>
-            <targetReference>Get_Membership_Form_Submission</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>set_Log_Message_Found_Account</name>
-        <label>set Log Message - Found Account</label>
-        <locationX>578</locationX>
-        <locationY>926</locationY>
         <assignmentItems>
             <assignToReference>soLogRecord.Log_Message__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>Existing Account Matched</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>soLogRecord.Log_Type__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>Pass</stringValue>
+                <stringValue></stringValue>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>set_MFS_Success_Info_Found_Account</targetReference>
+            <targetReference>Get_Membership_Form_Submission</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -307,7 +314,7 @@
         <locationX>314</locationX>
         <locationY>818</locationY>
         <defaultConnector>
-            <targetReference>set_Log_Message_Found_Account</targetReference>
+            <targetReference>Add_Log_Message_Found_Account</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Match Found</defaultConnectorLabel>
         <rules>

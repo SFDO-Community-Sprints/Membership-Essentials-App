@@ -111,7 +111,7 @@
     <assignments>
         <name>set_Error_Log_Values</name>
         <label>set Error Log Values</label>
-        <locationX>1370</locationX>
+        <locationX>1106</locationX>
         <locationY>386</locationY>
         <assignmentItems>
             <assignToReference>soLogRecord.Log_Type__c</assignToReference>
@@ -143,6 +143,13 @@
                 <elementReference>StaticFlowName</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>soLogRecord.Log_Message__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Get_MFS_record</targetReference>
         </connector>
@@ -150,7 +157,7 @@
     <assignments>
         <name>set_MFS_Error_Values</name>
         <label>set MFS Error Values</label>
-        <locationX>1370</locationX>
+        <locationX>1106</locationX>
         <locationY>602</locationY>
         <assignmentItems>
             <assignToReference>Get_MFS_record.Status__c</assignToReference>
@@ -393,7 +400,7 @@
     <recordCreates>
         <name>insert_Error_Log</name>
         <label>insert Error Log</label>
-        <locationX>1370</locationX>
+        <locationX>1106</locationX>
         <locationY>494</locationY>
         <connector>
             <targetReference>set_MFS_Error_Values</targetReference>
@@ -448,7 +455,7 @@
         <description>Update MFS with the error values</description>
         <name>update_MFS</name>
         <label>update MFS</label>
-        <locationX>1370</locationX>
+        <locationX>1106</locationX>
         <locationY>710</locationY>
         <faultConnector>
             <isGoTo>true</isGoTo>
@@ -465,7 +472,7 @@
         <object>DPEV_Contact_Finder__e</object>
         <triggerType>PlatformEvent</triggerType>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <variables>
         <name>soLogRecord</name>
         <dataType>SObject</dataType>
