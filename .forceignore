@@ -1,1 +1,4 @@
 **/profiles
+
+# AppSwitcher deploy hits intermittent Salesforce scratch-org errors (11852308); omit for CLI deploy
+**/AppSwitcher.appMenu-meta.xml
