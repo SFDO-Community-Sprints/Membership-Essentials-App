@@ -7,6 +7,26 @@
     <description>End user permissions for Membership Essentials package related objects and fields</description>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Membership_Form_Submission__c.Term_Tier__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Membership__c.Is_Active__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Membership__c.Tier__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Membership__c.Level__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.First_Membership_Start_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
