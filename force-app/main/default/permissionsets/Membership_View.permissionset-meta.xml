@@ -157,6 +157,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Membership_Form_Submission__c.Do_not_create_Opportunity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Membership_Form_Submission__c.Duration__c</field>
         <readable>true</readable>
     </fieldPermissions>

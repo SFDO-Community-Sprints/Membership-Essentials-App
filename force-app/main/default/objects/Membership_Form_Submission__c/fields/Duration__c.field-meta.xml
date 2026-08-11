@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Duration__c</fullName>
+    <description>Duration of the membership</description>
     <externalId>false</externalId>
+    <inlineHelpText>Select the duration for the membership</inlineHelpText>
     <label>Duration</label>
     <length>255</length>
     <required>false</required>

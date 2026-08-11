@@ -31,7 +31,7 @@
             <label>Create new Membership</label>
         </rules>
     </decisions>
-    <description>Checks if product family = Membership and Membership__c Lookup is null -&gt; Create Membership Transaction Business Process Event</description>
+    <description>Deprecate - no longer using OLI as trigger for process</description>
     <environments>Default</environments>
     <interviewLabel>Opportunity Line Item - After - Membership {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Opportunity Line Item - After - Membership</label>
@@ -108,7 +108,7 @@
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Obsolete</status>
     <variables>
         <name>StaticFlowName</name>
         <dataType>String</dataType>

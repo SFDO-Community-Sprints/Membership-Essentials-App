@@ -2,7 +2,9 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Contact__c</fullName>
     <deleteConstraint>SetNull</deleteConstraint>
+    <description>The contact for this membership form submission</description>
     <externalId>false</externalId>
+    <inlineHelpText>Select or create a contact who will be the the contact for this membership form submission</inlineHelpText>
     <label>Contact</label>
     <referenceTo>Contact</referenceTo>
     <relationshipLabel>Membership Form Submissions</relationshipLabel>

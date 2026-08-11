@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Do_not_create_Opportunity__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>When checked, Business Process Flow will skip all Opportunity creation steps.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>When checked, Business Process Flow will skip all Opportunity creation steps.</inlineHelpText>
+    <label>Do not create Opportunity</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

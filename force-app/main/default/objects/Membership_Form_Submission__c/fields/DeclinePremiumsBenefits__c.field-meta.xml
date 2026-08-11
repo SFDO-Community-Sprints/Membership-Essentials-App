@@ -2,7 +2,9 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>DeclinePremiumsBenefits__c</fullName>
     <defaultValue>false</defaultValue>
+    <description>This box will be checked if the member is declining any premiums or benefits the membership provides.</description>
     <externalId>false</externalId>
+    <inlineHelpText>Check this box if the member is declining any premiums or benefits the membership provides.</inlineHelpText>
     <label>Decline Premiums/Benefits</label>
     <trackTrending>false</trackTrending>
     <type>Checkbox</type>

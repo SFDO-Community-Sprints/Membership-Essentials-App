@@ -12,7 +12,7 @@
             <name>Send_for_Renewal</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Query_for_Opportunity_Line_Item.Membership__r.Type__c</leftValueReference>
+                <leftValueReference>Query_for_Membership_Form_Submission.MembershipType__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <elementReference>Get_Membership_Record.Type__c</elementReference>
@@ -31,34 +31,34 @@
         <locationY>602</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
-            <name>Opportunity_Product_Membership_Product_are_the_same</name>
+            <name>Same_Products_MFS_Membership</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Query_for_Opportunity_Line_Item.Product2Id</leftValueReference>
+                <leftValueReference>Query_for_Membership_Form_Submission.Product__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <elementReference>Query_for_Opportunity_Line_Item.Membership__r.Product__c</elementReference>
+                    <elementReference>Get_Membership_Record.Product__c</elementReference>
                 </rightValue>
             </conditions>
             <connector>
                 <targetReference>Fire_Membership_Renewal_Platform_Event</targetReference>
             </connector>
-            <label>Same Products-Opportunity &amp; Membership</label>
+            <label>Same Products-MFS &amp; Membership</label>
         </rules>
         <rules>
-            <name>Opportunity_Product_Membership_Product_do_not_match</name>
+            <name>Products_Don_t_Match_MFS_Membership</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Query_for_Opportunity_Line_Item.Product2Id</leftValueReference>
+                <leftValueReference>Query_for_Membership_Form_Submission.Product__c</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
-                    <elementReference>Query_for_Opportunity_Line_Item.Membership__r.Product__c</elementReference>
+                    <elementReference>Get_Membership_Record.Product__c</elementReference>
                 </rightValue>
             </conditions>
             <connector>
                 <targetReference>Get_Old_Product_ID</targetReference>
             </connector>
-            <label>Products Don&apos;t Match: Opportunity &amp; Membership</label>
+            <label>Products Don&apos;t Match: MFS &amp; Membership</label>
         </rules>
     </decisions>
     <decisions>
@@ -113,7 +113,7 @@
             <name>Membership_Finder_Has_Not_Run</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Query_for_Opportunity_Line_Item.Membership_Finder_Ran__c</leftValueReference>
+                <leftValueReference>Query_for_Membership_Form_Submission.Membership_Finder_Ran__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -128,10 +128,10 @@
             <name>Membership_Finder_Has_Run</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Query_for_Opportunity_Line_Item.Membership_Finder_Ran__c</leftValueReference>
+                <leftValueReference>Query_for_Membership_Form_Submission.Membership_Finder_Ran__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <booleanValue>true</booleanValue>
+                    <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -150,14 +150,14 @@
             <name>Membership_not_populated_and_Opportunity_is_Membership</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Get_New_Product_ID.Family</leftValueReference>
-                <operator>EqualTo</operator>
+                <leftValueReference>Query_for_Membership_Form_Submission.Opportunity__r.Id</leftValueReference>
+                <operator>IsNull</operator>
                 <rightValue>
-                    <stringValue>Membership</stringValue>
+                    <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>Query_for_Opportunity_Line_Item.Membership__c</leftValueReference>
+                <leftValueReference>Query_for_Membership_Form_Submission.Membership__r.Id</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
@@ -172,15 +172,8 @@
             <name>Membership_is_populated</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Query_for_Opportunity_Line_Item.Membership__c</leftValueReference>
+                <leftValueReference>Query_for_Membership_Form_Submission.Membership__r.Id</leftValueReference>
                 <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>Query_for_Opportunity_Line_Item.Membership_Finder_Ran__c</leftValueReference>
-                <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
                 </rightValue>
@@ -267,32 +260,6 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
-        <name>Create_Initial_Membership_Essentials_Log</name>
-        <label>Create Initial Membership Essentials Log</label>
-        <locationX>3042</locationX>
-        <locationY>278</locationY>
-        <inputAssignments>
-            <field>Flow_Name__c</field>
-            <value>
-                <elementReference>StaticFlowName</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Log_Message__c</field>
-            <value>
-                <stringValue>Platform event triggered. {!$Flow.FaultMessage}</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Log_Type__c</field>
-            <value>
-                <stringValue>Error</stringValue>
-            </value>
-        </inputAssignments>
-        <object>Membership_Essentials_Event_Log__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
         <name>Fire_Create_Membership_Platform_Event</name>
         <label>Fire Create Membership Platform Event</label>
         <locationX>314</locationX>
@@ -300,7 +267,7 @@
         <inputAssignments>
             <field>Record_Id__c</field>
             <value>
-                <elementReference>Query_for_Opportunity_Line_Item.Id</elementReference>
+                <elementReference>$Record.Record_Id__c</elementReference>
             </value>
         </inputAssignments>
         <object>DPEV_Create_Membership__e</object>
@@ -314,7 +281,7 @@
         <inputAssignments>
             <field>Record_Id__c</field>
             <value>
-                <elementReference>Query_for_Opportunity_Line_Item.Id</elementReference>
+                <elementReference>$Record.Record_Id__c</elementReference>
             </value>
         </inputAssignments>
         <object>DPEV_Membership_Downgrade__e</object>
@@ -328,7 +295,7 @@
         <inputAssignments>
             <field>Record_Id__c</field>
             <value>
-                <elementReference>Query_for_Opportunity_Line_Item.Id</elementReference>
+                <elementReference>$Record.Record_Id__c</elementReference>
             </value>
         </inputAssignments>
         <object>DPEV_Membership_Finder__e</object>
@@ -342,7 +309,7 @@
         <inputAssignments>
             <field>Record_Id__c</field>
             <value>
-                <elementReference>Query_for_Opportunity_Line_Item.Id</elementReference>
+                <elementReference>$Record.Record_Id__c</elementReference>
             </value>
         </inputAssignments>
         <object>DPEV_Membership_Renewal__e</object>
@@ -356,7 +323,7 @@
         <inputAssignments>
             <field>Record_Id__c</field>
             <value>
-                <elementReference>Query_for_Opportunity_Line_Item.Id</elementReference>
+                <elementReference>$Record.Record_Id__c</elementReference>
             </value>
         </inputAssignments>
         <object>DPEV_Membership_Upgrade__e</object>
@@ -380,7 +347,7 @@
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>Query_for_Opportunity_Line_Item.Membership__r.Id</elementReference>
+                <elementReference>Query_for_Membership_Form_Submission.Membership__r.Id</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
@@ -401,7 +368,7 @@
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>Query_for_Opportunity_Line_Item.Product2.Id</elementReference>
+                <elementReference>Query_for_Membership_Form_Submission.Product__c</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
@@ -433,18 +400,14 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <description>Get the line item provided in the Record Id Field of the BPEV - Membership Transaction</description>
-        <name>Query_for_Opportunity_Line_Item</name>
-        <label>Query for Opportunity Line Item</label>
+        <name>Query_for_Membership_Form_Submission</name>
+        <label>Query for Membership Form Submission</label>
         <locationX>1546</locationX>
         <locationY>170</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_New_Product_ID</targetReference>
         </connector>
-        <faultConnector>
-            <targetReference>Create_Initial_Membership_Essentials_Log</targetReference>
-        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -454,14 +417,14 @@
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>OpportunityLineItem</object>
+        <object>Membership_Form_Submission__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
         <locationX>1420</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Query_for_Opportunity_Line_Item</targetReference>
+            <targetReference>Query_for_Membership_Form_Submission</targetReference>
         </connector>
         <object>BPEV_Membership_Transaction__e</object>
         <triggerType>PlatformEvent</triggerType>

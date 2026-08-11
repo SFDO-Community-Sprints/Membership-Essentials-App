@@ -2,7 +2,9 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Campaign__c</fullName>
     <deleteConstraint>SetNull</deleteConstraint>
+    <description>The campaign to which this membership form submission is tied</description>
     <externalId>false</externalId>
+    <inlineHelpText>Select or create the campaign to which this membership form submission is tied</inlineHelpText>
     <label>Campaign</label>
     <referenceTo>Campaign</referenceTo>
     <relationshipLabel>Membership Form Submissions</relationshipLabel>
