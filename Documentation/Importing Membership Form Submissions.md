@@ -97,15 +97,19 @@ downgrade after it.
 | `SalePrice__c` | What was paid. Enables revenue expansion vs contraction analysis. |
 | `Source_Code__c` | Acquisition channel. Enables leak-by-source analysis. |
 | `Opportunity__c` | Link to the financial record, where one exists. |
-| `CreatedDate` | When the term was transacted. Set via *Create Audit Fields* if backdating history. |
+| `Term_Start_Date__c` | **When the term began.** Reporting groups on this, not `CreatedDate`. |
 
-### Backdating
+### Dating historical terms
 
-Historical rows should carry their real transaction date, not the import date. Enable
-**Create Audit Fields** in Setup (`User Interface → Enable "Set Audit Fields upon Record Creation"`)
-and grant the loading user the *Set Audit Fields upon Record Creation* permission, then set
-`CreatedDate` on the insert. Without this every historical term looks like it happened on import day
-and term-over-term reporting is meaningless.
+Set **`Term_Start_Date__c`** to the date the term actually began. Reporting deliberately groups on
+this field rather than `CreatedDate`, which means:
+
+- No org permission is required. Backdating `CreatedDate` needs *Set Audit Fields upon Record
+  Creation* enabled and granted; this does not.
+- Re-running an import does not shift your history.
+- A term can be recorded before it starts.
+
+Leave it blank and the term will not appear in any year grouping.
 
 ---
 
@@ -114,10 +118,10 @@ and term-over-term reporting is meaningless.
 After loading, confirm history looks right for a known member:
 
 ```sql
-SELECT Membership__r.Name, CreatedDate, Product__r.Name, Term_Tier__c, SalePrice__c, Source_Code__c
+SELECT Membership__r.Name, Term_Start_Date__c, Product__r.Name, Term_Tier__c, SalePrice__c, Source_Code__c
 FROM   Membership_Form_Submission__c
 WHERE  Membership__c = '<a membership id>'
-ORDER BY CreatedDate
+ORDER BY Term_Start_Date__c
 ```
 
 You should see one row per term, in order, with the product changing where the member upgraded or

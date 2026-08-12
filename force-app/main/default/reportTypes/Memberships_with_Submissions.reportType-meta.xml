@@ -80,6 +80,11 @@
         </columns>
         <columns>
             <checkedByDefault>true</checkedByDefault>
+            <field>Term_Start_Date__c</field>
+            <table>Membership__c.Membership_Form_Submissions__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
             <field>Product__c</field>
             <table>Membership__c.Membership_Form_Submissions__r</table>
         </columns>

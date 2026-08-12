@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>Membership__c$Name</field>
+    </columns>
+    <columns>
+        <field>Membership__c$Type__c</field>
+    </columns>
+    <columns>
+        <field>Membership__c$Level__c</field>
+    </columns>
+    <columns>
+        <field>Membership__c.Membership_Form_Submissions__r$Term_Tier__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Membership__c.Membership_Form_Submissions__r$SalePrice__c</field>
+    </columns>
+    <columns>
+        <field>Membership__c.Membership_Form_Submissions__r$Source_Code__c</field>
+    </columns>
+    <description>One row per membership term, grouped by the year the term started. Compare term counts year over year for retention. Because memberships extend in place, these submissions are the only durable record of past terms.</description>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Year</dateGranularity>
+        <field>Membership__c.Membership_Form_Submissions__r$Term_Start_Date__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Membership Terms by Year</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Memberships_with_Submissions__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Membership__c.Membership_Form_Submissions__r$Term_Start_Date__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

@@ -6,6 +6,11 @@
     </applicationVisibilities>
     <description>Admin/manage permissions for Membership Essentials package objects and fields</description>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Membership_Form_Submission__c.Term_Start_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Membership_Form_Submission__c.Term_Tier__c</field>
         <readable>true</readable>
