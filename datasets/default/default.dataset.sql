@@ -54,6 +54,12 @@ CREATE TABLE "Account" (
 );
 INSERT INTO "Account" VALUES('Account-1','','','','','','','','','','','','Pending','','','','','','','','','','','','','Existing Account','','','','','','','','','','','','','','','','','','','','','','','Account-2','');
 INSERT INTO "Account" VALUES('Account-2','','','','','','','','','','','','Pending','','','','','','','','','','','','','Existing Parent Account','','','','','','','','','','','','','','','','','','','','','','','','');
+INSERT INTO "Account" VALUES('Account-3','','','','','','','','','','','','Pending','','','','','','','','','','','','','Alvarez Household','','','','','','','','','','','','','','','','','','','','','','','','');
+INSERT INTO "Account" VALUES('Account-4','','','','','','','','','','','','Pending','','','','','','','','','','','','','Bennett Household','','','','','','','','','','','','','','','','','','','','','','','','');
+INSERT INTO "Account" VALUES('Account-5','','','','','','','','','','','','Pending','','','','','','','','','','','','','Chen Household','','','','','','','','','','','','','','','','','','','','','','','','');
+INSERT INTO "Account" VALUES('Account-6','','','','','','','','','','','','Pending','','','','','','','','','','','','','Diallo Household','','','','','','','','','','','','','','','','','','','','','','','','');
+INSERT INTO "Account" VALUES('Account-7','','','','','','','','','','','','Pending','','','','','','','','','','','','','Eriksson Household','','','','','','','','','','','','','','','','','','','','','','','','');
+INSERT INTO "Account" VALUES('Account-8','','','','','','','','','','','','Pending','','','','','','','','','','','','','Fitzgerald Household','','','','','','','','','','','','','','','','','','','','','','','','');
 CREATE TABLE "Contact" (
 	id VARCHAR(255) NOT NULL, 
 	"AssistantName" VARCHAR(255), 
@@ -108,6 +114,12 @@ CREATE TABLE "Contact" (
 	PRIMARY KEY (id)
 );
 INSERT INTO "Contact" VALUES('Contact-1','','','','Pending','','','False','email@email.com','','','','Member','','','False','False','','','Testerson','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','');
+INSERT INTO "Contact" VALUES('Contact-3','','','','Pending','','','False','alvarez@example.com','','','','Demo','','','False','False','','','Alvarez','','','','','','','','','','','','','','','','','','','','','','','','','','','','Account-3','','');
+INSERT INTO "Contact" VALUES('Contact-4','','','','Pending','','','False','bennett@example.com','','','','Demo','','','False','False','','','Bennett','','','','','','','','','','','','','','','','','','','','','','','','','','','','Account-4','','');
+INSERT INTO "Contact" VALUES('Contact-5','','','','Pending','','','False','chen@example.com','','','','Demo','','','False','False','','','Chen','','','','','','','','','','','','','','','','','','','','','','','','','','','','Account-5','','');
+INSERT INTO "Contact" VALUES('Contact-6','','','','Pending','','','False','diallo@example.com','','','','Demo','','','False','False','','','Diallo','','','','','','','','','','','','','','','','','','','','','','','','','','','','Account-6','','');
+INSERT INTO "Contact" VALUES('Contact-7','','','','Pending','','','False','eriksson@example.com','','','','Demo','','','False','False','','','Eriksson','','','','','','','','','','','','','','','','','','','','','','','','','','','','Account-7','','');
+INSERT INTO "Contact" VALUES('Contact-8','','','','Pending','','','False','fitzgerald@example.com','','','','Demo','','','False','False','','','Fitzgerald','','','','','','','','','','','','','','','','','','','','','','','','','','','','Account-8','','');
 CREATE TABLE "DandBCompany" (
 	id VARCHAR(255) NOT NULL, 
 	"DunsNumber" VARCHAR(255), 
@@ -121,8 +133,22 @@ CREATE TABLE "Individual" (
 );
 CREATE TABLE "Membership__c" (
 	id VARCHAR(255) NOT NULL, 
+	"Name" VARCHAR(255), 
+	"Type__c" VARCHAR(255), 
+	"Status__c" VARCHAR(255), 
+	"Start_Date__c" VARCHAR(255), 
+	"End_Date__c" VARCHAR(255), 
+	"Account__c" VARCHAR(255), 
+	"Primary_Contact__c" VARCHAR(255), 
+	"Product__c" VARCHAR(255), 
 	PRIMARY KEY (id)
 );
+INSERT INTO "Membership__c" VALUES('Membership__c-1','Alvarez Membership','Household','Current','2023-03-01','2027-03-01','Account-3','Contact-3','Product2-5');
+INSERT INTO "Membership__c" VALUES('Membership__c-2','Bennett Membership','Household','Current','2023-06-01','2027-06-01','Account-4','Contact-4','Product2-3');
+INSERT INTO "Membership__c" VALUES('Membership__c-3','Chen Membership','Individual','Current','2022-09-01','2025-09-01','Account-5','Contact-5','Product2-1');
+INSERT INTO "Membership__c" VALUES('Membership__c-4','Diallo Membership','Individual','Current','2024-02-01','2025-02-01','Account-6','Contact-6','Product2-1');
+INSERT INTO "Membership__c" VALUES('Membership__c-5','Eriksson Membership','Household','Current','2026-07-01','2027-07-01','Account-7','Contact-7','Product2-2');
+INSERT INTO "Membership__c" VALUES('Membership__c-6','Fitzgerald Membership','Household','Current','2021-04-01','2026-09-01','Account-8','Contact-8','Product2-3');
 CREATE TABLE "OperatingHours" (
 	id VARCHAR(255) NOT NULL, 
 	"Name" VARCHAR(255), 
@@ -150,9 +176,40 @@ CREATE TABLE "Product2" (
 	"Upgrade_Path__c" VARCHAR(255), 
 	PRIMARY KEY (id)
 );
-INSERT INTO "Product2" VALUES('Product2-1','','','','','','True','False','','Basic Membership','','','One-Time','BSC','Year','1.0','','Product2-2');
-INSERT INTO "Product2" VALUES('Product2-2','','','','','','True','False','','Standard Membership','','','One-Time','STD','Year','1.0','Product2-1','Product2-5');
-INSERT INTO "Product2" VALUES('Product2-3','','','','','','True','False','','Family Membership','','','One-Time','FAM','Year','1.0','','');
-INSERT INTO "Product2" VALUES('Product2-4','','','','','','True','False','','Youth Membership','','','One-Time','YTH','Year','1.0','','Product2-2');
-INSERT INTO "Product2" VALUES('Product2-5','','','','','','True','False','','Premier Membership','','','One-Time','PMR','Year','1.0','Product2-2','');
+INSERT INTO "Product2" VALUES('Product2-1','','','','Membership','30','True','False','3','Basic Membership','','','Renewable','BSC','Year','1.0','','Product2-2');
+INSERT INTO "Product2" VALUES('Product2-2','','','','Membership','30','True','False','1','Standard Membership','','','Renewable','STD','Year','1.0','Product2-1','Product2-5');
+INSERT INTO "Product2" VALUES('Product2-3','','','','Membership','30','True','False','2','Family Membership','','','Renewable','FAM','Year','1.0','','');
+INSERT INTO "Product2" VALUES('Product2-4','','','','Membership','30','True','False','4','Youth Membership','','','Renewable','YTH','Year','1.0','','Product2-2');
+INSERT INTO "Product2" VALUES('Product2-5','','','','Membership','30','True','False','0','Premier Membership','','','Renewable','PMR','Year','1.0','Product2-2','');
+CREATE TABLE "Membership_Form_Submission__c" (
+	id VARCHAR(255) NOT NULL, 
+	"Status__c" VARCHAR(255), 
+	"Membership_Finder_Ran__c" VARCHAR(255), 
+	"Term_Start_Date__c" VARCHAR(255), 
+	"SalePrice__c" VARCHAR(255), 
+	"Duration__c" VARCHAR(255), 
+	"MembershipType__c" VARCHAR(255), 
+	"Source_Code__c" VARCHAR(255), 
+	"Membership__c" VARCHAR(255), 
+	"Account__c" VARCHAR(255), 
+	"Product__c" VARCHAR(255), 
+	PRIMARY KEY (id)
+);
+INSERT INTO "Membership_Form_Submission__c" VALUES('MFS-1','Imported','True','2023-03-01','150','1 Year','Household','WEB','Membership__c-1','Account-3','Product2-3');
+INSERT INTO "Membership_Form_Submission__c" VALUES('MFS-2','Imported','True','2024-03-01','500','1 Year','Household','RENEWAL','Membership__c-1','Account-3','Product2-2');
+INSERT INTO "Membership_Form_Submission__c" VALUES('MFS-3','Imported','True','2025-03-01','2500','1 Year','Household','GALA','Membership__c-1','Account-3','Product2-5');
+INSERT INTO "Membership_Form_Submission__c" VALUES('MFS-4','Imported','True','2026-03-01','2500','1 Year','Household','RENEWAL','Membership__c-1','Account-3','Product2-5');
+INSERT INTO "Membership_Form_Submission__c" VALUES('MFS-5','Imported','True','2023-06-01','150','1 Year','Household','WEB','Membership__c-2','Account-4','Product2-3');
+INSERT INTO "Membership_Form_Submission__c" VALUES('MFS-6','Imported','True','2024-06-01','150','1 Year','Household','RENEWAL','Membership__c-2','Account-4','Product2-3');
+INSERT INTO "Membership_Form_Submission__c" VALUES('MFS-7','Imported','True','2025-06-01','150','1 Year','Household','RENEWAL','Membership__c-2','Account-4','Product2-3');
+INSERT INTO "Membership_Form_Submission__c" VALUES('MFS-8','Imported','True','2026-06-01','150','1 Year','Household','RENEWAL','Membership__c-2','Account-4','Product2-3');
+INSERT INTO "Membership_Form_Submission__c" VALUES('MFS-9','Imported','True','2022-09-01','500','1 Year','Individual','MEMBER_DRIVE','Membership__c-3','Account-5','Product2-2');
+INSERT INTO "Membership_Form_Submission__c" VALUES('MFS-10','Imported','True','2023-09-01','150','1 Year','Individual','RENEWAL','Membership__c-3','Account-5','Product2-3');
+INSERT INTO "Membership_Form_Submission__c" VALUES('MFS-11','Imported','True','2024-09-01','75','1 Year','Individual','RENEWAL','Membership__c-3','Account-5','Product2-1');
+INSERT INTO "Membership_Form_Submission__c" VALUES('MFS-12','Imported','True','2024-02-01','75','1 Year','Individual','SOCIAL','Membership__c-4','Account-6','Product2-1');
+INSERT INTO "Membership_Form_Submission__c" VALUES('MFS-13','Imported','True','2026-07-01','500','1 Year','Household','WEB','Membership__c-5','Account-7','Product2-2');
+INSERT INTO "Membership_Form_Submission__c" VALUES('MFS-14','Imported','True','2021-04-01','75','1 Year','Household','WEB','Membership__c-6','Account-8','Product2-1');
+INSERT INTO "Membership_Form_Submission__c" VALUES('MFS-15','Imported','True','2022-04-01','75','1 Year','Household','RENEWAL','Membership__c-6','Account-8','Product2-1');
+INSERT INTO "Membership_Form_Submission__c" VALUES('MFS-16','Imported','True','2024-09-01','150','1 Year','Household','WINBACK_MAIL','Membership__c-6','Account-8','Product2-3');
+INSERT INTO "Membership_Form_Submission__c" VALUES('MFS-17','Imported','True','2025-09-01','150','1 Year','Household','RENEWAL','Membership__c-6','Account-8','Product2-3');
 COMMIT;

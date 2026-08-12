@@ -129,6 +129,29 @@ downgraded.
 
 ---
 
+## A worked example ships with the app
+
+`datasets/default/` contains six households whose term histories cover the situations a
+membership programme actually sees. Every submission row in it follows the rules above — the
+mapping sets `Status__c` to `Imported` at insert, populates `Membership__c`, and sets
+`Membership_Finder_Ran__c`.
+
+| Household | What it shows |
+|---|---|
+| Alvarez | Upgraded twice and stayed — Family → Standard → Premier, $150 to $2,500 |
+| Bennett | Flat renewer, four consecutive years at the same level |
+| Chen | Downgraded twice, then lapsed — contraction as an early warning of churn |
+| Diallo | Joined and never renewed — first-year churn |
+| Eriksson | Joined this year, no history yet |
+| Fitzgerald | Two terms, a year missing, then won back at a **better** level |
+
+Load it into a scratch org and open **Membership Term History** to see the shape these produce.
+The Fitzgerald group is the one to look at for a lapse-and-return, since the gap is visible as a
+jump in term dates rather than anything the report has to be told about.
+
+Note the dates are fixed rather than relative, so the "currently active" households will age out
+over time and need refreshing like any static sample data.
+
 ## Related
 
 - **Membership Tier and the upgrade/downgrade convention** — how levels compare, and why

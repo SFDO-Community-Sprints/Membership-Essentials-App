@@ -43,18 +43,23 @@ Because the field accepts two decimal places, a new level can be slotted between
 without renumbering anything. Introducing a level between tier 1 and tier 2 means creating it as
 tier 1.5, not rewriting every product.
 
-### A worked example
+### The tiers that ship with the app
+
+The sample dataset sets these, following the upgrade paths already wired into the products:
 
 | Product | Tier | Meaning |
 |---|---|---|
-| Director's Circle | 0 | highest |
-| Patron | 1 | |
-| Sustainer | 1.5 | added later, between Patron and Family |
-| Family | 2 | |
-| Individual | 3 | entry level |
+| Premier Membership | 0 | highest |
+| Standard Membership | 1 | |
+| Family Membership | 2 | |
+| Basic Membership | 3 | |
+| Youth Membership | 4 | entry level |
 
-A member moving Individual → Family is an **upgrade** (3 → 2). Family → Individual is a
-**downgrade** (2 → 3).
+A member moving Basic → Standard is an **upgrade** (3 → 1). Standard → Family is a
+**downgrade** (1 → 2).
+
+Because the field takes two decimal places, a new level can be slotted in without renumbering —
+something between Standard and Family becomes tier 1.5, not a rewrite of every product.
 
 ---
 
