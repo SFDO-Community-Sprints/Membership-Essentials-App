@@ -5,7 +5,7 @@
         <description>Assign the Membership Form Submission to a record variable to updated</description>
         <name>AssignMembershipFormSubmissionforUpdate</name>
         <label>AssignMembershipFormSubmissionforUpdate</label>
-        <locationX>314</locationX>
+        <locationX>842</locationX>
         <locationY>278</locationY>
         <assignmentItems>
             <assignToReference>MembershipFormSubmissionforUpdate</assignToReference>
@@ -23,7 +23,7 @@
         <name>AssignMembershiptoMembershipFormSubmission</name>
         <label>AssignMembershiptoMembershipFormSubmission</label>
         <locationX>50</locationX>
-        <locationY>818</locationY>
+        <locationY>926</locationY>
         <assignmentItems>
             <assignToReference>GetMembershipFormSubmission.Membership__c</assignToReference>
             <operator>Assign</operator>
@@ -31,8 +31,15 @@
                 <elementReference>GetMembership.Id</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>GetMembershipFormSubmission.Membership_Finder_Ran__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
         <connector>
-            <targetReference>Copy_2_of_Create_Membership_Essentials_Log_Pass</targetReference>
+            <targetReference>Create_ME_Pass_Log_for_Found</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -40,7 +47,7 @@
         <name>SetMembershipFinderRanFlag</name>
         <label>SetMembershipFinderRanFlag</label>
         <locationX>314</locationX>
-        <locationY>818</locationY>
+        <locationY>926</locationY>
         <assignmentItems>
             <assignToReference>MembershipFormSubmissionforUpdate.Membership_Finder_Ran__c</assignToReference>
             <operator>Assign</operator>
@@ -53,11 +60,44 @@
         </connector>
     </assignments>
     <decisions>
+        <description>check if matches are found</description>
+        <name>Matching_Product_Check</name>
+        <label>Matching Product Check</label>
+        <locationX>842</locationX>
+        <locationY>494</locationY>
+        <defaultConnector>
+            <targetReference>Log_No_Matching_Products</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No Matching Products</defaultConnectorLabel>
+        <rules>
+            <name>Matching_Products_Found</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Matching_Products</leftValueReference>
+                <operator>IsEmpty</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_Matching_Products</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Matching_Product_ID_List</targetReference>
+            </connector>
+            <label>Matching Products Found</label>
+        </rules>
+    </decisions>
+    <decisions>
         <description>Test if a current membership exists</description>
         <name>MembershipPresent</name>
         <label>MembershipPresent</label>
         <locationX>314</locationX>
-        <locationY>710</locationY>
+        <locationY>818</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Membership_Found</name>
@@ -90,7 +130,7 @@
             <label>Membership not found</label>
         </rules>
     </decisions>
-    <description>Find membership associated with Membership Form Submission and Account or mark Membership Form Submission Record to indicate that the finder ran.</description>
+    <description>Find membership associated with Membership Form Submission and Account or mark Membership Form Submission Record to indicate that the finder ran. Add check and log for product matching.</description>
     <environments>Default</environments>
     <formulas>
         <description>Returns today&apos;s date</description>
@@ -120,10 +160,48 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordCreates>
-        <name>Copy_2_of_Create_Membership_Essentials_Log_Pass</name>
-        <label>Copy 2 of Create Membership Essentials Log - Pass</label>
+        <name>Create_GetMembership_Membership_Essentials_Log</name>
+        <label>Create &quot;GetMembership&quot; Membership Essentials Log</label>
+        <locationX>1106</locationX>
+        <locationY>818</locationY>
+        <inputAssignments>
+            <field>Error_Text__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <stringValue>Failed Query</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>GetMembershipFormSubmission.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_ME_Pass_Log_for_Found</name>
+        <label>Create ME Pass Log for Found</label>
         <locationX>50</locationX>
-        <locationY>926</locationY>
+        <locationY>1034</locationY>
         <connector>
             <targetReference>UpdateMembershipFormSubmission</targetReference>
         </connector>
@@ -145,30 +223,10 @@
                 <stringValue>Pass</stringValue>
             </value>
         </inputAssignments>
-        <object>Membership_Essentials_Event_Log__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
-        <name>Create_GetMembership_Membership_Essentials_Log</name>
-        <label>Create &quot;GetMembership&quot; Membership Essentials Log</label>
-        <locationX>1106</locationX>
-        <locationY>710</locationY>
         <inputAssignments>
-            <field>Flow_Name__c</field>
+            <field>Membership_Form_Submission__c</field>
             <value>
-                <elementReference>StaticFlowName</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Log_Message__c</field>
-            <value>
-                <elementReference>$Flow.FaultMessage</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Log_Type__c</field>
-            <value>
-                <stringValue>Error</stringValue>
+                <elementReference>GetMembershipFormSubmission.Id</elementReference>
             </value>
         </inputAssignments>
         <object>Membership_Essentials_Event_Log__c</object>
@@ -178,7 +236,7 @@
         <name>Create_Membership_Essentials_Log_Pass</name>
         <label>Create Membership Essentials Log - Pass</label>
         <locationX>314</locationX>
-        <locationY>1226</locationY>
+        <locationY>1334</locationY>
         <inputAssignments>
             <field>Flow_Name__c</field>
             <value>
@@ -197,6 +255,12 @@
                 <stringValue>Pass</stringValue>
             </value>
         </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>GetMembershipFormSubmission.Id</elementReference>
+            </value>
+        </inputAssignments>
         <object>Membership_Essentials_Event_Log__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
@@ -204,7 +268,7 @@
         <name>Create_Membership_Essentials_Log_Pass1</name>
         <label>Create Membership Essentials Log - Pass</label>
         <locationX>314</locationX>
-        <locationY>926</locationY>
+        <locationY>1034</locationY>
         <connector>
             <targetReference>UpdateMembershipFormSubmission</targetReference>
         </connector>
@@ -226,6 +290,12 @@
                 <stringValue>Pass</stringValue>
             </value>
         </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>GetMembershipFormSubmission.Id</elementReference>
+            </value>
+        </inputAssignments>
         <object>Membership_Essentials_Event_Log__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
@@ -233,7 +303,7 @@
         <name>Create_UpdateMembershipFormSubmission_Membership_Essentials_Log</name>
         <label>Create &quot;UpdateMembershipFormSubmission&quot; Membership Essentials Log</label>
         <locationX>842</locationX>
-        <locationY>1226</locationY>
+        <locationY>1334</locationY>
         <inputAssignments>
             <field>Flow_Name__c</field>
             <value>
@@ -252,17 +322,55 @@
                 <stringValue>Error</stringValue>
             </value>
         </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>GetMembershipFormSubmission.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Log_No_Matching_Products</name>
+        <label>Log No Matching Products</label>
+        <locationX>1370</locationX>
+        <locationY>602</locationY>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <stringValue>No Matching Products Found - can&apos;t proceed</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>GetMembershipFormSubmission.Id</elementReference>
+            </value>
+        </inputAssignments>
         <object>Membership_Essentials_Event_Log__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
         <name>Get_Matching_Products</name>
         <label>Get Matching Products</label>
-        <locationX>314</locationX>
+        <locationX>842</locationX>
         <locationY>386</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Matching_Product_ID_List</targetReference>
+            <targetReference>Matching_Product_Check</targetReference>
         </connector>
         <faultConnector>
             <isGoTo>true</isGoTo>
@@ -295,7 +403,7 @@ and the Product is a renewable membership of the same Category.</description>
         <name>GetMembership</name>
         <label>GetMembership</label>
         <locationX>314</locationX>
-        <locationY>602</locationY>
+        <locationY>710</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>MembershipPresent</targetReference>
@@ -337,7 +445,7 @@ and the Product is a renewable membership of the same Category.</description>
 Return the Membership Form Submission</description>
         <name>GetMembershipFormSubmission</name>
         <label>GetMembershipFormSubmission</label>
-        <locationX>314</locationX>
+        <locationX>842</locationX>
         <locationY>170</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -360,7 +468,7 @@ Return the Membership Form Submission</description>
         <name>UpdateMembershipFormSubmission</name>
         <label>UpdateMembershipFormSubmission</label>
         <locationX>314</locationX>
-        <locationY>1118</locationY>
+        <locationY>1226</locationY>
         <connector>
             <targetReference>Create_Membership_Essentials_Log_Pass</targetReference>
         </connector>
@@ -370,7 +478,7 @@ Return the Membership Form Submission</description>
         <inputReference>MembershipFormSubmissionforUpdate</inputReference>
     </recordUpdates>
     <start>
-        <locationX>188</locationX>
+        <locationX>716</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>GetMembershipFormSubmission</targetReference>
@@ -383,7 +491,7 @@ Return the Membership Form Submission</description>
         <name>Matching_Product_ID_List</name>
         <label>Matching Product ID List</label>
         <locationX>314</locationX>
-        <locationY>494</locationY>
+        <locationY>602</locationY>
         <connector>
             <targetReference>GetMembership</targetReference>
         </connector>
