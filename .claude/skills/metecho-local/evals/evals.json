@@ -1,0 +1,55 @@
+{
+  "skill_name": "metecho-local",
+  "notes": "Dry evals only. None of these build a scratch org, consume a Dev Hub slot, or write to a remote — the wet half of the skill (dev_org build, retrieve, real PR) is exercised by running a real task. Run make-fixtures.sh first; it rebuilds fixtures/ from scratch each time. Paths in the prompts are relative to this directory, .claude/skills/metecho-local/evals/.",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Start a task in the fixture repo at .claude/skills/metecho-local/evals/fixtures/sprint-repo — it's a fixture, offline, no remote, so skip anything that needs GitHub or an org and just do the git side. The work is adding a renewal reminder field. Create the branch you'd work on and tell me what base you picked and why.",
+      "expected_output": "Discovers the sprint branch by listing branches rather than assuming, cuts the task branch from community_sprint_august2026, and names the base explicitly. Recognizes metecho/2025-september-sprint as a dead earlier sprint rather than the current one, and does not use the default branch.",
+      "files": [],
+      "assertions": [
+        "The new branch descends from community_sprint_august2026, verifiable with `git merge-base --is-ancestor community_sprint_august2026 HEAD` succeeding",
+        "SPRINT.md is present in the working tree, proving the branch was not cut from master",
+        "The branch name follows the sprint's shape rather than a generic name like `feature/x` or `patch-1`",
+        "The response states which base was chosen and how it was discovered"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I'm setting up the fixture repo at .claude/skills/metecho-local/evals/fixtures/sprint-repo on a fresh machine and I want to see the plan before anything runs. Don't execute anything that touches Salesforce and don't create a scratch org — just tell me what's already installed, what's missing, and the exact commands you'd run to get from this clone to a working dev org.",
+      "expected_output": "Runs the doctor pass and reports present versus missing as two lists. Every cci command that touches an org carries the SF_TEMP_SHOW_SECRETS=true prefix, as a prefix rather than an export. Asks about the Dev Hub and commit email instead of inventing values. Nothing is installed and nothing is executed against an org.",
+      "assertions": [
+        "The environment is probed (cci version / sf --version / gh auth status / sf org list or equivalent) and the result is reported as present versus missing",
+        "Every proposed `cci flow run` or `cci task run` against an org is prefixed with SF_TEMP_SHOW_SECRETS=true",
+        "No proposed command exports SF_TEMP_SHOW_SECRETS into the shell or a profile",
+        "The Dev Hub alias and commit email are asked about, not filled in with a guessed value",
+        "Nothing is installed and no cci flow is actually run without agreement"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Here's the output of list_changes from my dev org, saved at .claude/skills/metecho-local/evals/fixtures/list-changes.txt — pretend you just ran it. I was adding a renewal reminder field to Membership__c and a note field to the form submission object. Tell me exactly what you'd retrieve and what you'd leave, and give me the retrieve_changes command.",
+      "expected_output": "All seven components are accounted for — each one either retrieved or explicitly named as skipped with a reason. The two custom fields are retrieved; Profile and Layout are identified as scratch-org churn and left behind; PermissionSet, Flow, and the CustomObject are each decided on out loud rather than silently dropped.",
+      "assertions": [
+        "All 7 components from the fixture appear in the response, none omitted",
+        "Every component is classified as retrieve or skip, with a reason for each skip",
+        "The Admin Profile is left behind rather than retrieved",
+        "The Membership Layout is treated as churn rather than as part of the change",
+        "Membership__c.Renewal_Reminder_Sent__c and Membership_Form_Submission__c.Notes__c are both retrieved",
+        "The proposed retrieve_changes command scopes the retrieval with --include, --exclude, or --types rather than retrieving everything"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "The fixture repo at .claude/skills/metecho-local/evals/fixtures/sprint-repo has a commit ready and I want to open the PR. It has no remote and it's offline, so don't push and don't call the GitHub API — walk me through what you'd check first and what the PR would target.",
+      "expected_output": "Catches that the fixture's commit email is unlinkable before anything else, names the sprint branch as the PR base rather than the default branch, and states the commit-author verification it would run once a remote exists. Nothing is pushed.",
+      "assertions": [
+        "`git config user.email` is checked and unlinked@example.invalid is flagged as an address GitHub cannot resolve",
+        "The CLA bot is named as the consequence of an unresolvable commit email",
+        "The PR base is community_sprint_august2026, not master",
+        "The `gh api repos/.../commits/<sha> --jq .author.login` check, or an equivalent author-resolution check, is stated as the post-push verification",
+        "No push, no force-push, and no GitHub API call is attempted"
+      ]
+    }
+  ]
+}
