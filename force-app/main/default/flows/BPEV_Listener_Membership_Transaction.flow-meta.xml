@@ -131,7 +131,7 @@
                 <leftValueReference>Query_for_Membership_Form_Submission.Membership_Finder_Ran__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <booleanValue>false</booleanValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -400,13 +400,14 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <name>Query_for_Membership_Form_Submission</name>
-        <label>Query for Membership Form Submission</label>
+        <description>The BPEV_Membership_Transaction__e payload carries an OpportunityLineItem Id in Record_Id__c (set by Opportunity_Line_Item_After_Membership). Resolve it here so the Membership Form Submission can be reached through its Opportunity, the same way DPEV_Listener_Membership_Create_Flow does it.</description>
+        <name>Get_Opportunity_Line_Item</name>
+        <label>Get Opportunity Line Item</label>
         <locationX>1546</locationX>
-        <locationY>170</locationY>
+        <locationY>62</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_New_Product_ID</targetReference>
+            <targetReference>Query_for_Membership_Form_Submission</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -417,6 +418,27 @@
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>OpportunityLineItem</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Query_for_Membership_Form_Submission</name>
+        <label>Query for Membership Form Submission</label>
+        <locationX>1546</locationX>
+        <locationY>170</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_New_Product_ID</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Opportunity__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Opportunity_Line_Item.OpportunityId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Membership_Form_Submission__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
@@ -424,7 +446,7 @@
         <locationX>1420</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Query_for_Membership_Form_Submission</targetReference>
+            <targetReference>Get_Opportunity_Line_Item</targetReference>
         </connector>
         <object>BPEV_Membership_Transaction__e</object>
         <triggerType>PlatformEvent</triggerType>
