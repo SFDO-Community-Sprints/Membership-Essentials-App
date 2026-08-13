@@ -295,7 +295,7 @@
         <inputAssignments>
             <field>Record_Id__c</field>
             <value>
-                <elementReference>$Record.Record_Id__c</elementReference>
+                <elementReference>Query_for_Membership_Form_Submission.Id</elementReference>
             </value>
         </inputAssignments>
         <object>DPEV_Membership_Finder__e</object>
