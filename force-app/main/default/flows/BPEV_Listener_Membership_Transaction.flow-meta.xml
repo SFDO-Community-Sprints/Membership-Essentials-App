@@ -103,27 +103,12 @@
         </rules>
     </decisions>
     <decisions>
-        <description>Checks whether the Membership Finder has not already run.</description>
+        <description>Fires the create event once the finder has reported back. Deliberately does NOT publish the finder event when the flag is false: the orchestrator already publishes DPEV_Membership_Finder__e for every submission, and publishing it here as well ran two finder interviews in the same second, each of which republished this event and produced a duplicate Membership.</description>
         <name>Membership_Finder_Run_Check</name>
         <label>Membership Finder Run Check</label>
         <locationX>314</locationX>
         <locationY>494</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Membership_Finder_Has_Not_Run</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>Query_for_Membership_Form_Submission.Membership_Finder_Ran__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Fire_Membership_Finder_Platform_Event</targetReference>
-            </connector>
-            <label>NOT RUN Membership Finder Has Not Run</label>
-        </rules>
         <rules>
             <name>Membership_Finder_Has_Run</name>
             <conditionLogic>and</conditionLogic>
@@ -285,20 +270,6 @@
             </value>
         </inputAssignments>
         <object>DPEV_Membership_Downgrade__e</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
-        <name>Fire_Membership_Finder_Platform_Event</name>
-        <label>Fire Membership Finder Platform Event</label>
-        <locationX>50</locationX>
-        <locationY>602</locationY>
-        <inputAssignments>
-            <field>Record_Id__c</field>
-            <value>
-                <elementReference>Query_for_Membership_Form_Submission.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <object>DPEV_Membership_Finder__e</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
