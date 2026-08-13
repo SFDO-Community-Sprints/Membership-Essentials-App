@@ -2,6 +2,43 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>61.0</apiVersion>
     <decisions>
+        <description>Idempotency and payload guard. Create exactly once: skip when the line item or submission could not be resolved, or when the submission already carries a Membership (a second create event for the same submission must be a no-op).</description>
+        <name>Should_Create_Membership</name>
+        <label>Should Create Membership</label>
+        <locationX>176</locationX>
+        <locationY>350</locationY>
+        <defaultConnectorLabel>Already handled or unresolved</defaultConnectorLabel>
+        <rules>
+            <name>Create_Is_Needed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Query_Opportunity_Product.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Query_Membership_Form_Submission.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Query_Membership_Form_Submission.Membership__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Create_Membership_Essentials_Log_Pass1</targetReference>
+            </connector>
+            <label>Create Is Needed</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Does_Recipient_Exist</name>
         <label>Does Recipient Exist</label>
         <locationX>314</locationX>
@@ -533,7 +570,7 @@ TEXT({!$Flow.CurrentDate})
         <locationY>386</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Create_Membership_Essentials_Log_Pass1</targetReference>
+            <targetReference>Should_Create_Membership</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Create_Query_Membership_Form_Submission_Membership_Essentials_Log</targetReference>

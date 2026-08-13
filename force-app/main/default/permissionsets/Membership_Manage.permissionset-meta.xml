@@ -719,8 +719,12 @@
         <visibility>Visible</visibility>
     </tabSettings>
     <tabSettings>
+        <tab>Membership_Essentials_Event_Log__c</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
         <tab>Membership_Form_Submission__c</tab>
-        <visibility>Available</visibility>
+        <visibility>Visible</visibility>
     </tabSettings>
     <tabSettings>
         <tab>Membership__c</tab>
