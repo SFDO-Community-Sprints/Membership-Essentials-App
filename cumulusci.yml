@@ -26,7 +26,11 @@ flows:
                 task: assign_permission_sets
                 options:
                     api_names: Membership_Manage
-            4:
+            4: #adds list views and attempts to assign page layouts. layout assignment not currently functioning as expected.
                 task: deploy_post
                 options:
                     path: unpackaged/dev
+            90: # Use a snowfakery recipe for data generation in place of the default dataset operation
+                task: snowfakery
+                options:
+                    recipe: datasets/default_data.snowfakery.yml
