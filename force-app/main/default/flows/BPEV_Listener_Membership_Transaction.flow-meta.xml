@@ -103,27 +103,12 @@
         </rules>
     </decisions>
     <decisions>
-        <description>Checks whether the Membership Finder has not already run.</description>
+        <description>Fires the create event once the finder has reported back. Deliberately does NOT publish the finder event when the flag is false: the orchestrator already publishes DPEV_Membership_Finder__e for every submission, and publishing it here as well ran two finder interviews in the same second, each of which republished this event and produced a duplicate Membership.</description>
         <name>Membership_Finder_Run_Check</name>
         <label>Membership Finder Run Check</label>
         <locationX>314</locationX>
         <locationY>494</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Membership_Finder_Has_Not_Run</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>Query_for_Membership_Form_Submission.Membership_Finder_Ran__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Fire_Membership_Finder_Platform_Event</targetReference>
-            </connector>
-            <label>NOT RUN Membership Finder Has Not Run</label>
-        </rules>
         <rules>
             <name>Membership_Finder_Has_Run</name>
             <conditionLogic>and</conditionLogic>
@@ -131,7 +116,7 @@
                 <leftValueReference>Query_for_Membership_Form_Submission.Membership_Finder_Ran__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <booleanValue>false</booleanValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -288,20 +273,6 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
-        <name>Fire_Membership_Finder_Platform_Event</name>
-        <label>Fire Membership Finder Platform Event</label>
-        <locationX>50</locationX>
-        <locationY>602</locationY>
-        <inputAssignments>
-            <field>Record_Id__c</field>
-            <value>
-                <elementReference>$Record.Record_Id__c</elementReference>
-            </value>
-        </inputAssignments>
-        <object>DPEV_Membership_Finder__e</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
         <name>Fire_Membership_Renewal_Platform_Event</name>
         <label>Fire Membership Renewal Platform Event</label>
         <locationX>1546</locationX>
@@ -400,13 +371,14 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <name>Query_for_Membership_Form_Submission</name>
-        <label>Query for Membership Form Submission</label>
+        <description>The BPEV_Membership_Transaction__e payload carries an OpportunityLineItem Id in Record_Id__c (set by Opportunity_Line_Item_After_Membership). Resolve it here so the Membership Form Submission can be reached through its Opportunity, the same way DPEV_Listener_Membership_Create_Flow does it.</description>
+        <name>Get_Opportunity_Line_Item</name>
+        <label>Get Opportunity Line Item</label>
         <locationX>1546</locationX>
-        <locationY>170</locationY>
+        <locationY>62</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_New_Product_ID</targetReference>
+            <targetReference>Query_for_Membership_Form_Submission</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -417,6 +389,27 @@
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>OpportunityLineItem</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Query_for_Membership_Form_Submission</name>
+        <label>Query for Membership Form Submission</label>
+        <locationX>1546</locationX>
+        <locationY>170</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_New_Product_ID</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Opportunity__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Opportunity_Line_Item.OpportunityId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Membership_Form_Submission__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
@@ -424,7 +417,7 @@
         <locationX>1420</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Query_for_Membership_Form_Submission</targetReference>
+            <targetReference>Get_Opportunity_Line_Item</targetReference>
         </connector>
         <object>BPEV_Membership_Transaction__e</object>
         <triggerType>PlatformEvent</triggerType>

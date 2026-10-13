@@ -15,7 +15,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Get_Matching_Products</targetReference>
+            <targetReference>Should_Finder_Proceed</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -25,14 +25,14 @@
         <locationX>50</locationX>
         <locationY>926</locationY>
         <assignmentItems>
-            <assignToReference>GetMembershipFormSubmission.Membership__c</assignToReference>
+            <assignToReference>MembershipFormSubmissionforUpdate.Membership__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>GetMembership.Id</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>GetMembershipFormSubmission.Membership_Finder_Ran__c</assignToReference>
+            <assignToReference>MembershipFormSubmissionforUpdate.Membership_Finder_Ran__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <booleanValue>true</booleanValue>
@@ -59,6 +59,68 @@
             <targetReference>Create_Membership_Essentials_Log_Pass1</targetReference>
         </connector>
     </assignments>
+    <decisions>
+        <description>Skip when the submission was not found, the finder already ran, or a Membership is already linked. Without this guard the finder can be entered twice for one submission (once from the orchestrator, once from the transaction listener) and would publish two create events.</description>
+        <name>Should_Finder_Proceed</name>
+        <label>Should Finder Proceed</label>
+        <locationX>842</locationX>
+        <locationY>350</locationY>
+        <defaultConnectorLabel>Already handled</defaultConnectorLabel>
+        <rules>
+            <name>Finder_Should_Run</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GetMembershipFormSubmission.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GetMembershipFormSubmission.Membership_Finder_Ran__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GetMembershipFormSubmission.Membership__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Matching_Products</targetReference>
+            </connector>
+            <label>Finder Should Run</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Fire_Transaction_For_Create</name>
+        <label>Fire Transaction For Create</label>
+        <locationX>314</locationX>
+        <locationY>1178</locationY>
+        <defaultConnector>
+            <targetReference>UpdateMembershipFormSubmission</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No Opportunity Line Item</defaultConnectorLabel>
+        <rules>
+            <name>OLI_Found</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_OLI_For_Transaction.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Fire_Membership_Transaction_For_Create</targetReference>
+            </connector>
+            <label>OLI Found</label>
+        </rules>
+    </decisions>
     <decisions>
         <description>check if matches are found</description>
         <name>Matching_Product_Check</name>
@@ -270,7 +332,7 @@
         <locationX>314</locationX>
         <locationY>1034</locationY>
         <connector>
-            <targetReference>UpdateMembershipFormSubmission</targetReference>
+            <targetReference>Get_OLI_For_Transaction</targetReference>
         </connector>
         <inputAssignments>
             <field>Flow_Name__c</field>
@@ -332,10 +394,31 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
+        <description>Republish the transaction event now that Membership_Finder_Ran__c is true. The flag update in this same interview commits before the event is delivered (publish-after-commit), so the listener re-enters on its Membership_Finder_Has_Run rule and fires DPEV_Create_Membership__e.</description>
+        <name>Fire_Membership_Transaction_For_Create</name>
+        <label>Fire Membership Transaction For Create</label>
+        <locationX>314</locationX>
+        <locationY>1250</locationY>
+        <connector>
+            <targetReference>UpdateMembershipFormSubmission</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Record_Id__c</field>
+            <value>
+                <elementReference>Get_OLI_For_Transaction.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>BPEV_Membership_Transaction__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
         <name>Log_No_Matching_Products</name>
         <label>Log No Matching Products</label>
         <locationX>1370</locationX>
         <locationY>602</locationY>
+        <connector>
+            <targetReference>SetMembershipFinderRanFlag</targetReference>
+        </connector>
         <inputAssignments>
             <field>Flow_Name__c</field>
             <value>
@@ -396,6 +479,38 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <description>The not-found path needs the Opportunity Line Item so it can republish BPEV_Membership_Transaction__e, whose Record_Id__c carries an OpportunityLineItem Id. The extra IsNull filter makes this lookup return nothing when the submission has no Opportunity (e.g. Do_not_create_Opportunity__c or the finder outran opportunity creation), instead of matching on null.</description>
+        <name>Get_OLI_For_Transaction</name>
+        <label>Get OLI For Transaction</label>
+        <locationX>314</locationX>
+        <locationY>1106</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Fire_Transaction_For_Create</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>OpportunityId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>MembershipFormSubmissionforUpdate.Opportunity__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>OpportunityId</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>OpportunityLineItem</object>
+        <queriedFields>Id</queriedFields>
+        <sortField>CreatedDate</sortField>
+        <sortOrder>Asc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <description>Query for a Membership record 
 where Account__c = Opportunity.AccountId 
 where End_Date__c &gt; today 
@@ -417,6 +532,13 @@ and the Product is a renewable membership of the same Category.</description>
             <operator>EqualTo</operator>
             <value>
                 <elementReference>GetMembershipFormSubmission.Account__r.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Account__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
             </value>
         </filters>
         <filters>
