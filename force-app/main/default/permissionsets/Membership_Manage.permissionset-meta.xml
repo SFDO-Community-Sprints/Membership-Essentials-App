@@ -242,6 +242,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Membership_Form_Submission__c.Membership_Product_Changed__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Membership_Form_Submission__c.Membership__c</field>
         <readable>true</readable>
     </fieldPermissions>
