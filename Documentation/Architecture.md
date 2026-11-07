@@ -44,11 +44,13 @@ The MFS is both the input and the **state of execution**. All progress is visibl
 
 ## P. Publishing a BPEV
 
-**P1. Any real-time automation may publish a BPEV.**
+**P1. A BPEV is fired only by a change to an MFS.** No other object's records start a business process. If a change elsewhere (an Opportunity Line Item, a Membership) should advance processing, a DPEV updates the MFS, and the MFS change fires the BPEV.
 
-**P2. By convention, the publisher is a record-triggered flow.** Using anything else (Apex, a screen flow, and so on) is a deliberate exception. It must be explicitly decided and justified in the pull request.
+**P2. By convention, the publisher is a record-triggered flow on `Membership_Form_Submission__c`.** Any other real-time automation on the MFS (Apex, a screen flow, and so on) is a deliberate exception. It must be explicitly decided and justified in the pull request.
 
 **P3. Apex does not publish BPEVs.** This follows from P2 and F1.
+
+**P4. A DPEV listener never publishes a BPEV.** A DPEV reports its outcome by updating the MFS (D3), and that update re-fires the BPEV through the record-triggered flow. Publishing a BPEV directly bypasses the recursion that keeps processing state on the MFS.
 
 ## B. BPEV listener contract
 
@@ -70,6 +72,8 @@ If step 2 also fails, the log entry stands and the MFS needs human attention.
 
 **B7. BPEV listeners are flows.** Orchestration is the part people most need to read, so it stays in Flow Builder.
 
+**B8. A failed publish is logged and nothing more.** Each DPEV publish in a BPEV listener has a fault path that logs the failure (L2). The fault path makes no change to the MFS (B1).
+
 ## D. DPEV listener contract
 
 **D1. One atomic task.** A DPEV listener is a small, discrete automation that accomplishes one task, written so any business process that needs that task can reuse it.
@@ -77,6 +81,8 @@ If step 2 also fails, the log entry stands and the MFS needs human attention.
 **D2. It finds its MFS through `Record_Id__c`** (E3).
 
 **D3. Every DPEV advances the MFS or stops it.** On completion, the listener sets the MFS field that marks its step complete, so the next BPEV pass moves on. On error, it logs the failure (through the log DPEV) and sets `Status__c = Failed`. **A DPEV listener that does neither causes an infinite loop or a stall.** This is the rule that keeps the recursion safe.
+
+If the MFS update that records the outcome fails, the fault path logs the failure (through the log DPEV) and tries a second update that sets `Status__c = Failed`. If the second update also fails, the log entry stands and the MFS needs human attention.
 
 **D4. Step completion is read from field values on the MFS.** It's usually a lookup being populated (the Account step is complete when `Account__c` is set) and sometimes a checkbox. Whichever field a DPEV sets on success is the field the BPEV listener checks to skip past that step.
 
@@ -126,12 +132,12 @@ The primary listener remains the only one that advances or fails the MFS.
 | --- | --- | --- | --- |
 | No matching membership | **Create** | Creates a membership (ordinary DPEV) | The DPEV sets the Membership lookup on the MFS |
 | Same tier | **Renewal** | Extends the existing membership's end date by the purchased product's term | The DPEV sets the renewal flag on the MFS (M4) |
-| Higher tier (lower number) | **Upgrade** | Publishes `DPEV_Membership_Upgrade__e`, nothing else | Publishing is the final step; the BPEV listener sets `Imported` |
-| Lower tier (higher number) | **Downgrade** | Publishes `DPEV_Membership_Downgrade__e`, nothing else | Publishing is the final step; the BPEV listener sets `Imported` |
+| Higher tier (lower number) | **Upgrade** | Changes the existing membership's product to the purchased product and sets its end date to today plus that product's term (`DPEV_Membership_Upgrade__e`) | The DPEV sets the product-change flag on the MFS (M4) |
+| Lower tier (higher number) | **Downgrade** | Same as Upgrade, through `DPEV_Membership_Downgrade__e` | The DPEV sets the product-change flag on the MFS (M4) |
 
-**M4. Renewal is tracked by a flag in addition to the Membership lookup.** The lookup is already set before the renewal (it's how the match was found), so it can't mark the renewal as done. The renewal listener sets the renewal-success checkbox `Membership_Renewed__c` on the MFS after extending the end date. On the next pass, the BPEV listener sees the lookup **and** the flag and sets `Imported`. Without the flag, every re-fire would renew again.
+**M4. Renewal and product changes are tracked by flags in addition to the Membership lookup.** The lookup is already set before these steps (it's how the match was found), so it can't mark them as done. The renewal listener sets `Membership_Renewed__c` on the MFS after extending the end date. The upgrade and downgrade listeners set `Membership_Product_Changed__c` after changing the product. On the next pass, the BPEV listener sees the lookup **and** either flag and sets `Imported`. Without the flags, every re-fire would renew or change the product again.
 
-**M5. Upgrade and downgrade are extension points.** The package publishes these events so an adopting organization can attach its own actions. The package itself doesn't act on them, and their outcome isn't tracked on the MFS.
+**M5. Upgrade and downgrade are package steps.** The package changes the membership's product (M3) and tracks the outcome on the MFS (M4), under the same contract as any other DPEV (D1–D4). An adopting organization that wants further actions on an upgrade or downgrade attaches its own listener as a side process (D5).
 
 ## F. Flow and Apex
 
@@ -154,6 +160,8 @@ The primary listener remains the only one that advances or fails the MFS.
 ## L. Logging
 
 **L1. All logging goes through `DPEV_Create_Membership_Essentials_Log__e`.** No automation inserts `Membership_Essentials_Event_Log__c` directly. Routing everything through the event means the logging switch in `Membership_Essentials_Setting__mdt` governs every log entry.
+
+**L2. Every platform event publish has a fault path that logs the failure** through the log DPEV. This applies to every automation that publishes, including the record-triggered flow, BPEV listeners and DPEV listeners. The only exception is the publish of the log DPEV itself, which has no fault path: a failed log has nowhere to be logged.
 
 ## N. Naming
 
@@ -184,11 +192,12 @@ grep -rn "TODO(flow-migration)\|TODO(settings-mdt)" force-app/
 
 Before opening a pull request that touches processing:
 
-- [ ] New BPEV? It's justified by materially different processing (E4) and published from a record-triggered flow (P2).
+- [ ] New BPEV? It's justified by materially different processing (E4) and published from a record-triggered flow on the MFS (P1, P2).
+- [ ] No DPEV listener publishes a BPEV (P4).
 - [ ] BPEV listener: no DML other than the B4 success status, which has its B5 fault path; publishes one DPEV per pass (B2); checks for a terminal status first (B3).
-- [ ] DPEV listener: one task (D1); on success, sets a field the BPEV listener checks; on failure, logs and sets `Failed` (D3); it's the only listener on its event, or it's a D5 side process.
+- [ ] DPEV listener: one task (D1); on success, sets a field the BPEV listener checks; on failure, logs and sets `Failed`, retrying with a second update if the first one fails (D3); it's the only listener on its event, or it's a D5 side process.
 - [ ] Every event carries `Record_Id__c` (E3).
-- [ ] Logging goes through the log DPEV (L1).
+- [ ] Logging goes through the log DPEV (L1), and every publish except the log DPEV's own has a fault path that logs the failure (L2, B8).
 - [ ] No new Apex without stating the Flow gap (F2); new hard-coded behavior strings are tagged (C2).
 - [ ] Names follow N1–N4.
 - [ ] The PR says what was verified in an org and what was only read from metadata.
@@ -213,6 +222,9 @@ Changes the design requires that aren't in the package yet:
 - Add the checkbox `Membership_Renewed__c` to `Membership_Form_Submission__c` (M4).
 - Rename the `_Test` classes to `_TEST`: `DuplicateRecordCheck_Test`, `TriggerHandler_Test` (N4).
 - Tag existing Apex other than duplicate matching (F3, F5) and hard-coded behavior strings (C2) per T1.
+- **TODO (P4):** `DPEV_Listener_Membership_Finder` publishes `BPEV_Membership_Transaction__e` (`Fire_Membership_Transaction_For_Create`). Replace this with an update to the MFS, so the transaction step is reached through the BPEV listener's re-entry.
+- **TODO (P1):** `Opportunity_Line_Item_After_Membership` is record-triggered on `OpportunityLineItem` and publishes `BPEV_Membership_Transaction__e` (`Fire_BPEV_Membership_Transaction`). Remove this entry point. The membership step runs inside the MFS process (see the E4 TODO below); if the line item's state matters, a DPEV records it on the MFS.
+- **TODO (E4, B2):** Fold the membership transaction into the MFS process. `BPEV_Listener_Membership_Form_Business_Process` takes over the membership step as its last step before `Imported`: the finder, then create, renew, upgrade or downgrade (M3). Then retire `BPEV_Membership_Transaction__e` and `BPEV_Listener_Membership_Transaction`. Once P1 holds, the transaction can only start from an MFS change, the same trigger as the MFS process, so it isn't a materially different process.
 
 ### Departures from the design
 
