@@ -18,6 +18,13 @@ tasks:
             path: robot/Membership-Management/tests
             output: robot/Membership-Management/doc/Membership-Management_tests.html
 
+    setup_pricebook:
+        group: Membership-Management
+        description: Activates the Standard Price Book, ensures the sample membership products exist, and creates their standard price book entries.
+        class_path: cumulusci.tasks.apex.anon.AnonymousApexTask
+        options:
+            path: scripts/apex/setup_pricebook.apex
+
 flows:
     config_dev:
         description: Customized flow used in the default dev org flow for setting up a development environment.
@@ -30,3 +37,9 @@ flows:
                 task: deploy_post
                 options:
                     path: unpackaged/dev
+            95:
+                task: setup_pricebook
+    config_qa:
+        steps:
+            95:
+                task: setup_pricebook

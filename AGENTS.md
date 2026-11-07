@@ -20,7 +20,7 @@ SF_TEMP_SHOW_SECRETS=true cci flow run dev_org --org dev
 cci org browser dev
 ```
 
-About three minutes. You get dependencies, all unmanaged metadata, `unpackaged/dev`, the `Membership_Manage` permission set, and the sample dataset from `datasets/`.
+About three minutes. You get dependencies, all unmanaged metadata, `unpackaged/dev`, the `Membership_Manage` permission set, and the sample dataset from `datasets/`. A final `setup_pricebook` step (also in `qa_org`) activates the Standard Price Book and gives the five sample membership products their standard price book entries, without which the first submission fails with "No Pricebook Entry Found". It is idempotent; run it alone with `cci task run setup_pricebook --org <alias>`.
 
 CumulusCI needs Python < 3.14 and installs with `pipx install "cumulusci[select]"`; the declared minimum is 3.9.1 and 4.10 is known good. Scratch orgs need a Dev Hub you control — a free Developer Edition org with Dev Hub enabled works, and allows 3 active and 6 daily scratch orgs.
 
