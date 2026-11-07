@@ -3,7 +3,7 @@
 The places where the code disagrees with [Architecture.md](Architecture.md), each with the rule it breaks, where it lives, and the work that resolves it. Where the two disagree, the code is what's wrong. If a departure turns out to be right, revise the rule in Architecture.md instead of leaving it here.
 
 **How to use this list**
-- Cite the ID in a pull request ("fixes DEP-02") and delete the entry in the same PR.
+- Each entry links to its GitHub issue. Cite the ID and close the issue from the pull request ("fixes DEP-02, closes #272"), and delete the entry in the same PR.
 - Flow fixes are made in Flow Builder. Element API names are given so the change is easy to find.
 - Items already tracked in Architecture.md ([Accepted as-is](Architecture.md#accepted-as-is) and [Backlog](Architecture.md#backlog), including the P1, P4 and E4 TODOs) aren't repeated here, but entries refer to them where they interact.
 
@@ -17,8 +17,8 @@ Several entries share a fix or depend on each other:
 
 1. **Independent and small, can start now:** DEP-02, the [bugs outside the rules](#bugs-outside-the-rules), and the [cleanup](#cleanup) deletions (DEP-14, -15, -16).
 2. **The log listener before the logging migration.** Fix the listener first (DEP-13, first item), then move the flows to the log DPEV (DEP-13, DEP-20) one flow per PR.
-3. **The fold.** The E4 backlog TODO moves the membership step into the MFS BPEV listener. It resolves or reshapes DEP-01, -03, -04, -05, -07 and -09, together with the P1 and P4 TODOs. Plan it as one piece of work.
-4. **After the backlog picklist value `Import Incomplete` and the field `Membership_Renewed__c` exist:** DEP-06, DEP-11 (second item) and DEP-12.
+3. **The fold** ([#278](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/278)). The E4 backlog TODO moves the membership step into the MFS BPEV listener. It resolves or reshapes DEP-01, -03, -04, -05, -07 and -09, together with the P1 ([#230](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/230)) and P4 ([#279](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/279)) TODOs. Plan it as one piece of work.
+4. **After the backlog picklist value `Import Incomplete` ([#280](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/280)) and the field `Membership_Renewed__c` ([#281](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/281)) exist:** DEP-06, DEP-11 (second item) and DEP-12.
 5. **Renames last** (DEP-17, DEP-18). Each rename creates a new flow, so do it in the same PR as that flow's other fixes.
 
 ---
@@ -26,7 +26,7 @@ Several entries share a fix or depend on each other:
 ## Processing breaks
 
 ### DEP-01 — `Imported` is set before the recipient and membership steps run
-**Breaks:** B4, B2, S2 · **Flow:** `BPEV_Listener_Membership_Form_Business_Process`
+**Issue:** [#284](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/284) · **Breaks:** B4, B2, S2 · **Flow:** `BPEV_Listener_Membership_Form_Business_Process`
 
 `Is_The_Opportunity_Lookup_Set` → `Update_MFS_status_Imported` → `Are_Recipient_fields_populated` → `Call_the_Recipient_Platform_Event` → `Get_Membership` → `Membership_Exists` → finder or create DPEV.
 
@@ -37,7 +37,7 @@ In a single pass the listener sets `Imported`, then publishes the recipient DPEV
 - [ ] Give the recipient step a skip check (D4): `Recipient__c` populated, or no recipient on the MFS.
 
 ### DEP-02 — Contact creation failure loops forever
-**Breaks:** D3 · **Flow:** `DPEV_Listener_Find_Create_Contact`
+**Issue:** [#272](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/272) · **Breaks:** D3 · **Flow:** `DPEV_Listener_Find_Create_Contact`
 
 The `Create_Contact` fault goes to `set_MFS_Failure_Message` → `Update_Membership_Form_Submission`. That path sets `Failure_Information__c` but not `Status__c = Failed`, and `Contact__c` stays blank. The update re-fires the record-triggered flow, and the BPEV listener publishes the contact DPEV again. The Account listener sends the same fault through `set_Error_Log_Values` → `set_MFS_Error_Values`, which sets `Failed`.
 
@@ -45,7 +45,7 @@ The `Create_Contact` fault goes to `set_MFS_Failure_Message` → `Update_Members
 - [ ] Add a fault connector to `Check_for_Contact_Matches`. The Account listener's duplicate check has one.
 
 ### DEP-03 — `Record_Id__c` carries an Opportunity Line Item Id on the membership events
-**Breaks:** E3, D2 · **Flows:** `Opportunity_Line_Item_After_Membership`, `DPEV_Listener_Membership_Finder`, `BPEV_Listener_Membership_Transaction`, `DPEV_Listener_Membership_Create_Flow`, `DPEV_Listener_Membership_Upgrade`, `DPEV_Listener_Membership_Downgrade`
+**Issue:** [#285](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/285) · **Breaks:** E3, D2 · **Flows:** `Opportunity_Line_Item_After_Membership`, `DPEV_Listener_Membership_Finder`, `BPEV_Listener_Membership_Transaction`, `DPEV_Listener_Membership_Create_Flow`, `DPEV_Listener_Membership_Upgrade`, `DPEV_Listener_Membership_Downgrade`
 
 - `BPEV_Membership_Transaction__e` receives an Opportunity Line Item Id from two publishers and an MFS Id from a third (DEP-04).
 - The Transaction listener forwards `$Record.Record_Id__c`, the line item Id, into the Create Membership, Renewal, Upgrade and Downgrade DPEVs.
@@ -55,7 +55,7 @@ The `Create_Contact` fault goes to `set_MFS_Failure_Message` → `Update_Members
 - [ ] As part of the fold, put the MFS Id in `Record_Id__c` on every membership DPEV. Listeners query the MFS first and reach the line item through `Opportunity__c`. If a line item Id needs to travel separately, `DPEV_Membership_Renewal__e` already has an `Opportunity_Line_Item_Id__c` field.
 
 ### DEP-04 — "Do not create Opportunity": a BPEV publishes a BPEV, or the MFS stalls
-**Breaks:** P2, B2, R3 · **Flow:** `BPEV_Listener_Membership_Form_Business_Process`
+**Issue:** [#265](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/265) · **Breaks:** P2, B2, R3 · **Flow:** `BPEV_Listener_Membership_Form_Business_Process`
 
 When `Do_not_create_Opportunity__c` is true, the flow goes `Ignore_Opportunity` → `Is_this_for_a_new_membership`:
 - **Membership-family product:** `Create_Membership_Transaction_Event` publishes `BPEV_Membership_Transaction__e` from a BPEV listener. It sends an MFS Id where the Transaction listener expects a line item Id.
@@ -68,7 +68,7 @@ When `Do_not_create_Opportunity__c` is true, the flow goes `Ignore_Opportunity` 
 - [ ] Make the non-membership branch continue to Recipient, then `Imported`.
 
 ### DEP-05 — Upgrade and downgrade are probably unreachable
-**Breaks:** M3 · **Flow:** `BPEV_Listener_Membership_Transaction`
+**Issue:** [#286](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/286) · **Breaks:** M3 · **Flow:** `BPEV_Listener_Membership_Transaction`
 
 `Get_Old_Product_ID` queries **`Product2History`** by `Id = Get_Membership_Record.Product__r.Id`, which is a Product2 Id, so it most likely returns no row. Both tier comparisons in `Determine_if_Membership_Renewal_is_an_Upgrade_or_a_Downgrade` then fail, and every product change falls through to `Check_Level_and_Type` *(needs org)*. The comparison direction itself (new < old → upgrade) agrees with M2.
 
@@ -76,7 +76,7 @@ When `Do_not_create_Opportunity__c` is true, the flow goes `Ignore_Opportunity` 
 - [ ] Compare tiers, not product Ids (today's `Compare_Opportunity_and_Membership_Products`): two different products on the same tier are a renewal (M3).
 
 ### DEP-06 — Renewal isn't implemented
-**Breaks:** M3, M4, D5 · **Event:** `DPEV_Membership_Renewal__e`, published by `BPEV_Listener_Membership_Transaction`
+**Issue:** [#287](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/287) · **Breaks:** M3, M4, D5 · **Event:** `DPEV_Membership_Renewal__e`, published by `BPEV_Listener_Membership_Transaction`
 
 Nothing subscribes to `DPEV_Membership_Renewal__e`. No flow extends the end date or marks the renewal on the MFS.
 
@@ -84,7 +84,7 @@ Nothing subscribes to `DPEV_Membership_Renewal__e`. No flow extends the end date
 - [ ] Have the BPEV listener treat Membership lookup + `Membership_Renewed__c` as complete (M4).
 
 ### DEP-07 — Matching ignores membership type
-**Breaks:** M1, R3 · **Flows:** `DPEV_Listener_Membership_Finder`, `BPEV_Listener_Membership_Transaction`
+**Issue:** [#288](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/288) · **Breaks:** M1, R3 · **Flows:** `DPEV_Listener_Membership_Finder`, `BPEV_Listener_Membership_Transaction`
 
 `GetMembership` matches on Account, `End_Date__c > today`, and a product in the renewable `Membership` family. It never compares `Type__c` with the MFS's `MembershipType__c`, so a Household submission can match a Corporate membership. Type is compared only later, in `Check_Level_and_Type`. A mismatch there takes the default outcome: no event and no status change, so the MFS stalls.
 
@@ -92,7 +92,7 @@ Nothing subscribes to `DPEV_Membership_Renewal__e`. No flow extends the end date
 - [ ] Remove `Check_Level_and_Type` in the fold; the finder's type filter replaces it.
 
 ### DEP-08 — Upgrade and downgrade listeners don't mark the step complete
-**Breaks:** M4, M5, D3 · **Flows:** `DPEV_Listener_Membership_Upgrade`, `DPEV_Listener_Membership_Downgrade`
+**Issue:** [#289](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/289) · **Breaks:** M4, M5, D3 · **Flows:** `DPEV_Listener_Membership_Upgrade`, `DPEV_Listener_Membership_Downgrade`
 
 Both change the Membership's `Product__c` and `End_Date__c` (`Assign_new_Membership_product` → `Update_Membership_with_new_product`), as M5 intends. But:
 - neither sets `Membership_Product_Changed__c`;
@@ -105,7 +105,7 @@ Both change the Membership's `Product__c` and `End_Date__c` (`Assign_new_Members
 - [ ] Change Downgrade's `CalculateNewEndDate` to start from `TODAY()`.
 
 ### DEP-09 — The BPEV listener doesn't skip a completed product change
-**Breaks:** M3, M4 · **Flows:** `BPEV_Listener_Membership_Transaction` today; `BPEV_Listener_Membership_Form_Business_Process` after the fold
+**Issue:** [#290](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/290) · **Breaks:** M3, M4 · **Flows:** `BPEV_Listener_Membership_Transaction` today; `BPEV_Listener_Membership_Form_Business_Process` after the fold
 
 No BPEV listener checks `Membership_Product_Changed__c` and then sets `Imported`. DEP-01 hides this today, because `Imported` was already set earlier in the pass.
 
@@ -116,7 +116,7 @@ No BPEV listener checks `Membership_Product_Changed__c` and then sets `Imported`
 ## Contract gaps
 
 ### DEP-10 — Fault paths that log but don't set `Failed`
-**Breaks:** D3
+**Issue:** [#291](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/291) · **Breaks:** D3
 
 | Listener | Faults that only log |
 | --- | --- |
@@ -136,7 +136,7 @@ In every DPEV listener, a fault on the update that records the outcome only logs
 - [ ] Give the second update its own fault path that ends the flow. If it faulted unhandled, the interview would roll back and discard the log event.
 
 ### DEP-11 — Neither BPEV listener checks for a terminal status
-**Breaks:** B3, S2 · **Flows:** both BPEV listeners; `Membership_Form_Submission_AFTER_MFS_auditor`
+**Issue:** [#262](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/262) · **Breaks:** B3, S2 · **Flows:** both BPEV listeners; `Membership_Form_Submission_AFTER_MFS_auditor`
 
 The MFS listener relies on the record-triggered flow's entry filter (`Status__c` ≠ `Failed` and ≠ `Imported`), so B3 is met only upstream. The Transaction listener has no gate at all: it runs from the line item trigger and from the finder, whatever the MFS status.
 
@@ -144,14 +144,14 @@ The MFS listener relies on the record-triggered flow's entry filter (`Status__c`
 - [ ] Add `Import Incomplete` to the record-triggered flow's entry filter once the backlog picklist value exists.
 
 ### DEP-12 — The B4 fault path doesn't set `Import Incomplete`
-**Breaks:** B5 · **Flow:** `BPEV_Listener_Membership_Form_Business_Process`
+**Issue:** [#292](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/292) · **Breaks:** B5 · **Flow:** `BPEV_Listener_Membership_Form_Business_Process`
 
 `Update_MFS_status_Imported` has a fault path, but it only inserts a log record directly, then stops.
 
 - [ ] Once the backlog picklist value exists, change the fault path to publish the log DPEV, then set `Import Incomplete`.
 
 ### DEP-13 — Nothing publishes the log DPEV
-**Breaks:** L1, B6 · **Flows:** the 15 active flows other than the log listener
+**Issue:** [#293](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/293) · **Breaks:** L1, B6 · **Flows:** the 15 active flows other than the log listener
 
 No flow publishes `DPEV_Create_Membership_Essentials_Log__e`. Every log entry is a direct insert of `Membership_Essentials_Event_Log__c`, so the logging switch in `Membership_Essentials_Setting__mdt` controls nothing. The log listener, `DPEV_Listener_Create_Membership_Essentials_Log`, isn't ready for the traffic either:
 - it doesn't map `MFS_RecordId__c` to `Membership_Form_Submission__c`, so log entries would lose their MFS link;
@@ -167,7 +167,7 @@ Separately, the log entries written by the Create Membership, Upgrade, Downgrade
 - [ ] Then move each flow to publish the event, one flow per PR, always filling the MFS Id.
 
 ### DEP-20 — Publishes without a logging fault path
-**Breaks:** L2, B8
+**Issue:** [#294](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/294) · **Breaks:** L2, B8
 
 Of the 17 platform event publishes, 3 have a fault path, and all 3 insert the log record directly (L1).
 
@@ -191,19 +191,20 @@ When a BPEV listener's publish fails, the MFS keeps a blank status and nothing r
 ## Cleanup
 
 ### DEP-14 — Obsolete second subscriber on `DPEV_Create_Opportunity__e`
-**Breaks:** D5 · **Flow:** `Create_Opportunity_Create_DPEV_Flow` (Obsolete)
+**Issue:** [#295](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/295) · **Breaks:** D5 · **Flow:** `Create_Opportunity_Create_DPEV_Flow` (Obsolete)
 - [ ] Delete the flow.
 - [ ] Correct `AGENTS.md`, which calls it a publisher.
 
 ### DEP-15 — `Create_Membership_DPEV__e` is unused
-**Breaks:** N1. The event has no publisher and no subscriber; `DPEV_Create_Membership__e` is the live one.
+**Issue:** [#296](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/296) · **Breaks:** N1. The event has no publisher and no subscriber; `DPEV_Create_Membership__e` is the live one.
 - [ ] Delete the event, and update the paragraph about it in `AGENTS.md`.
 
 ### DEP-16 — Leftover flows
+**Issue:** [#297](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/297)
 - [ ] Delete `Member_test_autolaunched` (Obsolete) and `MFS_Force_PE_Testing` (Draft screen flow).
 
 ### DEP-17 — Listener names don't match their events
-**Breaks:** N2
+**Issue:** [#298](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/298) · **Breaks:** N2
 
 A flow's API name can't be changed in place. Each rename means building the flow under the new name, then deactivating and deleting the old one.
 
@@ -221,11 +222,11 @@ A flow's API name can't be changed in place. Each rename means building the flow
 - [ ] Rename each listener, in the same PR as its other fixes.
 
 ### DEP-18 — Record-triggered flow name
-**Breaks:** N3
+**Issue:** [#299](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/299) · **Breaks:** N3
 - [ ] Rename `Membership_Form_Submission_AFTER_MFS_auditor` to `RTF_Membership_Form_Submission_After_Dispatch`. (`Opportunity_Line_Item_After_Membership` goes away under the P1 TODO.)
 
 ### DEP-19 — Hard-coded behavior strings in flows
-**Breaks:** C1, C2. This is the flow half of the backlog tagging item.
+**Issue:** [#300](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/300) · **Breaks:** C1, C2. This is the flow half of the backlog tagging item.
 - [ ] Tag each in its element's Description (T1):
   - product family `Membership`: `Is_this_for_a_new_membership` (MFS listener), `Is_this_for_a_new_Membership` (`Opportunity_Line_Item_After_Membership`), `Get_Matching_Products` (finder)
   - renewal option `Renewable`: `Get_Matching_Products` (finder)
@@ -243,11 +244,11 @@ The MFS's own state values (`Imported`, `Failed`, `Skipped`, `Matched`) are deli
 
 These don't break a numbered rule, but they turned up during the same review.
 
-- [ ] In `Are_Recipient_fields_populated`, rule `Recipient_Contact_Info` condition 2 checks `LastName__c` (the purchaser's) instead of `RecipientLastName__c`.
-- [ ] `DPEV_Listener_Campaign_Finder` searches when **either** the campaign name or the source code is given, but `Find_Existing_Campaign` requires **both** to match. A submission with only one of them fails with "campaign specified but not found" *(needs org)*.
-- [ ] If the line item insert fails in `DPEV_Listener_Create_Opportunity`, the Opportunity remains but isn't recorded on the MFS, so a retry creates a second one.
-- [ ] Some pass logs are written before the check they report ("Pricebook Entry Found", "Product Found"). The finder logs "can't proceed" as an error and then proceeds.
-- [ ] `MembershipService.rollupPrimaryMembershipContact` has an empty body. The account rollup runs on insert only, not on update.
-- [ ] `AGENTS.md` says "18 Flows" under Architecture and "19 flows" under Working rules; there are 19.
+- [ ] In `Are_Recipient_fields_populated`, rule `Recipient_Contact_Info` condition 2 checks `LastName__c` (the purchaser's) instead of `RecipientLastName__c`. [#301](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/301)
+- [ ] `DPEV_Listener_Campaign_Finder` searches when **either** the campaign name or the source code is given, but `Find_Existing_Campaign` requires **both** to match. A submission with only one of them fails with "campaign specified but not found" *(needs org)*. [#302](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/302)
+- [ ] If the line item insert fails in `DPEV_Listener_Create_Opportunity`, the Opportunity remains but isn't recorded on the MFS, so a retry creates a second one. [#303](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/303)
+- [ ] Some pass logs are written before the check they report ("Pricebook Entry Found", "Product Found"). The finder logs "can't proceed" as an error and then proceeds. [#261](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/261)
+- [ ] `MembershipService.rollupPrimaryMembershipContact` has an empty body. The account rollup runs on insert only, not on update. [#39](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/39)
+- [ ] `AGENTS.md` says "18 Flows" under Architecture and "19 flows" under Working rules; there are 19. [#304](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/304)
 
 Context, not a departure: flow API versions range from 49.0 to 67.0, and the project is on 59.0.
