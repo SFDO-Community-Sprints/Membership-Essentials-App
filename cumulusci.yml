@@ -41,5 +41,9 @@ flows:
                 task: setup_pricebook
     config_qa:
         steps:
+            3:
+                task: assign_permission_sets
+                options:
+                    api_names: Membership_Manage
             95:
                 task: setup_pricebook
