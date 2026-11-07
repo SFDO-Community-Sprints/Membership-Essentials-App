@@ -147,9 +147,9 @@ The primary listener remains the only one that advances or fails the MFS.
 
 **F3. Existing Apex is migration debt.** Each class is tagged for migration (T1) with the reason it's Apex today. The exception is F5.
 
-**F5. Duplicate matching is a justified use of Apex.** Flow has no native action for running duplicate rules, so `Duplicate`, `FindDuplicates`, `FindDuplicatesFactory`, `DuplicateRecordCheck_Util` and `DuplicateRecordCheck_Invocable` stay in Apex and aren't tagged for migration. Flows reach them through the `DuplicateRecordCheck_Invocable` action.
-
 **F4. Apex joins the event architecture only as a DPEV listener** (D6). Flows otherwise reach Apex through invocable actions.
+
+**F5. Duplicate matching is a justified use of Apex.** Flow has no native action for running duplicate rules, so `Duplicate`, `FindDuplicates`, `FindDuplicatesFactory`, `DuplicateRecordCheck_Util` and `DuplicateRecordCheck_Invocable` stay in Apex and aren't tagged for migration. Flows reach them through the `DuplicateRecordCheck_Invocable` action.
 
 ## C. Configuration
 
@@ -228,4 +228,4 @@ Changes the design requires that aren't in the package yet:
 
 ### Departures from the design
 
-Not yet assessed. The next step is a pass comparing the flows, events and Apex against these rules, with each finding labelled "read from metadata" or "reproduced in an org."
+Tracked in [Departures.md](Departures.md): where the code breaks these rules, the rule each departure breaks, and the work that resolves it. Every entry there is read from metadata; none has yet been reproduced in an org.
