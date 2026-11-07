@@ -20,7 +20,7 @@ SF_TEMP_SHOW_SECRETS=true cci flow run dev_org --org dev
 cci org browser dev
 ```
 
-About three minutes. You get dependencies, all unmanaged metadata, `unpackaged/dev`, the `Membership_Manage` permission set, and the sample dataset from `datasets/`.
+About three minutes. You get dependencies, all unmanaged metadata, `unpackaged/dev`, the `Membership_Manage` permission set, and the sample dataset from `datasets/`. A final `setup_pricebook` step (also in `qa_org`) activates the Standard Price Book and gives the five sample membership products their standard price book entries, without which the first submission fails with "No Pricebook Entry Found". It is idempotent; run it alone with `cci task run setup_pricebook --org <alias>`.
 
 CumulusCI needs Python < 3.14 and installs with `pipx install "cumulusci[select]"`; the declared minimum is 3.9.1 and 4.10 is known good. Scratch orgs need a Dev Hub you control — a free Developer Edition org with Dev Hub enabled works, and allows 3 active and 6 daily scratch orgs.
 
@@ -58,8 +58,7 @@ API version is 59.0 in both `sfdx-project.json` and `cumulusci.yml`.
 
 ## Traps worth knowing before you hit them
 
-- **`qa_org` does not assign a permission set.** Only `config_dev` assigns `Membership_Manage` (see `cumulusci.yml`), so an org built with `cci flow run qa_org` leaves you without membership access until you assign it yourself. Reviewers hit this first.
-- **Four permission sets, two near-duplicate pairs** — `Membership_Manage` / `Manage_Memberships` and `Membership_View` / `View_Memberships`. The dev flow assigns `Membership_Manage`; the others predate it. Confirm which one a change should touch instead of picking by name.
+- **Four permission sets, two near-duplicate pairs** — `Membership_Manage` / `Manage_Memberships` and `Membership_View` / `View_Memberships`. The dev and QA flows both assign `Membership_Manage` (`config_dev` and `config_qa` in `cumulusci.yml`); the others predate it. Confirm which one a change should touch instead of picking by name.
 - **`unpackaged/dev` deploys only in `config_dev`.** Metadata placed there is absent from QA and packaging orgs by design.
 - **Membership types and active statuses live in Apex constants** rather than in `Membership_Essentials_Setting__mdt`, so adopting the app currently means editing code. Moving them is known, well-defined work.
 
