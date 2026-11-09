@@ -34,12 +34,10 @@ Event-driven: Flows publish platform events, and other Flows subscribe to them. 
 
 **The design rules are in [Documentation/Architecture.md](Documentation/Architecture.md). Read it before changing any flow, event, or processing Apex.** It describes the intended design — BPEV listeners decide and DPEV listeners act, one DPEV per pass, progress by managed recursion through the MFS — and where the code disagrees, the code is what departs. The inventory below describes what is in the repo today.
 
-**18 platform events** in two families:
+**17 platform events** in two families:
 
 - `BPEV_*` — business process events (3): membership altering, form submission, transaction.
-- `DPEV_*` — data process events (15): finders (`DPEV_Contact_Finder__e`, `DPEV_Membership_Finder__e`, `DPEV_Pricebook_Finder__e`, `DPEV_Product_Finder__e`, `DPEV_Gift_Recipient_Finder__e`, `DPEV_Find_Campaign__e`), writers (`DPEV_Create_Membership__e`, `DPEV_Create_Opportunity__e`, `DPEV_Create_Membership_Essentials_Log__e`, `DPEV_Account__e`), and lifecycle transitions (`DPEV_Membership_Upgrade__e`, `DPEV_Membership_Downgrade__e`, `DPEV_Membership_Renewal__e`, `DPEV_Extend_Membership__e`).
-
-`Create_Membership_DPEV__e` belongs to the DPEV family but carries the suffix in the wrong position, and overlaps in purpose with `DPEV_Create_Membership__e`. Treat it as a rename that did not finish rather than as a distinct concept, and check both before assuming which one a flow publishes.
+- `DPEV_*` — data process events (14): finders (`DPEV_Contact_Finder__e`, `DPEV_Membership_Finder__e`, `DPEV_Pricebook_Finder__e`, `DPEV_Product_Finder__e`, `DPEV_Gift_Recipient_Finder__e`, `DPEV_Find_Campaign__e`), writers (`DPEV_Create_Membership__e`, `DPEV_Create_Opportunity__e`, `DPEV_Create_Membership_Essentials_Log__e`, `DPEV_Account__e`), and lifecycle transitions (`DPEV_Membership_Upgrade__e`, `DPEV_Membership_Downgrade__e`, `DPEV_Membership_Renewal__e`, `DPEV_Extend_Membership__e`).
 
 **19 Flows.** Subscribers are named `<FAMILY>_Listener_<subject>` (`DPEV_Listener_Create_Opportunity`, `BPEV_Listener_Membership_Transaction`); publishers are named for the action (`Create_Opportunity_Create_DPEV_Flow`). To find what handles an event, look for the listener with the matching subject — the event name and the listener name do not always match token for token.
 
