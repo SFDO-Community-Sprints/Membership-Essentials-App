@@ -83,18 +83,26 @@ public class DuplicateRecordCheck_Test{
 
     @IsTest
     public static void Factory_Test(){
-        try {
-            List<sObject> records = new List<sObject>{new Account()};
-            
-            System.Test.startTest();
-                FindDuplicatesFactory factory = FindDuplicatesFactory.getFactory();
-                FindDuplicates findDuplicates = factory.getFindDuplicates();
-                List<FindDuplicates.FindDuplicatesResult> duplicates = findDuplicates.findDuplicates(records);
-            System.Test.stopTest();
+        List<sObject> records = new List<sObject>{new Account()};
+        List<FindDuplicates.FindDuplicatesResult> duplicates;
+        FindDuplicates.FindDuplicatesException thrown;
 
-            system.assertEquals(records.size(), duplicates.size());
-        } catch (Exception ex) {
-            system.debug(ex);
+        System.Test.startTest();
+            FindDuplicatesFactory factory = FindDuplicatesFactory.getFactory();
+            FindDuplicates findDuplicates = factory.getFindDuplicates();
+            try {
+                duplicates = findDuplicates.findDuplicates(records);
+            } catch (FindDuplicates.FindDuplicatesException ex) {
+                // Datacloud refuses when no duplicate rule is active for the object; the wrapper must
+                // surface that as a FindDuplicatesException. Any other exception fails the test.
+                thrown = ex;
+            }
+        System.Test.stopTest();
+
+        if (thrown == null) {
+            system.assertEquals(records.size(), duplicates.size(), 'One result per record checked.');
+        } else {
+            system.assert(String.isNotBlank(thrown.getMessage()), 'The wrapped exception should carry the platform message.');
         }
     }
 
