@@ -7,6 +7,31 @@
     <description>Admin/manage permissions for Membership Essentials package objects and fields</description>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Membership_Form_Submission__c.Term_Start_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Membership_Form_Submission__c.Term_Tier__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Membership__c.Is_Active__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Membership__c.Tier__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Membership__c.Level__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.First_Membership_Start_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -213,6 +238,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Membership_Form_Submission__c.Membership_Finder_Ran__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Membership_Form_Submission__c.Membership_Product_Changed__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -694,8 +724,12 @@
         <visibility>Visible</visibility>
     </tabSettings>
     <tabSettings>
+        <tab>Membership_Essentials_Event_Log__c</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
         <tab>Membership_Form_Submission__c</tab>
-        <visibility>Available</visibility>
+        <visibility>Visible</visibility>
     </tabSettings>
     <tabSettings>
         <tab>Membership__c</tab>

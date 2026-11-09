@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
+    <description>added logging</description>
+    <environments>Default</environments>
     <interviewLabel>Membership Form Submission - AFTER - MFS auditor {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Membership Form Submission - AFTER - MFS auditor</label>
     <processMetadataValues>
@@ -22,10 +25,86 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordCreates>
+        <name>Create_ME_Log</name>
+        <label>Create ME Log</label>
+        <locationX>176</locationX>
+        <locationY>431</locationY>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <stringValue>Membership Form Submission AFTER Flow</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <stringValue>Fired New/updated Membership Platform Event</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Pass</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>ME_Fail_Log</name>
+        <label>ME Fail Log</label>
+        <locationX>440</locationX>
+        <locationY>431</locationY>
+        <inputAssignments>
+            <field>Error_Text__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <stringValue>Membership Form Submission AFTER Flow</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <stringValue>Failed New Membership PE</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
         <name>Send_New_Updated_Membership_Platform_Event</name>
         <label>Send New/Updated Membership Platform Event</label>
         <locationX>176</locationX>
         <locationY>323</locationY>
+        <connector>
+            <targetReference>Create_ME_Log</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>ME_Fail_Log</targetReference>
+        </faultConnector>
         <inputAssignments>
             <field>Membership_Form_Submission_Id__c</field>
             <value>
@@ -41,6 +120,7 @@
         <connector>
             <targetReference>Send_New_Updated_Membership_Platform_Event</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Status__c</field>
             <operator>NotEqualTo</operator>

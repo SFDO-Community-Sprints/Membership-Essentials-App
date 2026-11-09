@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Level__c</fullName>
+    <description>The membership level, taken from the related Product name. Gives reports a readable grouping, since Membership Tier is a number.</description>
+    <externalId>false</externalId>
+    <formula>Product__r.Name</formula>
+    <formulaTreatBlanksAs>BlankAsBlank</formulaTreatBlanksAs>
+    <inlineHelpText>The name of the membership product for this membership.</inlineHelpText>
+    <label>Level</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -8,3 +8,7 @@ extract:
         fields: FIELDS(ALL)
     PriceBookEntry:
         fields: FIELDS(ALL)
+    Membership__c:
+        fields: FIELDS(ALL)
+    Membership_Form_Submission__c:
+        fields: FIELDS(ALL)

@@ -31,7 +31,7 @@
             <label>Create new Membership</label>
         </rules>
     </decisions>
-    <description>Deprecate - no longer using OLI as trigger for process</description>
+    <description>Checks if product family = Membership and Membership__c Lookup is null -&gt; Create Membership Transaction Business Process Event</description>
     <environments>Default</environments>
     <interviewLabel>Opportunity Line Item - After - Membership {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Opportunity Line Item - After - Membership</label>
@@ -58,7 +58,7 @@
         <name>Create_Membership_Essentials_Log</name>
         <label>Create Membership Essentials Log</label>
         <locationX>50</locationX>
-        <locationY>539</locationY>
+        <locationY>647</locationY>
         <inputAssignments>
             <field>Flow_Name__c</field>
             <value>
@@ -77,6 +77,12 @@
                 <stringValue>Pass</stringValue>
             </value>
         </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>Get_MFS_Id.Id</elementReference>
+            </value>
+        </inputAssignments>
         <object>Membership_Essentials_Event_Log__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
@@ -87,7 +93,7 @@
         <locationX>50</locationX>
         <locationY>431</locationY>
         <connector>
-            <targetReference>Create_Membership_Essentials_Log</targetReference>
+            <targetReference>Get_MFS_Id</targetReference>
         </connector>
         <inputAssignments>
             <field>Record_Id__c</field>
@@ -98,6 +104,28 @@
         <object>BPEV_Membership_Transaction__e</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
+    <recordLookups>
+        <name>Get_MFS_Id</name>
+        <label>Get MFS Id</label>
+        <locationX>50</locationX>
+        <locationY>539</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Create_Membership_Essentials_Log</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Opportunity__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.OpportunityId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Membership_Form_Submission__c</object>
+        <queriedFields>Id</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <start>
         <locationX>56</locationX>
         <locationY>0</locationY>
@@ -108,7 +136,7 @@
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Obsolete</status>
+    <status>Active</status>
     <variables>
         <name>StaticFlowName</name>
         <dataType>String</dataType>

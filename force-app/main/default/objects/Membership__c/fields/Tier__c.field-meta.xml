@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tier__c</fullName>
+    <description>Membership Tier of the related Product, surfaced on the Membership so reports can group and compare levels. 0 is the highest tier.</description>
+    <externalId>false</externalId>
+    <formula>Product__r.Membership_Tier__c</formula>
+    <formulaTreatBlanksAs>BlankAsBlank</formulaTreatBlanksAs>
+    <inlineHelpText>Tier of this membership&apos;s product, with 0 being the highest tier.</inlineHelpText>
+    <label>Tier</label>
+    <precision>5</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

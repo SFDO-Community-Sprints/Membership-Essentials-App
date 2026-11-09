@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <chart>
+        <backgroundColor1>#FFFFFF</backgroundColor1>
+        <backgroundColor2>#FFFFFF</backgroundColor2>
+        <backgroundFadeDir>Diagonal</backgroundFadeDir>
+        <chartSummaries>
+            <axisBinding>y</axisBinding>
+            <column>RowCount</column>
+        </chartSummaries>
+        <chartType>VerticalColumnStacked</chartType>
+        <groupingColumn>Membership__c.Membership_Form_Submissions__r$Term_Start_Date__c</groupingColumn>
+        <legendPosition>Right</legendPosition>
+        <location>CHART_TOP</location>
+        <secondaryGroupingColumn>Membership__c.Membership_Form_Submissions__r$Term_Tier__c</secondaryGroupingColumn>
+        <showAxisLabels>true</showAxisLabels>
+        <showPercentage>false</showPercentage>
+        <showTotal>false</showTotal>
+        <size>Medium</size>
+        <summaryAxisRange>Auto</summaryAxisRange>
+        <textColor>#000000</textColor>
+        <textSize>12</textSize>
+        <titleColor>#000000</titleColor>
+        <titleSize>18</titleSize>
+    </chart>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Membership__c.Membership_Form_Submissions__r$SalePrice__c</field>
+    </columns>
+    <description>The shape of the membership base over time. Rows are the year a term started, columns are the tier held during it, where 0 is the highest tier. Reads as concentration moving up or sliding down the ladder.</description>
+    <format>Matrix</format>
+    <groupingsAcross>
+        <dateGranularity>None</dateGranularity>
+        <field>Membership__c.Membership_Form_Submissions__r$Term_Tier__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsAcross>
+    <groupingsDown>
+        <dateGranularity>Year</dateGranularity>
+        <field>Membership__c.Membership_Form_Submissions__r$Term_Start_Date__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Membership Terms by Year and Tier</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Memberships_with_Submissions__c</reportType>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Membership__c.Membership_Form_Submissions__r$Term_Start_Date__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

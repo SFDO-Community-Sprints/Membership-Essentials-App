@@ -2,6 +2,7 @@
 <ListView xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>All</fullName>
     <columns>NAME</columns>
+    <columns>Membership_Form_Submission__c</columns>
     <columns>Flow_Name__c</columns>
     <columns>Log_Type__c</columns>
     <columns>CREATED_DATE</columns>

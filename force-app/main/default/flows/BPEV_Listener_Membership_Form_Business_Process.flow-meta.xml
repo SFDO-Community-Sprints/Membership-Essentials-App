@@ -326,7 +326,7 @@
         <name>Membership_Exists</name>
         <label>Membership Exists?</label>
         <locationX>446</locationX>
-        <locationY>1574</locationY>
+        <locationY>1682</locationY>
         <defaultConnector>
             <targetReference>Create_Membership_Platform_Event_Message</targetReference>
         </defaultConnector>
@@ -335,7 +335,7 @@
             <name>Yes_Membership_found</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Get_Membership</leftValueReference>
+                <leftValueReference>GET_Membership_Form_Submission_Record.Membership__c</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -359,7 +359,9 @@
             <label>Finder Ran, Still Blank</label>
         </rules>
     </decisions>
-    <description>Checks for existing population of lookup fields on the Membership Form record and triggers platform events for creation if necessary.</description>
+    <description>Checks for existing population of lookup fields on the Membership Form record and triggers platform events for creation if necessary.
+Updating incomplete logging
+Check existing membership updated to verify MFS field not null (was using GET variable)</description>
     <environments>Default</environments>
     <interviewLabel>BPEV Listener  - Membership Form Business Process {!$Flow.CurrentDateTime}</interviewLabel>
     <label>BPEV Listener  - Membership Form Business Process</label>
@@ -496,6 +498,12 @@
         <locationX>3746</locationX>
         <locationY>278</locationY>
         <inputAssignments>
+            <field>Error_Text__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Flow_Name__c</field>
             <value>
                 <elementReference>StaticFlowName</elementReference>
@@ -504,13 +512,19 @@
         <inputAssignments>
             <field>Log_Message__c</field>
             <value>
-                <stringValue>Platform event triggered. {!$Flow.FaultMessage}</stringValue>
+                <stringValue>Error Getting MFS Record</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
             <field>Log_Type__c</field>
             <value>
                 <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>GET_Membership_Form_Submission_Record.Id</elementReference>
             </value>
         </inputAssignments>
         <object>Membership_Essentials_Event_Log__c</object>
@@ -520,8 +534,8 @@
         <description>Create a Membership Essential Events Log record that indicates the Membership Creation action was taken</description>
         <name>Create_MEMBERSHIP_CREATION_Log_Message</name>
         <label>Create MEMBERSHIP CREATION Log Message</label>
-        <locationX>402</locationX>
-        <locationY>1790</locationY>
+        <locationX>446</locationX>
+        <locationY>1898</locationY>
         <inputAssignments>
             <field>Flow_Name__c</field>
             <value>
@@ -553,8 +567,8 @@
         <description>Create a record so that a new Membership record will get created via a platform event</description>
         <name>Create_Membership_Creation_Platform_Event</name>
         <label>Create Membership Creation Platform Event</label>
-        <locationX>402</locationX>
-        <locationY>1682</locationY>
+        <locationX>446</locationX>
+        <locationY>1790</locationY>
         <connector>
             <targetReference>Create_MEMBERSHIP_CREATION_Log_Message</targetReference>
         </connector>
@@ -574,6 +588,9 @@
         <locationX>314</locationX>
         <locationY>1250</locationY>
         <inputAssignments>
+            <field>Error_Text__c</field>
+        </inputAssignments>
+        <inputAssignments>
             <field>Flow_Name__c</field>
             <value>
                 <elementReference>StaticFlowName</elementReference>
@@ -582,7 +599,7 @@
         <inputAssignments>
             <field>Log_Message__c</field>
             <value>
-                <elementReference>$Flow.FaultMessage</elementReference>
+                <stringValue>Error Creating Recipient PE</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -607,7 +624,7 @@
         <locationX>578</locationX>
         <locationY>1142</locationY>
         <connector>
-            <targetReference>Membership_Exists</targetReference>
+            <targetReference>Log_Milestone</targetReference>
         </connector>
         <inputAssignments>
             <field>Flow_Name__c</field>
@@ -643,7 +660,7 @@
         <locationX>842</locationX>
         <locationY>1142</locationY>
         <connector>
-            <targetReference>Membership_Exists</targetReference>
+            <targetReference>Log_Milestone</targetReference>
         </connector>
         <inputAssignments>
             <field>Flow_Name__c</field>
@@ -676,8 +693,8 @@
         <description>Create a Membership Essentials Event Log record that indicates the Membership Finder process was attempted</description>
         <name>Create_MEMBERSHIP_FINDER_Log_Message</name>
         <label>Create MEMBERSHIP FINDER Log Message</label>
-        <locationX>666</locationX>
-        <locationY>1790</locationY>
+        <locationX>710</locationX>
+        <locationY>1898</locationY>
         <inputAssignments>
             <field>Flow_Name__c</field>
             <value>
@@ -709,8 +726,8 @@
         <description>Create a Membership Essentials Events Log record that indicates that the Membership Finder process ran</description>
         <name>Create_Membership_Platform_Event_Message</name>
         <label>Create Membership Finder Platform Event Message</label>
-        <locationX>666</locationX>
-        <locationY>1682</locationY>
+        <locationX>710</locationX>
+        <locationY>1790</locationY>
         <connector>
             <targetReference>Create_MEMBERSHIP_FINDER_Log_Message</targetReference>
         </connector>
@@ -819,6 +836,12 @@
         <locationX>1106</locationX>
         <locationY>1034</locationY>
         <inputAssignments>
+            <field>Error_Text__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Flow_Name__c</field>
             <value>
                 <elementReference>StaticFlowName</elementReference>
@@ -827,13 +850,49 @@
         <inputAssignments>
             <field>Log_Message__c</field>
             <value>
-                <elementReference>$Flow.FaultMessage</elementReference>
+                <stringValue>Error Updating MFS Status</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
             <field>Log_Type__c</field>
             <value>
                 <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Membership_Form_Submission__c</field>
+            <value>
+                <elementReference>GET_Membership_Form_Submission_Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Membership_Essentials_Event_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <description>create Log when mile</description>
+        <name>Log_Milestone</name>
+        <label>Log Milestone</label>
+        <locationX>446</locationX>
+        <locationY>1574</locationY>
+        <connector>
+            <targetReference>Membership_Exists</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <elementReference>StaticFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <stringValue>Milestone Before Membership Decision</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Pass</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -853,7 +912,7 @@
         <locationY>1250</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Membership_Exists</targetReference>
+            <targetReference>Log_Milestone</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>

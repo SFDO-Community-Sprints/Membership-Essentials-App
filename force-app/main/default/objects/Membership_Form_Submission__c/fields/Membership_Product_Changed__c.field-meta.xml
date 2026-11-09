@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Membership_Product_Changed__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Set by the upgrade or downgrade listener after it changes the matched membership&apos;s product. With the Membership lookup, tells the business process listener that the product-change step is complete, so it sets the submission to Imported instead of changing the product again. See Architecture.md M3-M5.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Checked once an upgrade or downgrade from this submission has been applied to the membership.</inlineHelpText>
+    <label>Membership Product Changed</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

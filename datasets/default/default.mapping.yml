@@ -36,6 +36,24 @@ Insert Product2:
 Insert Membership__c:
   sf_object: Membership__c
   table: Membership__c
+  fields:
+  - Name
+  - Type__c
+  - Status__c
+  - Start_Date__c
+  - End_Date__c
+  lookups:
+    Account__c:
+      table: Account
+      key_field: Account__c
+      after: Insert Account
+    Primary_Contact__c:
+      table: Contact
+      key_field: Primary_Contact__c
+      after: Insert Contact
+    Product__c:
+      table: Product2
+      key_field: Product__c
 Insert Account:
   sf_object: Account
   table: Account
@@ -151,3 +169,27 @@ Insert Contact:
       table: Contact
       key_field: ReportsToId
       after: Insert Contact
+Insert Membership_Form_Submission__c:
+  sf_object: Membership_Form_Submission__c
+  table: Membership_Form_Submission__c
+  fields:
+  # Status must be Imported at insert. The AFTER-MFS-auditor flow fires on create
+  # and update unless status is Imported or Failed, and would otherwise re-run the
+  # whole intake pipeline against every row in this dataset.
+  - Status__c
+  - Membership_Finder_Ran__c
+  - Term_Start_Date__c
+  - SalePrice__c
+  - Duration__c
+  - MembershipType__c
+  - Source_Code__c
+  lookups:
+    Membership__c:
+      table: Membership__c
+      key_field: Membership__c
+    Account__c:
+      table: Account
+      key_field: Account__c
+    Product__c:
+      table: Product2
+      key_field: Product__c
