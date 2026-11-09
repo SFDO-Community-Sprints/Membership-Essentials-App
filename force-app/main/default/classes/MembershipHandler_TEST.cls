@@ -96,6 +96,7 @@ private without sharing class MembershipHandler_TEST {
         System.assertEquals(Date.today(), mcrs[0].Start_Date__c);
     }
 
+    @isTest
     private static void testUpdateMembershipWithNewPrimaryUpdatesExistingMCRs() {
         Membership__c m = new Membership__c(
             Name = 'First Membership',
