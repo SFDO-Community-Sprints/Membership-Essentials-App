@@ -186,15 +186,15 @@ The scenarios assert the intended design, so some fail today. Each failure is th
 | Membership w/ extra gift, option 2 | Pass | | |
 | Renewal after end of grace period | Pass | | |
 | Buying gift membership | Pass | | |
-| Membership with merchandise | Fail | The membership is created, but no membership line is added to the Opportunity the MFS references | New finding |
-| Membership w/ extra gift, option 1 | Fail | Same as merchandise | New finding |
-| Bundle with fee-for-service products | Fail | Same as merchandise | New finding |
-| Renewal before expiration (before it expires) | Fail | The finder matches the membership, but its end date isn't extended | [DEP-06](Departures.md#dep-06--renewal-isnt-implemented) |
-| Renewal before expiration (during grace period) | Fail | A second membership is created. The finder only matches `End_Date__c > today`, and no flow reads `Grace_Period__c` | New finding |
-| Buying multi-year membership | Fail | Ends 2029-11-04, not 2029-11-07: year terms are computed as 364 days × `Term__c` | New finding |
-| Buying multiple memberships for one | Fail | The second purchase matches the first membership, which is of a different type | [DEP-07](Departures.md#dep-07--matching-ignores-membership-type) |
-| Buying institutional membership | Fail | The created membership has no `Type__c`; no flow sets it from `MembershipType__c` | New finding |
-| Gift and standard membership together | Fail | The gift is matched to the payor's own membership, so no membership is created for the giftee | New finding |
+| Membership with merchandise | Fail | The membership is created, but no membership line is added to the Opportunity the MFS references | [#307](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/307) |
+| Membership w/ extra gift, option 1 | Fail | Same as merchandise | [#307](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/307) |
+| Bundle with fee-for-service products | Fail | Same as merchandise | [#307](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/307) |
+| Renewal before expiration (before it expires) | Fail | The finder matches the membership, but its end date isn't extended | [DEP-06](Departures.md#dep-06--renewal-isnt-implemented), [#287](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/287) |
+| Renewal before expiration (during grace period) | Fail | A second membership is created. The finder only matches `End_Date__c > today`, and no flow reads `Grace_Period__c` | [#308](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/308) |
+| Buying multi-year membership | Fail | Ends 2029-11-04, not 2029-11-07: year terms are computed as 364 days × `Term__c` | [#309](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/309) |
+| Buying multiple memberships for one | Fail | The second purchase matches the first membership, which is of a different type | [DEP-07](Departures.md#dep-07--matching-ignores-membership-type), [#288](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/288) |
+| Buying institutional membership | Fail | The created membership has no `Type__c`; no flow sets it from `MembershipType__c` | [#310](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/310) |
+| Gift and standard membership together | Fail | The gift is matched to the payor's own membership, so no membership is created for the giftee | [#311](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/311) |
 
 ### Open items
 
