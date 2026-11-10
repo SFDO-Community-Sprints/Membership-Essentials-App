@@ -7,7 +7,7 @@ The places where the code disagrees with [Architecture.md](Architecture.md), eac
 - Flow fixes are made in Flow Builder. Element API names are given so the change is easy to find.
 - Items already tracked in Architecture.md ([Accepted as-is](Architecture.md#accepted-as-is) and [Backlog](Architecture.md#backlog), including the P1, P4 and E4 TODOs) aren't repeated here, but entries refer to them where they interact.
 
-**Evidence.** Snapshot of 2026-11-07, taken by parsing `force-app/main/default/flows/*.flow-meta.xml`, the platform event definitions and the Apex. Every entry is **read from metadata; none has been reproduced in an org.** Entries marked *(needs org)* depend on runtime behavior that reading the metadata can't settle. Reproduce those before building a fix on them.
+**Evidence.** Snapshot of 2026-11-07, taken by parsing `force-app/main/default/flows/*.flow-meta.xml`, the platform event definitions and the Apex. Every entry is **read from metadata; none has been reproduced in an org**, except those under [Found by the scenario tests](#found-by-the-scenario-tests). Entries marked *(needs org)* depend on runtime behavior that reading the metadata can't settle. Reproduce those before building a fix on them.
 
 ---
 
@@ -15,11 +15,15 @@ The places where the code disagrees with [Architecture.md](Architecture.md), eac
 
 Several entries share a fix or depend on each other:
 
-1. **Independent and small, can start now:** DEP-02, the [bugs outside the rules](#bugs-outside-the-rules), and the [cleanup](#cleanup) deletions (DEP-14, -15, -16).
+1. **Independent and small, can start now:** DEP-02, the [bugs outside the rules](#bugs-outside-the-rules), and the [cleanup](#cleanup) deletions (DEP-14, -15, -16). The term-end setting ([#314](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/314)) and `Type__c` on created memberships ([#310](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/310)) belong here too, because later steps need them.
 2. **The log listener before the logging migration.** Fix the listener first (DEP-13, first item), then move the flows to the log DPEV (DEP-13, DEP-20) one flow per PR.
-3. **The fold** ([#278](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/278)). The E4 backlog TODO moves the membership step into the MFS BPEV listener. It resolves or reshapes DEP-01, -03, -04, -05, -07 and -09, together with the P1 ([#230](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/230)) and P4 ([#279](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/279)) TODOs. Plan it as one piece of work.
-4. **After the backlog picklist value `Import Incomplete` ([#280](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/280)) and the field `Membership_Renewed__c` ([#281](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/281)) exist:** DEP-06, DEP-11 (second item) and DEP-12.
+3. **The fold** ([#278](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/278)). The E4 backlog TODO moves the membership step into the MFS BPEV listener. It resolves or reshapes DEP-01, -03, -04, -05, -07 and -09, together with the P1 ([#230](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/230)) and P4 ([#279](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/279)) TODOs, the grace-period match ([#308](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/308)) and gift matching ([#311](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/311)). Plan it as one piece of work. #310 must land first: once the finder matches on type (DEP-07), a membership with a blank `Type__c` never matches, so every renewal would create a new membership.
+4. **After the backlog picklist value `Import Incomplete` ([#280](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/280)) and the field `Membership_Renewed__c` ([#281](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/281)) exist:** DEP-06, DEP-11 (second item) and DEP-12. DEP-06 and DEP-08 also need the term-end setting (#314).
 5. **Renames last** (DEP-17, DEP-18). Each rename creates a new flow, so do it in the same PR as that flow's other fixes.
+
+The issues carry these dependencies as GitHub *blocked by* links, and #278 lists the fold's pieces as sub-issues. Flow files don't merge cleanly, so two fixes to the same flow also go one after the other, even when neither depends on the other.
+
+**Decisions taken at the November 2026 sprint** (2026-11-08) are recorded in the entries they settle, marked **Decided**.
 
 ---
 
@@ -64,7 +68,10 @@ When `Do_not_create_Opportunity__c` is true, the flow goes `Ignore_Opportunity` 
 - **Any other product:** the default outcome ends the flow. No DPEV is published and `Imported` is never set, so the MFS sits with a blank status indefinitely.
 - On both branches the recipient step is skipped.
 
-- [ ] The fold removes `Create_Membership_Transaction_Event`; this branch runs the ordinary membership step inside the listener.
+**Decided:** `Do_not_create_Opportunity__c` means *a membership without a revenue record*. Only the Opportunity step is skipped; everything else runs as usual. The Membership has no `Opportunity__c`.
+
+- [ ] The fold removes `Create_Membership_Transaction_Event`; this branch runs the ordinary membership step inside the listener, resolving product, term and type from the MFS (DEP-03).
+- [ ] Creating the Membership must not require an Opportunity or a line item.
 - [ ] Make the non-membership branch continue to Recipient, then `Imported`.
 
 ### DEP-05 — Upgrade and downgrade are probably unreachable
@@ -80,6 +87,8 @@ When `Do_not_create_Opportunity__c` is true, the flow goes `Ignore_Opportunity` 
 
 Nothing subscribes to `DPEV_Membership_Renewal__e`. No flow extends the end date or marks the renewal on the MFS.
 
+**Decided:** a renewal extends the matched membership's **old end date** by one term, also when it's paid during the grace period ([#308](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/308)), so coverage has no gap. The term ends according to the setting in [#314](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/314).
+
 - [ ] Build `DPEV_Listener_Membership_Renewal`. It extends the matched membership's end date by the product's term and sets `Membership_Renewed__c` (once that backlog field exists). On error it logs and sets `Failed` (D3).
 - [ ] Have the BPEV listener treat Membership lookup + `Membership_Renewed__c` as complete (M4).
 
@@ -90,6 +99,12 @@ Nothing subscribes to `DPEV_Membership_Renewal__e`. No flow extends the end date
 
 - [ ] Add `Type__c = MembershipType__c` to `GetMembership`. A different-type membership is then no match, and the Create path follows (M3).
 - [ ] Remove `Check_Level_and_Type` in the fold; the finder's type filter replaces it.
+
+**Land #310 first.** Created memberships have no `Type__c` today ([#310](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/310)); with the type filter, none of them would ever be matched. Memberships already created with a blank type need backfilling.
+
+Two more decided changes to `GetMembership` go in the same piece of work:
+- **Grace period** ([#308](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/308)). **Decided:** match `End_Date__c >= TODAY() - Product__r.Grace_Period__c`, with a blank grace period read as 0.
+- **Gifts** ([#311](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/311)). **Decided:** a gift is matched against the **giftee's** memberships, never the purchaser's. Match through the giftee's contact role so the rule holds whichever Account the giftee ends up on; that placement is still open. This needs the Recipient step to run before the membership step (DEP-01).
 
 ### DEP-08 — Upgrade and downgrade listeners don't mark the step complete
 **Issue:** [#289](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/289) · **Breaks:** M4, M5, D3 · **Flows:** `DPEV_Listener_Membership_Upgrade`, `DPEV_Listener_Membership_Downgrade`
@@ -103,6 +118,7 @@ Both change the Membership's `Product__c` and `End_Date__c` (`Assign_new_Members
 - [ ] After the product update succeeds, set `Membership_Product_Changed__c = true` on the MFS.
 - [ ] On error, log and set `Failed`, with the D3 second update.
 - [ ] Change Downgrade's `CalculateNewEndDate` to start from `TODAY()`.
+- [ ] Compute both end dates with the term-end setting ([#314](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/314)). Today both land on the anniversary; the shipped default is the day before.
 
 ### DEP-09 — The BPEV listener doesn't skip a completed product change
 **Issue:** [#290](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/290) · **Breaks:** M3, M4 · **Flows:** `BPEV_Listener_Membership_Transaction` today; `BPEV_Listener_Membership_Form_Business_Process` after the fold
@@ -246,9 +262,20 @@ These don't break a numbered rule, but they turned up during the same review.
 
 - [ ] In `Are_Recipient_fields_populated`, rule `Recipient_Contact_Info` condition 2 checks `LastName__c` (the purchaser's) instead of `RecipientLastName__c`. [#301](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/301)
 - [ ] `DPEV_Listener_Campaign_Finder` searches when **either** the campaign name or the source code is given, but `Find_Existing_Campaign` requires **both** to match. A submission with only one of them fails with "campaign specified but not found" *(needs org)*. [#302](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/302)
+  **Decided:** either field is enough, and the code wins. If `Source_Code__c` is given, match on it alone; otherwise match on `Source_Campaign_Name__c`. Active campaigns only.
 - [ ] If the line item insert fails in `DPEV_Listener_Create_Opportunity`, the Opportunity remains but isn't recorded on the MFS, so a retry creates a second one. [#303](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/303)
+  **Decided:** record the Opportunity on the MFS, then set `Failed`. A retry then skips the Opportunity step, because the lookup is set, so `Failure_Information__c` must tell the admin to add the line, or to delete the Opportunity and clear `Opportunity__c`, before retrying.
 - [ ] Some pass logs are written before the check they report ("Pricebook Entry Found", "Product Found"). The finder logs "can't proceed" as an error and then proceeds. [#261](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/261)
 - [ ] `MembershipService.rollupPrimaryMembershipContact` has an empty body. The account rollup runs on insert only, not on update. [#39](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/39)
-- [ ] `AGENTS.md` says "18 Flows" under Architecture and "19 flows" under Working rules; there are 19. [#304](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/304)
 
 Context, not a departure: flow API versions range from 49.0 to 67.0, and the project is on 59.0.
+
+### Found by the scenario tests
+
+Unlike the rest of this page, these were **verified in a dev scratch org** on 2026-11-08 by `MembershipScenarios_TEST` (see [Automated Testing](Automated%20Testing.md#current-results)).
+
+- [ ] Year terms are computed as 364 days × `Term__c` in `DPEV_Listener_Membership_Create_Flow` (`calculatedEndDate`), so memberships end early. [#309](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/309)
+  **Decided:** when a term ends is a setting in `Membership_Essentials_Setting__mdt`, defaulting to the day before the anniversary ([#314](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/314)). Create, Renewal (DEP-06), Upgrade and Downgrade (DEP-08) all read it.
+- [ ] `Create_Membership` never sets `Type__c` from `MembershipType__c`. [#310](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/310) Land it before DEP-07.
+- [ ] A renewal paid during the grace period creates a new membership; no flow reads `Grace_Period__c`. [#308](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/308) Decided under DEP-07 and DEP-06.
+- [ ] A gift is matched against the purchaser's memberships. [#311](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/311) Decided under DEP-07.
