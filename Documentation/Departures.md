@@ -15,7 +15,7 @@ The places where the code disagrees with [Architecture.md](Architecture.md), eac
 
 Several entries share a fix or depend on each other:
 
-1. **Independent and small, can start now:** DEP-02, the [bugs outside the rules](#bugs-outside-the-rules), and the [cleanup](#cleanup) deletions (DEP-14, -15, -16).
+1. **Independent and small, can start now:** DEP-02, the [bugs outside the rules](#bugs-outside-the-rules), and the [cleanup](#cleanup) deletions (DEP-14, -15).
 2. **The log listener before the logging migration.** Fix the listener first (DEP-13, first item), then move the flows to the log DPEV (DEP-13, DEP-20) one flow per PR.
 3. **The fold** ([#278](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/278)). The E4 backlog TODO moves the membership step into the MFS BPEV listener. It resolves or reshapes DEP-01, -03, -04, -05, -07 and -09, together with the P1 ([#230](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/230)) and P4 ([#279](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/279)) TODOs. Plan it as one piece of work.
 4. **After the backlog picklist value `Import Incomplete` ([#280](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/280)) and the field `Membership_Renewed__c` ([#281](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/281)) exist:** DEP-06, DEP-11 (second item) and DEP-12.
@@ -202,10 +202,6 @@ When a BPEV listener's publish fails, the MFS keeps a blank status and nothing r
 ### DEP-15 — `Create_Membership_DPEV__e` is unused
 **Issue:** [#296](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/296) · **Breaks:** N1. The event has no publisher and no subscriber; `DPEV_Create_Membership__e` is the live one.
 - [ ] Delete the event, and update the paragraph about it in `AGENTS.md`.
-
-### DEP-16 — Leftover flows
-**Issue:** [#297](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/297)
-- [ ] Delete `Member_test_autolaunched` (Obsolete) and `MFS_Force_PE_Testing` (Draft screen flow).
 
 ### DEP-17 — Listener names don't match their events
 **Issue:** [#298](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/298) · **Breaks:** N2
