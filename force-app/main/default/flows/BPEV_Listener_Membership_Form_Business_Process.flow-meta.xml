@@ -22,7 +22,7 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>GET_Membership_Form_Submission_Record.LastName__c</leftValueReference>
+                <leftValueReference>GET_Membership_Form_Submission_Record.RecipientLastName__c</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
