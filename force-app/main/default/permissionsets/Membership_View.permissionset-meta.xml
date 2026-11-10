@@ -352,6 +352,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Membership__c.Grace_Period_End__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Membership__c.Opportunity__c</field>
         <readable>true</readable>
     </fieldPermissions>
