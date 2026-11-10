@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Membership Essentials Defaults</label>
+    <protected>false</protected>
+    <values>
+        <field>Membership_Log_Creation__c</field>
+        <value xsi:type="xsd:string">Enabled</value>
+    </values>
+    <values>
+        <field>Term_End_Convention__c</field>
+        <value xsi:type="xsd:string">Day before anniversary</value>
+    </values>
+</CustomMetadata>

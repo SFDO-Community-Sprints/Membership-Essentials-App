@@ -145,6 +145,8 @@ The primary listener remains the only one that advances or fails the MFS.
 
 **F2. Apex is used only when Flow can't support the requirement.** A pull request that adds Apex states which Flow capability is missing.
 
+The term-end calculator is one such exception: Salesforce rejects Subflow elements in platform-event-triggered flows. `MembershipTermEndAction` is an invocable adapter that invokes `Calculate_Membership_Term_End_Date` in bulk; validation, settings lookup, and date arithmetic remain in that autolaunched Flow. Remove the adapter when direct subflow calls are supported for these listeners.
+
 **F3. Existing Apex is migration debt.** Each class is tagged for migration (T1) with the reason it's Apex today. The exception is F5.
 
 **F4. Apex joins the event architecture only as a DPEV listener** (D6). Flows otherwise reach Apex through invocable actions.
@@ -156,6 +158,8 @@ The primary listener remains the only one that advances or fails the MFS.
 **C1. Strings that drive package behavior and that an adopter could reasonably change belong in `Membership_Essentials_Setting__mdt`.** Examples include picklist values, membership types, statuses, role names, product families and price book names. This applies to Flow as well as Apex.
 
 **C2. Until such a string is migrated, it's tagged** for settings migration (T1).
+
+**Term-end convention (#314).** The shared settings record's DeveloperName is `MembershipEssentialsDefaults`. `Term_End_Convention__c` selects `Day before anniversary` (the shipped default) or `Anniversary`; an absent record or blank value also uses the default. The same record carries `Membership_Log_Creation__c` and is intended for the logging lookup in #293. The calculator advances the caller's `ReferenceDate` using `ADDMONTHS` for Month/Year and days for Day/Week, then subtracts one day for the default convention. It follows Salesforce's month-end behavior. Each caller owns its reference date: Create and Upgrade pass today; Downgrade currently passes Opportunity Close Date, with changing that input tracked in #289. Invalid inputs return an error; the listeners publish the log DPEV and mark the MFS `Failed` before changing the Membership. Renewal can reuse the calculator when #287 is implemented; its reference date must avoid subtracting the inclusive day twice across consecutive terms.
 
 ## L. Logging
 

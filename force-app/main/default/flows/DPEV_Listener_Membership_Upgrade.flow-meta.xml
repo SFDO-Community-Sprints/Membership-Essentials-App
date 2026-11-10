@@ -1,5 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>Shared term calculation. The caller owns the reference date and handles invalid inputs or settings lookup errors before changing the Membership.</description>
+        <name>Calculate_Term_End</name>
+        <label>Calculate Term End</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>MembershipTermEndAction</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Term_Is_Valid</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Capture_Term_Fault</targetReference>
+        </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>referenceDate</name>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>term</name>
+            <value>
+                <elementReference>Get_Membership_Form_Submission.Product__r.Term__c</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>termUnit</name>
+            <value>
+                <elementReference>Get_Membership_Form_Submission.Product__r.Term_Unit__c</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>MembershipTermEndAction</nameSegment>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
     <apiVersion>59.0</apiVersion>
     <assignments>
         <description>Assign new product and end dates for the membership</description>
@@ -18,11 +54,43 @@
             <assignToReference>Get_the_related_Membership.End_Date__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>CalculateNewEndDate</elementReference>
+                <elementReference>Calculate_Term_End.endDate</elementReference>
             </value>
         </assignmentItems>
         <connector>
             <targetReference>Update_Membership_with_new_product</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Capture_Invalid_Term</name>
+        <label>Capture Invalid Term</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>TermCalculationError</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Calculate_Term_End.errorMessage</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Publish_Term_Error</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Capture_Term_Fault</name>
+        <label>Capture Term Fault</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>TermCalculationError</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Publish_Term_Error</targetReference>
         </connector>
     </assignments>
     <decisions>
@@ -43,38 +111,38 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Assign_new_Membership_product</targetReference>
+                <targetReference>Calculate_Term_End</targetReference>
             </connector>
             <label>Update Membership opportunity product</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>Term_Is_Valid</name>
+        <label>Term Is Valid</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Capture_Invalid_Term</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Invalid term</defaultConnectorLabel>
+        <rules>
+            <name>Valid_Term</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Calculate_Term_End.isValid</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_new_Membership_product</targetReference>
+            </connector>
+            <label>Valid Term</label>
+        </rules>
+    </decisions>
     <description>A flow called by the platform events to upgrade the membership by updating the opportunity product on the membership record</description>
     <environments>Default</environments>
-    <formulas>
-        <description>Assumes based on Close Date of opportunity, will need adjusting if using end of month or more specific options
-Doesn&apos;t calculated for leap years</description>
-        <name>CalculateNewEndDate</name>
-        <dataType>Date</dataType>
-        <expression>
-IF(
-    ISPICKVAL({!Get_Membership_Form_Submission.Product__r.Term_Unit__c}, &quot;Month&quot;), 
-    ADDMONTHS(TODAY(), 
-{!Get_Membership_Form_Submission.Product__r.Term__c}),
-    
-    IF(
-        ISPICKVAL({!Get_Membership_Form_Submission.Product__r.Term_Unit__c}, &quot;Year&quot;), 
-        ADDMONTHS(TODAY(), 
-({!Get_Membership_Form_Submission.Product__r.Term__c} * 12)),
-        
-        IF(
-            ISPICKVAL({!Get_Membership_Form_Submission.Product__r.Term_Unit__c}, &quot;Week&quot;), 
-            (TODAY() + ({!Get_Membership_Form_Submission.Product__r.Term__c} * 7)),
-            
-            TODAY() + {!Get_Membership_Form_Submission.Product__r.Term__c}
-        )
-    )
-)</expression>
-    </formulas>
     <interviewLabel>DPEV Listener - Membership Upgrade {!$Flow.CurrentDateTime}</interviewLabel>
     <label>DPEV Listener - Membership Upgrade</label>
     <processMetadataValues>
@@ -200,6 +268,129 @@ IF(
         <object>Membership_Essentials_Event_Log__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
+    <recordCreates>
+        <description>Publish through the log DPEV. The log publish itself has no fault path (Architecture L2).</description>
+        <name>Publish_Term_Error</name>
+        <label>Publish Term Error</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Mark_Term_Failed</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <stringValue>DPEV_Listener_Membership_Upgrade</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Location__c</field>
+            <value>
+                <stringValue>Calculate_Term_End</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <elementReference>TermCalculationError</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>MFS_RecordId__c</field>
+            <value>
+                <elementReference>Get_Membership_Form_Submission.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>DPEV_Create_Membership_Essentials_Log__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <description>Publish through the log DPEV. The log publish itself has no fault path (Architecture L2).</description>
+        <name>Publish_Term_Retry_Fault</name>
+        <label>Publish Term Retry Fault</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <stringValue>DPEV_Listener_Membership_Upgrade</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Location__c</field>
+            <value>
+                <stringValue>Retry_Mark_Term_Failed</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>MFS_RecordId__c</field>
+            <value>
+                <elementReference>Get_Membership_Form_Submission.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>DPEV_Create_Membership_Essentials_Log__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <description>Publish through the log DPEV. The log publish itself has no fault path (Architecture L2).</description>
+        <name>Publish_Term_Status_Fault</name>
+        <label>Publish Term Status Fault</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Retry_Mark_Term_Failed</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Flow_Name__c</field>
+            <value>
+                <stringValue>DPEV_Listener_Membership_Upgrade</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Location__c</field>
+            <value>
+                <stringValue>Mark_Term_Failed</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Type__c</field>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>MFS_RecordId__c</field>
+            <value>
+                <elementReference>Get_Membership_Form_Submission.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>DPEV_Create_Membership_Essentials_Log__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
     <recordLookups>
         <name>Get_Membership_Form_Submission</name>
         <label>Get Membership Form Submission</label>
@@ -249,6 +440,62 @@ IF(
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
+        <description>Stop the MFS on term validation/calculation failure. If this update fails, log and retry setting Failed without the descriptive field (Architecture D3).</description>
+        <name>Mark_Term_Failed</name>
+        <label>Mark Term Failed</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <faultConnector>
+            <targetReference>Publish_Term_Status_Fault</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Membership_Form_Submission.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Failure_Information__c</field>
+            <value>
+                <elementReference>TermCalculationError</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status__c</field>
+            <value>
+                <stringValue>Failed</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Membership_Form_Submission__c</object>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Stop the MFS on term validation/calculation failure. If this update fails, log and retry setting Failed without the descriptive field (Architecture D3).</description>
+        <name>Retry_Mark_Term_Failed</name>
+        <label>Retry Mark Term Failed</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <faultConnector>
+            <targetReference>Publish_Term_Retry_Fault</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Membership_Form_Submission.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Status__c</field>
+            <value>
+                <stringValue>Failed</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Membership_Form_Submission__c</object>
+    </recordUpdates>
+    <recordUpdates>
         <name>Update_Membership_with_new_product</name>
         <label>Update Membership with new product</label>
         <locationX>50</locationX>
@@ -280,5 +527,12 @@ IF(
         <value>
             <stringValue>DPEV Listener - Membership Upgrade</stringValue>
         </value>
+    </variables>
+    <variables>
+        <name>TermCalculationError</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
 </Flow>

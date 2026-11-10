@@ -147,9 +147,9 @@ public class MembershipAssert {
     }
 
     /**
-     * End date for a term in whole years starting today: the day before the anniversary. This is the
-     * expected design. The create flow today computes years as 364 days x Term__c, which agrees for one
-     * year only outside leap-day spans (see Documentation/Automated Testing.md).
+     * Expected end date for scenario tests using the shipped Day before anniversary convention.
+     * These scenarios deliberately assert the default rather than deriving expectations from the
+     * calculator under test. MembershipTermEnd_TEST covers the configurable calculator separately.
      */
     public static Date termEndFromToday(Integer years) {
         return Date.today().addYears(years).addDays(-1);
