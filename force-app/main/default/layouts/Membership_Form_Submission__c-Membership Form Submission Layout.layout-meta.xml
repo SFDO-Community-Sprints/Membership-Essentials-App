@@ -35,6 +35,10 @@
                 <behavior>Edit</behavior>
                 <field>Membership_Product_Changed__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Membership_Renewed__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

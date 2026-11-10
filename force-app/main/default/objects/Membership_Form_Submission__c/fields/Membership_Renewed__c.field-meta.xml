@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Membership_Renewed__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Set by the renewal listener after it extends the matched membership&apos;s end date. With the Membership lookup, tells the business process listener that the renewal step is complete, so it sets the submission to Imported instead of renewing again. See Architecture.md M4.</description>
+    <inlineHelpText>Checked once a renewal from this submission has been applied to the membership.</inlineHelpText>
+    <label>Membership Renewed</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>
