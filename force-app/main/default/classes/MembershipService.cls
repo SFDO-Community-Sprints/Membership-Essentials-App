@@ -2,6 +2,7 @@
  * Created by ChrisPifer on 2/10/2021.
  */
 
+// TODO(flow-migration): Rolls up the active primary Membership__c lookup onto Account (Primary_Membership__c) and Contact.
 public without sharing class MembershipService {
     @TestVisible private ConfigurationService cs;
 

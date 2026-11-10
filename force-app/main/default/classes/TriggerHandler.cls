@@ -1,3 +1,4 @@
+// TODO(flow-migration): Trigger dispatch, loop-count, and bypass framework supporting ContactHandler and MembershipHandler until their trigger logic moves to Flow.
 public virtual class TriggerHandler {
 
     // static map of handlername, times run() was invoked

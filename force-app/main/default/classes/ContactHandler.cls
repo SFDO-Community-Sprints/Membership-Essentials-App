@@ -1,3 +1,4 @@
+// TODO(flow-migration): Dispatches Contact after-insert and after-update trigger events to MembershipContactRoleService to manage Membership_Contact_Role__c records when Contacts join or leave Accounts.
 public with sharing class ContactHandler extends TriggerHandler {
     public override void afterInsert() {
         Map<Id, Id> contactsEnteringAccountsMap = new Map<Id, Id>();
