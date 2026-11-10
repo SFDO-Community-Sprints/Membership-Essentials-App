@@ -220,7 +220,6 @@ Changes the design requires that aren't in the package yet:
 
 - Add the checkbox `Membership_Renewed__c` to `Membership_Form_Submission__c` (M4).
 - Rename the `_Test` classes to `_TEST`: `DuplicateRecordCheck_Test`, `TriggerHandler_Test` (N4).
-- Tag existing Apex other than duplicate matching (F3, F5) and hard-coded behavior strings (C2) per T1.
 - **TODO (P4):** `DPEV_Listener_Membership_Finder` publishes `BPEV_Membership_Transaction__e` (`Fire_Membership_Transaction_For_Create`). Replace this with an update to the MFS, so the transaction step is reached through the BPEV listener's re-entry.
 - **TODO (P1):** `Opportunity_Line_Item_After_Membership` is record-triggered on `OpportunityLineItem` and publishes `BPEV_Membership_Transaction__e` (`Fire_BPEV_Membership_Transaction`). Remove this entry point. The membership step runs inside the MFS process (see the E4 TODO below); if the line item's state matters, a DPEV records it on the MFS.
 - **TODO (E4, B2):** Fold the membership transaction into the MFS process. `BPEV_Listener_Membership_Form_Business_Process` takes over the membership step as its last step before `Imported`: the finder, then create, renew, upgrade or downgrade (M3). Then retire `BPEV_Membership_Transaction__e` and `BPEV_Listener_Membership_Transaction`. Once P1 holds, the transaction can only start from an MFS change, the same trigger as the MFS process, so it isn't a materially different process.

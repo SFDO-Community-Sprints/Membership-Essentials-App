@@ -1,4 +1,5 @@
 // This class is `without sharing` to ensure data integrity
+// TODO(flow-migration): Creates and deactivates household Membership_Contact_Role__c records when Contacts are added to or moved between Accounts.
 public without sharing class MembershipContactRoleService {
     @TestVisible private ConfigurationService cs;
 
