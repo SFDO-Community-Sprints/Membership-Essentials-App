@@ -196,10 +196,42 @@ The scenarios assert the intended design, so some fail today. Each failure is th
 | Buying institutional membership | Fail | The created membership has no `Type__c`; no flow sets it from `MembershipType__c` | [#310](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/310) |
 | Gift and standard membership together | Fail | The gift is matched to the payor's own membership, so no membership is created for the giftee | [#311](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/311) |
 
+### Term end convention (#314): verified 2026-11-10
+
+The historical scenario results above are from the earlier run. In scratch org `CCSprint27`, `MembershipScenarios_TEST.multiYear_endsAfterThreeYears` now passes with the shipped default. `MembershipTermEnd_TEST` separately exercises the reusable calculator and all three existing listeners.
+
+| Settings state | Tests passed | Test run Id |
+| --- | --- | --- |
+| `MembershipEssentialsDefaults`: Day before anniversary | 12, including the existing multi-year scenario | `707di0000LGQQup` |
+| `MembershipEssentialsDefaults`: Anniversary | 11 | `707di0000LGQ13c` |
+| `MembershipEssentialsDefaults`: blank convention | 11 | `707di0000LGQGpo` |
+| No settings record | 11 | `707di0000LGQN8w` |
+
+These are 45 successful test executions across four configurations, not 45 distinct test methods. The org was restored to the shipped Day before anniversary record, with logging Enabled, after testing. Apex cannot DML custom metadata, so the configuration variants were deployed as temporary metadata fixtures, and the absent-record case removed and then restored the ticket's record.
+
+Coverage includes fixed dates for Day/Week/Month/Year, the issue's 2026-11-08 three-year example, one-day terms, leap days, and Salesforce `ADDMONTHS` month-end behavior. Missing reference dates, missing/nonpositive/fractional terms, missing/unrecognized units, and terms exceeding the supported date range return an error without an end date. The three listeners were exercised with their platform events: invalid product terms set the MFS to Failed and leave the Membership unchanged (or uncreated). Valid Create/Upgrade use today; valid Downgrade retains Opportunity Close Date. Downgrade's input lookups were corrected to resolve the event's MFS and its matching opportunity product so this failure handling targets the actual submission. Its success flag and other #289 lifecycle work remain separate.
+
+Salesforce rejected direct Subflow elements in the platform-event listeners. The F2 exception is `MembershipTermEndAction`, an invocable adapter using the bulk Flow action API; the shared `Calculate_Membership_Term_End_Date` Flow still owns configuration, validation, and calculation. A 200-input org probe used one SOQL query; the test suite guards against per-input queries and verifies output order. The adapter has 21/22 covered lines (95%) in the default run. The focused run is not a full-package regression run or a claim about package-wide coverage.
+
+The new error paths publish `DPEV_Create_Membership_Essentials_Log__e`, including the MFS Id. The log listener's existing mapping/settings defects remain under #293. The MFS-update fault paths log and retry setting Failed, but those DML faults were not deliberately forced during verification.
+
+Flow XML was authored through the CLI at the contributor's explicit request, deployed, and tested in the scratch org; these results are runtime evidence rather than conclusions from parsing metadata. Run the new test class and the existing scenario class sequentially when testing both: concurrent updates to the Standard Price Book can produce `UNABLE_TO_LOCK_ROW` during test setup. One blank-setting run encountered that setup lock; the isolated rerun above passed.
+
+Source capture used `cci task run list_changes` before retrieval. The initial 275-component inventory was saved and snapshotted as the pre-existing org baseline. The final inventory had 16 components, accounted for as follows:
+
+| Disposition | Components | Reason |
+| --- | --- | --- |
+| Retrieved | The shared calculator Flow; Create, Upgrade, and Downgrade listener Flows; `MembershipTermEndAction`; `MembershipTermEnd_TEST`; `MembershipAssert`; the convention field; `MembershipEssentialsDefaults`; settings layout; `Membership_Manage` | Eleven components belonging to #314. |
+| Skipped | `Profile: Admin` | Deployment-generated profile churn. |
+| Skipped | `Membership_Form_Submission__c.Membership_Renewed__c` | Existing sprint metadata deployed only to satisfy the permission set; unchanged in this branch. |
+| Skipped | `MembershipScenarios_TEST`, `MembershipTestData`, `MfsPipelineDriver` | Existing sprint test sources deployed as prerequisites; unchanged in this branch. |
+
+Local command inventories and test JSON are retained under `.cci/issue314-evidence/` (ignored by Git).
+
 ### Open items
 
 - **Linking Contacts to Accounts.** How the pipeline should link a purchaser's or giftee's Contact to an Account is being decided at this sprint. The scenarios don't assert `Contact.AccountId`, or which Account a giftee and a gift membership sit on. Today, an MFS without `OrganizationName__c` creates no Account (`Account_Import_Status__c = Skipped`), and the Opportunity and Membership have no Account *(verified)*.
-- **Expected end dates.** The tests expect a term of N years to end the day before the Nth anniversary, and a renewal to extend the old end date by one term, including a renewal paid during the grace period. Both are readings of the design to confirm.
+- **Expected end dates.** #314 confirms Day before anniversary as the default, with Anniversary configurable through `MembershipEssentialsDefaults`. The scenarios assert the shipped default. The renewal expectation (extend the old end date by one term, including during the grace period) still needs implementation under #287.
 - **Opportunity Contact Roles** aren't asserted; the use-case diagrams don't show them yet.
 
 ---

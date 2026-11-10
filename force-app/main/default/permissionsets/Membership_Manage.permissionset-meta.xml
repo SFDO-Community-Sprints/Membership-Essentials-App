@@ -4,6 +4,14 @@
         <application>Membership</application>
         <visible>true</visible>
     </applicationVisibilities>
+    <classAccesses>
+        <apexClass>MembershipTermEndAction</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <customMetadataTypeAccesses>
+        <enabled>true</enabled>
+        <name>Membership_Essentials_Setting__mdt</name>
+    </customMetadataTypeAccesses>
     <description>Admin/manage permissions for Membership Essentials package objects and fields</description>
     <fieldPermissions>
         <editable>true</editable>

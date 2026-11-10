@@ -18,6 +18,10 @@
                 <behavior>Required</behavior>
                 <field>Membership_Log_Creation__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Term_End_Convention__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
