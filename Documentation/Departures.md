@@ -272,6 +272,8 @@ Unlike the rest of this page, these were **verified in a dev scratch org** on 20
 
 - [ ] Year terms are computed as 364 days × `Term__c` in `DPEV_Listener_Membership_Create_Flow` (`calculatedEndDate`), so memberships end early. [#309](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/309)
   **Decided:** when a term ends is a setting in `Membership_Essentials_Setting__mdt`, defaulting to the day before the anniversary ([#314](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/314)). Create, Renewal (DEP-06), Upgrade and Downgrade (DEP-08) all read it.
-- [ ] `Create_Membership` never sets `Type__c` from `MembershipType__c`. [#310](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/310) Land it before DEP-07.
-- [ ] A renewal paid during the grace period creates a new membership; no flow reads `Grace_Period__c`. [#308](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/308) Decided under DEP-07 and DEP-06.
+- [x] `Create_Membership` never sets `Type__c` from `MembershipType__c`. [#310](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/310) Land it before DEP-07.
+  Merged to the sprint branch (PR #321); the 2026-11-17 run gets `Corporate` on the institutional membership.
+- [x] A renewal paid during the grace period creates a new membership; no flow reads `Grace_Period__c`. [#308](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/308) Decided under DEP-07 and DEP-06.
+  Merged to the sprint branch (PR #323); the finder now matches through the grace period. Extending the end date is still DEP-06.
 - [ ] A gift is matched against the purchaser's memberships. [#311](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/311) Decided under DEP-07.
