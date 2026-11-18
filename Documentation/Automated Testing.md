@@ -178,29 +178,33 @@ Rules the helpers rely on:
 
 ### Current results
 
-The scenarios assert the intended design, so some fail today. Each failure is the first point where the org and the design diverge. Later assertions in the same test haven't been reached.
+The scenarios assert the intended design, so some fail today. Each failure is the first point where the org and the design diverge. Later assertions in the same test haven't been reached. The baseline, both grace-period renewal and institutional rows are from a run on 2026-11-17, after #308, #310 and #272 were merged; the other rows are from 2026-11-08.
 
 | Scenario | Result | First divergence | Issue |
 |---|---|---|---|
-| Baseline: new purchaser | Pass | | |
 | Membership w/ extra gift, option 2 | Pass | | |
-| Renewal after end of grace period | Pass | | |
 | Buying gift membership | Pass | | |
-| Membership with merchandise | Fail | The membership is created, but no membership line is added to the Opportunity the MFS references | [#307](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/307) |
-| Membership w/ extra gift, option 1 | Fail | Same as merchandise | [#307](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/307) |
-| Bundle with fee-for-service products | Fail | Same as merchandise | [#307](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/307) |
+| Baseline: new purchaser | Fail; regression | One submission creates two memberships. Passed on 2026-11-08 | [#331](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/331), [#260](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/260) |
+| Renewal after end of grace period | Fail; regression | Two new memberships are created, not one. Passed on 2026-11-08 | [#331](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/331), [#260](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/260) |
+| Membership with merchandise | Fail; to be rewritten | The test gives the MFS an existing Opportunity, which the design doesn't support ([#307](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/307), closed). Rewrite once multi-line submissions are decided | [#315](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/315) |
+| Membership w/ extra gift, option 1 | Fail; to be rewritten | Same as merchandise | [#315](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/315) |
+| Bundle with fee-for-service products | Fail; to be rewritten | Same as merchandise | [#315](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/315) |
 | Renewal before expiration (before it expires) | Fail | The finder matches the membership, but its end date isn't extended | [DEP-06](Departures.md#dep-06--renewal-isnt-implemented), [#287](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/287) |
-| Renewal before expiration (during grace period) | Fail | A second membership is created. The finder only matches `End_Date__c > today`, and no flow reads `Grace_Period__c` | [#308](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/308) |
-| Buying multi-year membership | Fail | Ends 2029-11-04, not 2029-11-07: year terms are computed as 364 days × `Term__c` | [#309](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/309) |
+| Renewal before expiration (during grace period) | Fail | The finder now matches the membership through its grace period ([#308](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/308)), but its end date isn't extended | [DEP-06](Departures.md#dep-06--renewal-isnt-implemented), [#287](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/287) |
+| Buying multi-year membership | Fail | Ends 2029-11-04, not 2029-11-07: year terms are computed as 364 days × `Term__c` | [#309](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/309), [#314](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/314) |
 | Buying multiple memberships for one | Fail | The second purchase matches the first membership, which is of a different type | [DEP-07](Departures.md#dep-07--matching-ignores-membership-type), [#288](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/288) |
-| Buying institutional membership | Fail | The created membership has no `Type__c`; no flow sets it from `MembershipType__c` | [#310](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/310) |
+| Buying institutional membership | Fail | The membership is now `Corporate` ([#310](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/310)), but the organisation's other contacts get no contact role | [#332](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/332) |
 | Gift and standard membership together | Fail | The gift is matched to the payor's own membership, so no membership is created for the giftee | [#311](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/311) |
 
 ### Open items
 
-- **Linking Contacts to Accounts.** How the pipeline should link a purchaser's or giftee's Contact to an Account is being decided at this sprint. The scenarios don't assert `Contact.AccountId`, or which Account a giftee and a gift membership sit on. Today, an MFS without `OrganizationName__c` creates no Account (`Account_Import_Status__c = Skipped`), and the Opportunity and Membership have no Account *(verified)*.
-- **Expected end dates.** The tests expect a term of N years to end the day before the Nth anniversary, and a renewal to extend the old end date by one term, including a renewal paid during the grace period. Both are readings of the design to confirm.
+- **Linking Contacts to Accounts.** How the pipeline should link a purchaser's or giftee's Contact to an Account is being decided at this sprint. The scenarios don't assert `Contact.AccountId`, or which Account a giftee and a gift membership sit on. Today, an MFS without `OrganizationName__c` creates no Account (`Account_Import_Status__c = Skipped`), and the Opportunity and Membership have no Account *(verified)*. Settled meanwhile (2026-11-08): a gift is matched against the giftee's memberships, never the purchaser's ([#311](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/311)).
+- **Multi-line submissions.** The pipeline creates the Opportunity for a submission and never finds or reuses an existing one; duplicate Opportunities are left to standard Salesforce duplicate management. Decided 2026-11-08 ([#307](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/307)). The merchandise, extra gift option 1 and bundle scenarios give the MFS an existing Opportunity, so they will be rewritten once [#315](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/315) decides how one submission carries several lines.
 - **Opportunity Contact Roles** aren't asserted; the use-case diagrams don't show them yet.
+
+### Decided
+
+- **Expected end dates** (2026-11-08). A term of N years ends the day before the Nth anniversary. This is the shipped default of a setting in `Membership_Essentials_Setting__mdt` ([#314](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/314)); an adopter can choose the anniversary instead, and a test that depends on the convention should read the setting once it exists. A renewal extends the old end date by one term, including a renewal paid during the grace period ([#308](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/308)). The tests already expect both.
 
 ---
 
