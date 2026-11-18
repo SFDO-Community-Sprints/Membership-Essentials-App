@@ -19,6 +19,10 @@
             <typeName>T__records</typeName>
             <typeValue>Contact</typeValue>
         </dataTypeMappings>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>set_Error_Log_Values</targetReference>
+        </faultConnector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>record</name>
@@ -206,7 +210,7 @@
         <locationX>314</locationX>
         <locationY>1034</locationY>
         <assignmentItems>
-            <assignToReference>Get_MFS_record.Failure_Information__c</assignToReference>
+            <assignToReference>varMFSFailureMessage</assignToReference>
             <operator>Assign</operator>
             <value>
                 <stringValue>Unable to create new contact record</stringValue>
@@ -214,7 +218,7 @@
         </assignmentItems>
         <connector>
             <isGoTo>true</isGoTo>
-            <targetReference>Update_Membership_Form_Submission</targetReference>
+            <targetReference>set_Error_Log_Values</targetReference>
         </connector>
     </assignments>
     <assignments>

@@ -15,7 +15,7 @@ The places where the code disagrees with [Architecture.md](Architecture.md), eac
 
 Several entries share a fix or depend on each other:
 
-1. **Independent and small, can start now:** DEP-02, the [bugs outside the rules](#bugs-outside-the-rules), and the [cleanup](#cleanup) deletions (DEP-14, -15, -16). The term-end setting ([#314](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/314)) and `Type__c` on created memberships ([#310](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/310)) belong here too, because later steps need them.
+1. **Independent and small, can start now:** the [bugs outside the rules](#bugs-outside-the-rules), and the [cleanup](#cleanup) deletions (DEP-14, -15, -16). The term-end setting ([#314](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/314)) and `Type__c` on created memberships ([#310](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/310)) belong here too, because later steps need them.
 2. **The log listener before the logging migration.** Fix the listener first (DEP-13, first item), then move the flows to the log DPEV (DEP-13, DEP-20) one flow per PR.
 3. **The fold** ([#278](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/278)). The E4 backlog TODO moves the membership step into the MFS BPEV listener. It resolves or reshapes DEP-01, -03, -04, -05, -07 and -09, together with the P1 ([#230](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/230)) and P4 ([#279](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/279)) TODOs, the grace-period match ([#308](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/308)) and gift matching ([#311](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/311)). Plan it as one piece of work. #310 must land first: once the finder matches on type (DEP-07), a membership with a blank `Type__c` never matches, so every renewal would create a new membership.
 4. **After the backlog picklist value `Import Incomplete` ([#280](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/280)) and the field `Membership_Renewed__c` ([#281](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/281)) exist:** DEP-06, DEP-11 (second item) and DEP-12. DEP-06 and DEP-08 also need the term-end setting (#314).
@@ -39,14 +39,6 @@ In a single pass the listener sets `Imported`, then publishes the recipient DPEV
 - [ ] Reorder the steps: Account → Contact → Product → Campaign → Price Book Entry → Opportunity → Recipient → Membership, with `Imported` last.
 - [ ] End the flow after each DPEV publish (one per pass).
 - [ ] Give the recipient step a skip check (D4): `Recipient__c` populated, or no recipient on the MFS.
-
-### DEP-02 — Contact creation failure loops forever
-**Issue:** [#272](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/272) · **Breaks:** D3 · **Flow:** `DPEV_Listener_Find_Create_Contact`
-
-The `Create_Contact` fault goes to `set_MFS_Failure_Message` → `Update_Membership_Form_Submission`. That path sets `Failure_Information__c` but not `Status__c = Failed`, and `Contact__c` stays blank. The update re-fires the record-triggered flow, and the BPEV listener publishes the contact DPEV again. The Account listener sends the same fault through `set_Error_Log_Values` → `set_MFS_Error_Values`, which sets `Failed`.
-
-- [ ] Route `set_MFS_Failure_Message` to `set_Error_Log_Values`, as the Account listener does.
-- [ ] Add a fault connector to `Check_for_Contact_Matches`. The Account listener's duplicate check has one.
 
 ### DEP-03 — `Record_Id__c` carries an Opportunity Line Item Id on the membership events
 **Issue:** [#285](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/285) · **Breaks:** E3, D2 · **Flows:** `Opportunity_Line_Item_After_Membership`, `DPEV_Listener_Membership_Finder`, `BPEV_Listener_Membership_Transaction`, `DPEV_Listener_Membership_Create_Flow`, `DPEV_Listener_Membership_Upgrade`, `DPEV_Listener_Membership_Downgrade`
