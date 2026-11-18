@@ -63,7 +63,7 @@
             <assignToReference>Get_the_Membership_Form_Submission_Record.Campaign__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Find_Existing_Campaign.Id</elementReference>
+                <elementReference>Found_Campaign.Id</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -90,7 +90,7 @@
             <name>Yes</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Find_Existing_Campaign</leftValueReference>
+                <leftValueReference>Found_Campaign</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -112,8 +112,8 @@
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
-            <name>Yes_2</name>
-            <conditionLogic>or</conditionLogic>
+            <name>Source_Code_Given</name>
+            <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>Get_the_Membership_Form_Submission_Record.Source_Code__c</leftValueReference>
                 <operator>IsNull</operator>
@@ -121,6 +121,14 @@
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
+            <connector>
+                <targetReference>Find_Campaign_By_Source_Code</targetReference>
+            </connector>
+            <label>Source Code Given</label>
+        </rules>
+        <rules>
+            <name>Campaign_Name_Given</name>
+            <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>Get_the_Membership_Form_Submission_Record.Source_Campaign_Name__c</leftValueReference>
                 <operator>IsNull</operator>
@@ -129,9 +137,9 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Find_Existing_Campaign</targetReference>
+                <targetReference>Find_Campaign_By_Name</targetReference>
             </connector>
-            <label>Yes</label>
+            <label>Campaign Name Given</label>
         </rules>
     </decisions>
     <description>Updated to include the new Membership Essentials Log object.</description>
@@ -283,18 +291,19 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
-        <name>Find_Existing_Campaign</name>
-        <label>Find Existing Campaign</label>
-        <locationX>182</locationX>
+        <description>Used only when no source code is given. Matches an active campaign on Name.</description>
+        <name>Find_Campaign_By_Name</name>
+        <label>Find Campaign By Name</label>
+        <locationX>314</locationX>
         <locationY>386</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Was_a_Campaign_Found</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Create_Find_Membership_Campaign_Membership_Essentials_Log</targetReference>
         </faultConnector>
-        <filterLogic>(1 OR 2) and 3</filterLogic>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Name</field>
             <operator>EqualTo</operator>
@@ -302,6 +311,31 @@
                 <elementReference>Get_the_Membership_Form_Submission_Record.Source_Campaign_Name__c</elementReference>
             </value>
         </filters>
+        <filters>
+            <field>IsActive</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>Campaign</object>
+        <outputReference>Found_Campaign</outputReference>
+        <queriedFields>Id</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <description>A given source code wins: matches an active campaign on Source Code alone, ignoring the campaign name.</description>
+        <name>Find_Campaign_By_Source_Code</name>
+        <label>Find Campaign By Source Code</label>
+        <locationX>50</locationX>
+        <locationY>386</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Was_a_Campaign_Found</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Create_Find_Membership_Campaign_Membership_Essentials_Log</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Source_Code__c</field>
             <operator>EqualTo</operator>
@@ -316,9 +350,9 @@
                 <booleanValue>true</booleanValue>
             </value>
         </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Campaign</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <outputReference>Found_Campaign</outputReference>
+        <queriedFields>Id</queriedFields>
     </recordLookups>
     <recordLookups>
         <name>Get_the_Membership_Form_Submission_Record</name>
@@ -367,4 +401,13 @@
         <triggerType>PlatformEvent</triggerType>
     </start>
     <status>Active</status>
+    <variables>
+        <description>The campaign found by either lookup.</description>
+        <name>Found_Campaign</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Campaign</objectType>
+    </variables>
 </Flow>
