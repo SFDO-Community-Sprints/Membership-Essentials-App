@@ -194,12 +194,6 @@
     </decisions>
     <description>Find membership associated with Membership Form Submission and Account or mark Membership Form Submission Record to indicate that the finder ran. Add check and log for product matching.</description>
     <environments>Default</environments>
-    <formulas>
-        <description>Returns today&apos;s date</description>
-        <name>FormulaToday</name>
-        <dataType>Date</dataType>
-        <expression>TODAY()</expression>
-    </formulas>
     <interviewLabel>DPEV Listener - Membership Finder {!$Flow.CurrentDateTime}</interviewLabel>
     <label>DPEV Listener - Membership Finder</label>
     <processMetadataValues>
@@ -511,10 +505,7 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <description>Query for a Membership record 
-where Account__c = Opportunity.AccountId 
-where End_Date__c &gt; today 
-and the Product is a renewable membership of the same Category.</description>
+        <description>Find the oldest-created membership for the submission's account with a renewable Membership-family product whose grace period ends today or later. Grace_Period_End__c uses the existing membership's product and treats blank grace as zero.</description>
         <name>GetMembership</name>
         <label>GetMembership</label>
         <locationX>314</locationX>
@@ -542,10 +533,10 @@ and the Product is a renewable membership of the same Category.</description>
             </value>
         </filters>
         <filters>
-            <field>End_Date__c</field>
-            <operator>GreaterThan</operator>
+            <field>Grace_Period_End__c</field>
+            <operator>GreaterThanOrEqualTo</operator>
             <value>
-                <elementReference>FormulaToday</elementReference>
+                <elementReference>$Flow.CurrentDate</elementReference>
             </value>
         </filters>
         <filters>

@@ -103,6 +103,16 @@ TEXT({!$Flow.CurrentDate})
 
 ,80)</expression>
     </formulas>
+    <formulas>
+        <description>The submission&apos;s Membership Type, if it is one of the values the restricted Membership Type picklist accepts; otherwise blank, so an unexpected value leaves the type empty rather than failing the create.</description>
+        <name>membershipType</name>
+        <dataType>String</dataType>
+        <expression>CASE(UPPER(TRIM({!Query_Membership_Form_Submission.MembershipType__c})),
+&quot;INDIVIDUAL&quot;, &quot;Individual&quot;,
+&quot;HOUSEHOLD&quot;, &quot;Household&quot;,
+&quot;CORPORATE&quot;, &quot;Corporate&quot;,
+&quot;&quot;)</expression>
+    </formulas>
     <interviewLabel>DPEV Listener - Membership Create Flow {!$Flow.CurrentDateTime}</interviewLabel>
     <label>DPEV Listener - Membership Create Flow</label>
     <processMetadataValues>
@@ -228,6 +238,12 @@ TEXT({!$Flow.CurrentDate})
             <field>Status__c</field>
             <value>
                 <stringValue>Current</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Type__c</field>
+            <value>
+                <elementReference>membershipType</elementReference>
             </value>
         </inputAssignments>
         <object>Membership__c</object>

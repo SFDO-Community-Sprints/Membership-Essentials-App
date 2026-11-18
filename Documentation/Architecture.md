@@ -218,7 +218,6 @@ These knowingly depart from the rules above. Leave them alone unless a task targ
 
 Changes the design requires that aren't in the package yet:
 
-- Add `Import Incomplete` to the `Status__c` picklist on `Membership_Form_Submission__c` (S1, B5).
 - Add the checkbox `Membership_Renewed__c` to `Membership_Form_Submission__c` (M4).
 - Rename the `_Test` classes to `_TEST`: `DuplicateRecordCheck_Test`, `TriggerHandler_Test` (N4).
 - Tag existing Apex other than duplicate matching (F3, F5) and hard-coded behavior strings (C2) per T1.

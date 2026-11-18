@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Grace_Period_End__c</fullName>
+    <description>Last day this membership is eligible for matching, including the grace period in days from its existing product. Blank grace is zero; a missing membership end date leaves this date blank.</description>
+    <externalId>false</externalId>
+    <formula>IF(ISBLANK(End_Date__c), NULL, End_Date__c + BLANKVALUE(Product__r.Grace_Period__c, 0))</formula>
+    <inlineHelpText>The membership end date plus its product's grace period. The membership finder includes this day when matching a purchase.</inlineHelpText>
+    <label>Grace Period End</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

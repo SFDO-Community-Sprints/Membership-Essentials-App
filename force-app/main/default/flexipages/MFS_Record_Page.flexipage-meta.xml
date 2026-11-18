@@ -96,6 +96,12 @@
                 <identifier>RecordMembership_Product_Changed__cField</identifier>
             </fieldInstance>
         </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldItem>Record.Membership_Renewed__c</fieldItem>
+                <identifier>RecordMembership_Renewed__cField</identifier>
+            </fieldInstance>
+        </itemInstances>
         <name>Facet-c2ba2f3a-c534-4fb5-b971-b786be649a27</name>
         <type>Facet</type>
     </flexiPageRegions>
