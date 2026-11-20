@@ -388,8 +388,14 @@
             <label>Yes</label>
         </rules>
     </decisions>
-    <description>If the Organization Name is populated, attempts to find a matching Account using active duplicate rules. If duplicate rules are inactive or no match is found, creates a new Account.</description>
+    <description>If the Organization Name is populated, attempts to find a matching Account using active duplicate rules. If duplicate rules are inactive or no match is found, creates a new Account. New Accounts get their billing address from the submission&apos;s billing fields.</description>
     <environments>Default</environments>
+    <formulas>
+        <description>Combines the submission&apos;s two street lines (BillingStreet__c and BillingStreet2__c) into the single street value Account.BillingStreet accepts, so a suite or unit number isn&apos;t lost. Same approach as forBillingStreet in DPEV Listener - Find/Create Contact. Added for #270.</description>
+        <name>forBillingStreet</name>
+        <dataType>String</dataType>
+        <expression>{!Get_Membership_Form_Submission.BillingStreet__c} + &quot; &quot; + {!Get_Membership_Form_Submission.BillingStreet2__c}</expression>
+    </formulas>
     <interviewLabel>DPEV Listener - {!$Flow.CurrentDateTime}</interviewLabel>
     <label>DPEV Listener - Find/Create Account</label>
     <processMetadataValues>
@@ -412,6 +418,7 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordCreates>
+        <description>Creates the organization&apos;s Account when no match is found, setting the name and the billing address from the Membership Form Submission. Only runs for submissions with an Organization Name.</description>
         <name>Create_Account</name>
         <label>Create Account</label>
         <locationX>50</locationX>
@@ -422,6 +429,36 @@
         <faultConnector>
             <targetReference>set_MFS_Failure_Message</targetReference>
         </faultConnector>
+        <inputAssignments>
+            <field>BillingCity</field>
+            <value>
+                <elementReference>Get_Membership_Form_Submission.BillingCity__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>BillingCountry</field>
+            <value>
+                <elementReference>Get_Membership_Form_Submission.BillingCountry__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>BillingPostalCode</field>
+            <value>
+                <elementReference>Get_Membership_Form_Submission.BillingZip__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>BillingState</field>
+            <value>
+                <elementReference>Get_Membership_Form_Submission.BillingState__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>BillingStreet</field>
+            <value>
+                <elementReference>forBillingStreet</elementReference>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <field>Name</field>
             <value>
