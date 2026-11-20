@@ -5,6 +5,7 @@
 * Created by ChrisPifer on 9/24/2020.
 */
 
+// TODO(flow-migration): Dispatches Membership__c after-insert and after-update trigger events to sync Primary_Contact__c with Membership_Contact_Role__c records and roll up primary memberships to Account and Contact.
 public with sharing class MembershipHandler extends TriggerHandler{
     
     private Map<Id, Membership__c> newMembershipsMap;
