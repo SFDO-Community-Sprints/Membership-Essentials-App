@@ -256,7 +256,7 @@ The MFS's own state values (`Imported`, `Failed`, `Skipped`, `Matched`) are deli
 
 These don't break a numbered rule, but they turned up during the same review.
 
-- [ ] In `Are_Recipient_fields_populated`, rule `Recipient_Contact_Info` condition 2 checks `LastName__c` (the purchaser's) instead of `RecipientLastName__c`. [#301](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/301)
+- [x] In `Are_Recipient_fields_populated`, rule `Recipient_Contact_Info` condition 2 checks `LastName__c` (the purchaser's) instead of `RecipientLastName__c`. [#301](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/301)
 - [ ] `DPEV_Listener_Campaign_Finder` searches when **either** the campaign name or the source code is given, but `Find_Existing_Campaign` requires **both** to match. A submission with only one of them fails with "campaign specified but not found" *(needs org)*. [#302](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/302)
   **Decided:** either field is enough, and the code wins. If `Source_Code__c` is given, match on it alone; otherwise match on `Source_Campaign_Name__c`. Active campaigns only.
 - [ ] If the line item insert fails in `DPEV_Listener_Create_Opportunity`, the Opportunity remains but isn't recorded on the MFS, so a retry creates a second one. [#303](https://github.com/SFDO-Community-Sprints/Membership-Essentials-App/issues/303)
