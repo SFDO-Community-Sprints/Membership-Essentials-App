@@ -47,7 +47,7 @@ Event-driven: Flows publish platform events, and other Flows subscribe to them. 
 
 **Apex** — 16 classes, 11 production and 5 test. `TriggerHandler` is the trigger framework; `MembershipHandler`, `ContactHandler`, `MembershipService`, `MembershipContactRoleService`, and `ConfigurationService` sit on top of it. Duplicate matching is its own group: `Duplicate`, `FindDuplicates`, `FindDuplicatesFactory`, `DuplicateRecordCheck_Util`, and `DuplicateRecordCheck_Invocable` (the Flow entry point).
 
-**Robot** — one suite at `robot/Membership-Management/tests`, run with `cci task run robot`.
+**Robot** — tests at `robot/Membership-Management/tests`, run with `cci task run robot`. The browser test needs extra setup first: see [Running the browser tests](Documentation/Automated%20Testing.md#running-the-browser-tests).
 
 API version is 59.0 in both `sfdx-project.json` and `cumulusci.yml`.
 
