@@ -2,6 +2,7 @@
 
 Resource        cumulusci/robotframework/Salesforce.robot
 Library         cumulusci.robotframework.PageObjects
+Library         ../resources/cci_logging.py
 
 Suite Setup     Open Test Browser
 Suite Teardown  Delete Records and Close Browser
@@ -54,5 +55,5 @@ Validate Contact
 
     # Validate via API
     &{contact} =     Salesforce Get  Contact  ${contact_id}
-    Should Be Equal  ${first_name}  &{contact}[FirstName]
-    Should Be Equal  ${last_name}  &{contact}[LastName]
+    Should Be Equal  ${first_name}  ${contact}[FirstName]
+    Should Be Equal  ${last_name}  ${contact}[LastName]

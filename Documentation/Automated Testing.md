@@ -1,6 +1,6 @@
 # Automated Testing
 
-How to test Membership Essentials' event-driven flows from Apex unit tests: how platform events are delivered in a test, the pattern for testing one processing step, and the traps found while working this out. Written for contributors adding test coverage to flows, events, or processing Apex.
+How to test Membership Essentials' event-driven flows from Apex unit tests: how platform events are delivered in a test, the pattern for testing one processing step, and the traps found while working this out. Written for contributors adding test coverage to flows, events, or processing Apex. Setup for the Robot browser tests is in [Running the browser tests](#running-the-browser-tests).
 
 **Where this comes from.** Everything below marked *verified* was run in a dev scratch org (API 68.0) on 2026-11-08, against the flows at their active version 1, using [`BPEV_DPEV_Delivery_TEST`](../force-app/main/default/classes/BPEV_DPEV_Delivery_TEST.cls) and the scenario suite ([`MembershipScenarios_TEST`](../force-app/main/default/classes/MembershipScenarios_TEST.cls) and its helpers). Anything marked *expected* was read from the flow metadata and has not been run. Read [Architecture.md](Architecture.md) first for the BPEV/DPEV design this builds on.
 
@@ -259,6 +259,64 @@ Chains B and C, and control A, use the `Status__c = 'Imported'` isolation above.
 | [`membership_smoke.robot`](../robot/Membership-Management/tests/membership_smoke.robot) | One new purchase through **real** asynchronous delivery: `cci task run robot --org dev -o suites robot/Membership-Management/tests/membership_smoke.robot`. Needs an org built by `dev_org` or `qa_org`, which run `setup_pricebook` (it uses sample product `STD`). It finished in about 16 seconds *(verified)*, and deletes what it created. |
 
 Run the Apex suite with `cci task run run_tests --org dev`, or for the assertion trails, `sf apex run test --class-names MembershipScenarios_TEST --result-format json -o <alias>`.
+
+---
+
+## Running the browser tests
+
+[`create_contact.robot`](../robot/Membership-Management/tests/create_contact.robot) drives a real browser. It needs setup beyond the usual CumulusCI install. [`membership_smoke.robot`](../robot/Membership-Management/tests/membership_smoke.robot) is API-only and doesn't.
+
+These steps run headless Chrome from a second CumulusCI install, `cci@browser`, so your usual `cci` is left alone. Both tests passed this way on 2026-11-25 on an Apple silicon Mac, with CumulusCI 4.11.0, Python 3.13, Chrome 153 and a dev scratch org (API 68.0). Linux and Windows haven't been tried.
+
+### Set up once
+
+You need Google Chrome, pipx and Python 3.13, plus the Salesforce CLI and a Dev Hub as for any org on this project ([AGENTS.md](../AGENTS.md#get-a-working-org)).
+
+```bash
+pipx install --python python3.13 --suffix=@browser "cumulusci[select]==4.11.0"
+pipx inject --force cumulusci@browser "urllib3<2" "chromedriver-binary==153.0.8010.52.0"
+```
+
+- **`urllib3<2`:** CumulusCI 4.11.0 uses Selenium 3.141.0, which fails with urllib3 2 (`ValueError: Timeout value connect was <object object ...>`).
+- **`chromedriver-binary`:** a third-party package that downloads ChromeDriver when it installs. Its major version has to match your Chrome's. The version above is for Chrome 153; find yours at `chrome://version`.
+
+### Run the tests
+
+From the repo root, using a `dev` org built as described in [AGENTS.md](../AGENTS.md#get-a-working-org). Both installs use the same orgs.
+
+```bash
+DRIVER_DIR="$("$(pipx environment --value PIPX_LOCAL_VENVS)/cumulusci@browser/bin/python" -I -c 'import importlib.util, os; print(os.path.dirname(importlib.util.find_spec("chromedriver_binary").origin))')"
+
+PATH="$DRIVER_DIR:$PATH" SF_TEMP_SHOW_SECRETS=true cci@browser task run robot --org dev \
+  --suites robot/Membership-Management/tests/create_contact.robot \
+  --vars BROWSER:headlesschrome
+```
+
+To watch the browser, use `BROWSER:chrome`. A plain `cci task run robot` runs every suite, including this one, which can't open a browser with urllib3 2 installed.
+
+### What to expect
+
+These warnings appear on a passing run:
+
+- `The '[Return]' setting is deprecated`, several times: it comes from CumulusCI's own `Salesforce.robot`.
+- `Locators for api 68 not found. Falling back to locators_57`: CumulusCI has no newer page locators. A UI step that can't find an element may trace back to this.
+- `Imported library '.../cci_logging.py' contains no keywords`: harmless. [`cci_logging.py`](../robot/Membership-Management/resources/cci_logging.py) only changes a logging setting.
+
+**Import `cci_logging.py` in every new browser suite.** Without it, a run here ended in `RecursionError: maximum recursion depth exceeded`, because CumulusCI's copy of the console output fed back into Robot's logger.
+
+```robotframework
+Library    ../resources/cci_logging.py
+```
+
+### Update or remove
+
+When Chrome moves to a new major version, install the matching driver (replace `<major>`):
+
+```bash
+pipx inject --force cumulusci@browser "chromedriver-binary==<major>.*"
+```
+
+To remove the whole setup: `pipx uninstall cumulusci@browser`.
 
 ---
 
