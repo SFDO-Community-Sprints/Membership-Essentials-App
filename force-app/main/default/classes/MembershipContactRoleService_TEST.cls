@@ -160,4 +160,83 @@ private without sharing class MembershipContactRoleService_TEST {
         ];
         System.assertEquals(0, mcrs.size(), 'expected no Roles');
     }
+	
+    @isTest
+    private static void testAddSecondPrimaryContact() {
+        Test.startTest();
+        List<Contact> cs = new List<Contact>{
+            new Contact(
+                AccountId = [SELECT Id FROM Account WHERE Name = 'First Account'].Id,
+                FirstName = 'Molly',
+                LastName = 'Member'
+            ),
+            new Contact(
+                AccountId = [SELECT Id FROM Account WHERE Name = 'First Account'].Id,
+                FirstName = 'Mikaela',
+                LastName = 'Member'
+            )
+        };
+        insert cs;
+        
+        Membership__c m = new Membership__c( Id = [SELECT Id FROM Membership__c WHERE Name = 'First Membership'].Id, 
+                                                Primary_Contact__c = cs[0].Id);
+        update m;
+
+        List<Membership_Contact_Role__c> mcrs = [
+            SELECT Id, Is_Primary__c, Name, Start_Date__c, Role__c, Membership__c, Contact__c
+            FROM Membership_Contact_Role__c
+            WHERE Membership__c = :m.Id AND Is_Primary__c = TRUE
+        ];
+        System.assertEquals(1, mcrs.size(), 'expected 1 Primary Role');
+
+        m = new Membership__c( Id = [SELECT Id FROM Membership__c WHERE Name = 'First Membership'].Id, 
+                                                Primary_Contact__c = cs[1].Id);
+        update m;
+
+        mcrs = [
+            SELECT Id, Is_Primary__c, Name, Start_Date__c, Role__c, Membership__c, Contact__c
+            FROM Membership_Contact_Role__c
+            WHERE Membership__c = :m.Id AND Is_Primary__c = TRUE
+        ];
+        System.assertEquals(1, mcrs.size(), 'still expected only 1 Primary Role');
+    }
+    
+    @isTest
+    private static void testMakeSecondRolePrimary() {
+        List<Contact> cs = new List<Contact>{
+            new Contact(
+                AccountId = [SELECT Id FROM Account WHERE Name = 'First Account'].Id,
+                FirstName = 'Molly',
+                LastName = 'Member'
+            ),
+            new Contact(
+                AccountId = [SELECT Id FROM Account WHERE Name = 'First Account'].Id,
+                FirstName = 'Mikaela',
+                LastName = 'Member'
+            )
+        };
+        insert cs;
+        
+        Membership__c m = new Membership__c( Id = [SELECT Id FROM Membership__c WHERE Name = 'First Membership'].Id, 
+                                                Primary_Contact__c = cs[0].Id);
+        update m;
+
+        Test.startTest();
+        List<Membership_Contact_Role__c> mcrs = [
+            SELECT Id, Is_Primary__c, Name, Start_Date__c, Role__c, Membership__c, Contact__c
+            FROM Membership_Contact_Role__c
+            WHERE Membership__c = :m.Id AND Is_Primary__c = TRUE
+        ];
+        System.assertEquals(1, mcrs.size(), 'expected 1 Primary Role');
+
+		Membership_Contact_Role__c mcr = new Membership_Contact_Role__c(Id = [SELECT Id FROM Membership_Contact_Role__c WHERE Membership__c = :m.Id AND Contact__c = :cs[1].Id].Id, Is_Primary__c = TRUE);
+        update mcr;
+
+        mcrs = [
+            SELECT Id, Is_Primary__c, Name, Start_Date__c, Role__c, Membership__c, Contact__c
+            FROM Membership_Contact_Role__c
+            WHERE Membership__c = :m.Id AND Is_Primary__c = TRUE
+        ];
+        System.assertEquals(1, mcrs.size(), 'still expected only 1 Primary Role');
+    }
 }
